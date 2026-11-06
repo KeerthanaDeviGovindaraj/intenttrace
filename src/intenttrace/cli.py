@@ -179,6 +179,14 @@ def serve(
     uvicorn.run(api_app, host=host, port=port)
 
 
+@app.command()
+def mcp() -> None:
+    """Start the MCP server over stdio."""
+    from intenttrace import mcp_server
+
+    mcp_server.run()
+
+
 @app.command("load-sample")
 def load_sample(
     sample_dir: Path = typer.Option(Path("benchmark/sample"), "--dir", help="Directory of sample cases."),

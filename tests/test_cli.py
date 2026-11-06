@@ -75,3 +75,19 @@ def test_investigate_unknown_provider_exits_2(tmp_path, monkeypatch):
     case_path, _ = _generated_case(tmp_path)
     monkeypatch.setenv("INTENTTRACE_LLM_PROVIDER", "nonesuch")
     assert runner.invoke(app, ["investigate", str(case_path)]).exit_code == 2
+
+
+def test_mcp_command_registered_in_help():
+    result = runner.invoke(app, ["--help"])
+    assert result.exit_code == 0, result.output
+    assert "mcp" in result.output
+
+
+def test_mcp_command_calls_server_run(monkeypatch):
+    from intenttrace import mcp_server
+
+    calls: list[int] = []
+    monkeypatch.setattr(mcp_server, "run", lambda: calls.append(1))
+    result = runner.invoke(app, ["mcp"])
+    assert result.exit_code == 0, result.output
+    assert calls == [1]
