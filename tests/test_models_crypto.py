@@ -161,3 +161,31 @@ def test_schema_export_matches_committed(tmp_path):
     generated = json.loads(out.read_text(encoding="utf-8"))
     committed = json.loads((ROOT / "docs" / "case-file.schema.json").read_text(encoding="utf-8"))
     assert generated == committed
+
+
+def test_finding_defaults_round_trip_and_extras():
+    from intenttrace.models import Finding, Span
+
+    f = Finding(kind="scope_violation")
+    assert f.detail == "" and f.field is None and f.expected is None and f.actual is None
+    assert f.step_ids == [] and f.spans == [] and f.method is None
+    # default lists are not shared between instances
+    f.step_ids.append("s1")
+    assert Finding(kind="k").step_ids == []
+
+    full = Finding(
+        kind="hidden_text",
+        detail="d",
+        field="cart.total_cents",
+        expected=100,
+        actual={"a": 1},
+        step_ids=["s1"],
+        spans=[Span(step_id="s1", start=0, end=4, rule_id="R1")],
+        method="rule",
+    )
+    assert Finding.model_validate_json(full.model_dump_json()) == full
+
+    with pytest.raises(ValidationError):
+        Finding(kind="k", bogus=1)
+    with pytest.raises(ValidationError):
+        Finding(kind="k", method="magic")
