@@ -24,7 +24,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Ordered rule table rows 1 to 7, integrity finding to Reason_Code mapping, first match wins
     - Template dict keyed by Reason_Code, no LLM, no caller-supplied text, explanation capped at 400 characters and ending with "Technical signal on synthetic data. Not legal advice."
     - _Requirements: 2.2, 2.4, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 5.5, 12.2_
-  - [ ]* 2.3 Write property test for the rule table
+  - [x]* 2.3 Write property test for the rule table
     - **Property 1: Rule table is total and ordered**
     - Use a flat `if` chain in the test as an independent oracle over generated `Facts`
     - **Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 5.5**
@@ -35,7 +35,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Step ID equals content item ID so spans need no translation
     - `provider_from_env()` returns `(None, [])` for unset, empty, or `none`; returns `(None, ["llm_unavailable"])` when `make_provider` raises
     - _Requirements: 1.2, 4.1, 4.2, 4.4, 4.5, 4.6, 5.3_
-  - [ ]* 3.2 Write unit tests for the adapter and provider selection
+  - [x]* 3.2 Write unit tests for the adapter and provider selection
     - Source mapping table, placeholder payment yields only a `payment.signature` finding, empty cart and duplicate item IDs rejected, `provider_from_env` cases
     - _Requirements: 1.2, 4.6, 5.3_
 
@@ -49,7 +49,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 4.2 Add `decision_markdown(record)` to `paygate_log.py`
     - Build an `EvidencePacket` from the record and render it with `evidence.to_markdown`; append the "Decision record" section and the sentence that content text is not stored; include the legal notice
     - _Requirements: 4.3, 12.2_
-  - [ ]* 4.3 Write property test for chain verification and tamper location
+  - [x]* 4.3 Write property test for chain verification and tamper location
     - **Property 9: Chain verifies, and any tamper is located**
     - Strategy `tampered_log()` appends N records to a temp log, then tampers one field of record k, or deletes a middle record
     - **Validates: Requirements 9.3, 9.4, 9.5, 9.7**
@@ -57,21 +57,21 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Genesis hash, 8 concurrent writer threads produce one linear chain, key file mode 0600, explicit missing key file fails, `decision_keys` row present, tamper test returns the tampered record ID
     - _Requirements: 9.5, 9.8, 9.9, 9.10, 13.1, 13.3_
 
-- [ ] 5. Orchestration with `gate_purchase`
-  - [~] 5.1 Implement `gate_purchase` in `paygate.py`
+- [x] 5. Orchestration with `gate_purchase`
+  - [x] 5.1 Implement `gate_purchase` in `paygate.py`
     - Validate, adapt, run integrity then scope (short-circuit on findings), then `detect`, `replay` (only when spans are flagged), and `check_deviation`; drop `payment.*` integrity failures; build `Facts`, call `decide_from_facts`, fill `skipped_checks` and `notes`, append one log record
     - Wrap the whole body in `try/except Exception`; per-check failures give `ASK_HUMAN / CHECK_FAILED` naming the check; a failed log write gives `ASK_HUMAN / CHECK_FAILED` with `record_id = None`; the fallback is built from constants only
     - Accept a model or dict, accept an injected `log`, make zero network calls when `provider=None`
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 4.1, 4.2, 4.4, 4.5, 5.1, 5.2, 5.3, 5.4, 5.5, 6.1, 6.2, 6.3, 6.4, 6.5, 9.1_
-  - [~] 5.2 Create hypothesis strategies in `tests/strategies_paygate.py`
+  - [x] 5.2 Create hypothesis strategies in `tests/strategies_paygate.py`
     - `facts()`, `signed_request()` (valid signed `GateRequest` varying price, quantity, content, listings, `agent_config`, with benign text mixed with R1 to R5 trigger phrases), `mutated_request()` (extra key, card number, removed field, oversize)
     - _Requirements: 13.1_
-  - [ ]* 5.3 Write property tests for result shape and input rejection
+  - [-]* 5.3 Write property tests for result shape and input rejection
     - **Property 2: Result shape invariant**
     - **Validates: Requirements 2.1, 2.2, 2.4, 6.3, 12.2**
     - **Property 3: Invalid requests are rejected with paths**
     - **Validates: Requirements 1.3, 1.4, 1.5, 5.6**
-  - [ ]* 5.4 Write property tests for determinism, spans, and skipped checks
+  - [-]* 5.4 Write property tests for determinism, spans, and skipped checks
     - **Property 4: Determinism and input independence**
     - **Validates: Requirements 3.10, 6.2, 4.6**
     - **Property 5: Highlighted spans are well formed**
@@ -93,7 +93,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 7. HTTP endpoints
-  - [~] 7.1 Add the PayGate routes to `api.py`
+  - [-] 7.1 Add the PayGate routes to `api.py`
     - `POST /api/paygate/check?replay=true` (200 for every Decision, 422 with an `INPUT_MALFORMED` body for non-JSON), `GET /api/paygate/decisions` (newest first, `decision` filter, `limit` 1 to 500, 422 on a bad filter), `GET /api/paygate/decisions/{id}/evidence.md` (404 if unknown), `GET /api/paygate/chain`
     - Use `provider_from_env()`; keep existing routes, `127.0.0.1` binding, and CORS unchanged
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 10.6_
@@ -102,7 +102,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - _Requirements: 7.2, 7.3, 7.4, 7.5, 7.6, 13.2_
 
 - [ ] 8. MCP tool
-  - [~] 8.1 Add `check_purchase(request_json)` to `mcp_server.py` and register it in `create_server`
+  - [-] 8.1 Add `check_purchase(request_json)` to `mcp_server.py` and register it in `create_server`
     - Parse the string, route unparseable input through `gate_purchase` so it yields `INPUT_MALFORMED`, return `model_dump(mode="json")`; leave the three existing tools unchanged
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5_
   - [ ]* 8.2 Write tests for the MCP tool
@@ -110,7 +110,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - _Requirements: 8.1, 8.3, 8.4, 8.5, 13.2_
 
 - [ ] 9. Benchmark mode and CLI
-  - [~] 9.1 Add `case_to_request` and `run_paygate_bench` to `bench.py`
+  - [-] 9.1 Add `case_to_request` and `run_paygate_bench` to `bench.py`
     - Convert `merchant`, `review`, and `external_agent` trace steps to content items; drop payment, delivered item, and `listing_after`
     - Run `gate_purchase` per case with a temp database and key in `tempfile.TemporaryDirectory`, time with `perf_counter`
     - Groups: Attack_Cases (`MANIPULATED`, `OUT_OF_SCOPE`, `INTEGRITY_FAILURE` except payment-only causes), Legitimate_Cases, and two excluded groups (`MERCHANT_MISREPRESENTATION`; `INTEGRITY_FAILURE` with cause `amount_altered` or `cart_hash_altered`) counted with their reasons

@@ -6,6 +6,7 @@ Synthetic data only. Technical signal on synthetic data. Not legal advice.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from dataclasses import dataclass
@@ -13,7 +14,13 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field, ValidationError, field_validator
 
-from .crypto import mandate_hash
+from .checks.integrity import check_integrity
+from .checks.scope import check_scope
+from .crypto import canonical, mandate_hash
+from .forensics.detect import detect
+from .forensics.deviation import check_deviation
+from .forensics.replay import original_choice
+from .forensics.replay import replay as run_replay
 from .llm.base import LLMProvider
 from .llm.factory import make_provider
 from .models import (
@@ -335,3 +342,192 @@ def validate_request(raw: Any) -> GateRequest:
         return GateRequest.model_validate(raw)
     except ValidationError as exc:
         raise RequestError(_error_items(exc)) from None
+
+
+# ---------------------------------------------------------------------------
+# Orchestration
+# ---------------------------------------------------------------------------
+
+
+class _CheckFailed(Exception):
+    """Internal: a named check raised. Carries only the fixed check name."""
+
+    def __init__(self, check: str) -> None:
+        super().__init__(check)
+        self.check = check
+
+
+def _run_check(name: str, fn: Any, *args: Any) -> Any:
+    try:
+        return fn(*args)
+    except Exception:
+        raise _CheckFailed(name) from None
+
+
+def _request_hash(raw: Any, req: GateRequest | None) -> str:
+    try:
+        if req is not None:
+            return hashlib.sha256(canonical(req.model_dump())).hexdigest()
+        data = json.dumps(raw, default=str, sort_keys=True).encode("utf-8", "replace")
+    except Exception:
+        data = b"unhashable"
+    return hashlib.sha256(data).hexdigest()
+
+
+def _failed_result(check: str, record_id: str | None = None) -> GateResult:
+    """CHECK_FAILED result built from constants and a fixed check name only."""
+    codes: list[ReasonCode] = ["CHECK_FAILED"]
+    return GateResult(
+        decision="ASK_HUMAN",
+        reason_codes=codes,
+        explanation=build_explanation(codes, check=check),
+        record_id=record_id,
+    )
+
+
+def gate_purchase(
+    request: GateRequest | dict[str, Any],
+    provider: LLMProvider | None = None,
+    replay: bool = True,
+    *,
+    log: Any = None,
+) -> GateResult:
+    """Decide ALLOW, BLOCK or ASK_HUMAN for a proposed purchase. Never raises.
+
+    ``provider=None`` runs rules only and makes no network calls. One record is appended to
+    ``log`` (a default ``DecisionLog()`` when None) per call.
+    """
+    try:
+        return _gate(request, provider, replay, log)
+    except Exception:
+        return _failed_result("gate")
+
+
+def _gate(request: Any, provider: LLMProvider | None, replay: bool, log: Any) -> GateResult:
+    from .paygate_log import DecisionLog, RecordInput  # lazy: paygate_log imports this module
+
+    own_log = False
+    try:
+        if log is None:
+            log = DecisionLog()
+            own_log = True
+    except Exception:
+        return _failed_result("log")
+    try:
+        req: GateRequest | None = None
+        errors: list[ErrorItem] = []
+        skipped: list[str] = []
+        notes: list[str] = []
+        spans: list[HighlightedSpan] = []
+        count = 0
+        check = "unknown"
+        try:
+            req = validate_request(request)
+            decision, codes_t, count = _evaluate(req, provider, replay, skipped, notes, spans)
+        except RequestError as exc:
+            errors = exc.errors
+            decision, codes_t = "ASK_HUMAN", ("INPUT_MALFORMED",)
+        except _CheckFailed as exc:
+            decision, codes_t, check = "ASK_HUMAN", ("CHECK_FAILED",), exc.check
+            spans, skipped, notes = [], [], []
+        explanation = build_explanation(codes_t, count=count, check=check)
+        try:
+            record = log.append(
+                RecordInput(
+                    decision=decision,
+                    reason_codes=list(codes_t),
+                    explanation=explanation,
+                    spans=spans,
+                    skipped_checks=skipped,
+                    request_hash=_request_hash(request, req),
+                )
+            )
+        except Exception:
+            return _failed_result("log")
+        return GateResult(
+            decision=decision,
+            reason_codes=list(codes_t),
+            explanation=explanation,
+            spans=spans,
+            skipped_checks=skipped,
+            notes=notes,
+            errors=errors,
+            record_id=record.record_id,
+        )
+    finally:
+        if own_log:
+            try:
+                log.close()
+            except Exception:
+                pass
+
+
+def _evaluate(
+    req: GateRequest,
+    provider: LLMProvider | None,
+    replay: bool,
+    skipped: list[str],
+    notes: list[str],
+    spans_out: list[HighlightedSpan],
+) -> tuple[Decision, tuple[ReasonCode, ...], int]:
+    case = _run_check("adapter", request_to_case, req)
+
+    integrity = _run_check("integrity", check_integrity, case)
+    codes: list[ReasonCode] = []
+    for f in integrity.failures:
+        if (f.field or "").startswith("payment."):
+            continue
+        code = integrity_code_for_kind(f.kind)
+        if code is not None:
+            codes.append(code)
+    outcome = decide_from_facts(Facts(integrity_codes=tuple(codes)))
+    if codes:
+        return outcome.decision, outcome.reason_codes, 0
+
+    scope = _run_check("scope", check_scope, case)
+    violations = len(scope.violations)
+    if violations:
+        outcome = decide_from_facts(Facts(scope_violations=violations))
+        return outcome.decision, outcome.reason_codes, violations
+
+    detection = _run_check("detect", detect, case, provider)
+    if any(f.kind == "llm_unavailable" for f in detection.findings):
+        notes.append("llm_unavailable")
+    spans_out.extend(
+        HighlightedSpan(
+            item_id=s.step_id, start=s.start, end=s.end, rule_id=s.rule_id or s.method or "unknown"
+        )
+        for s in detection.spans
+    )
+    flagged = len(detection.spans)
+
+    replay_state: Literal["changed", "unchanged", "unavailable"] = "unavailable"
+    if not replay:
+        skipped.append("replay: disabled")
+    elif req.agent_config is None:
+        skipped.append("replay: no agent_config")
+    elif flagged:
+        result = _run_check("replay", run_replay, case, detection.spans, True)
+        replay_state = result.result
+        if replay_state == "unavailable":
+            skipped.append(f"replay: {result.reason or 'unavailable'}")
+
+    deviation_state: Literal["deviates", "matches", "unavailable"] = "unavailable"
+    if not req.listings:
+        skipped.append("deviation: no listings")
+    else:
+        dev = _run_check(
+            "deviation",
+            check_deviation,
+            req.intent.natural_language,
+            req.intent.constraints,
+            req.listings,
+            original_choice(case),
+        )
+        if dev.eligible_count == 0:
+            skipped.append("deviation: no eligible listing")
+        else:
+            deviation_state = "deviates" if dev.deviation else "matches"
+
+    outcome = decide_from_facts(Facts(flagged_spans=flagged, replay=replay_state, deviation=deviation_state))
+    return outcome.decision, outcome.reason_codes, flagged

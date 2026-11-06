@@ -1,5 +1,14 @@
 {
-  "pbtResults": {},
+  "pbtResults": {
+    "2.3 Write property test for the rule table": {
+      "status": "passed",
+      "lastRunTimestamp": 1794002415296
+    },
+    "4.3 Write property test for chain verification and tamper location": {
+      "status": "passed",
+      "lastRunTimestamp": 1794002437703
+    }
+  },
   "executionHistory": {
     "1.1 Add `hypothesis` with a pinned version to the `dev` extra in `pyproject.toml`": [
       {
@@ -125,6 +134,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879506
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002450507
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002591989
       }
     ],
     "5.2 Create hypothesis strategies in `tests/strategies_paygate.py`": [
@@ -132,6 +151,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879545
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002451588
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002593056
       }
     ],
     "6. Checkpoint - core gate": [
@@ -146,6 +175,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879604
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002600806
       }
     ],
     "8.1 Add `check_purchase(request_json)` to `mcp_server.py` and register it in `create_server`": [
@@ -153,6 +187,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879629
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002603816
       }
     ],
     "9.1 Add `case_to_request` and `run_paygate_bench` to `bench.py`": [
@@ -160,6 +199,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879656
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002603839
       }
     ],
     "9.2 Add `render_paygate_section` and `write_paygate_results`, and update `write_results` in `bench.py`": [
@@ -270,6 +314,63 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794002377003
+      }
+    ],
+    "2.3 Write property test for the rule table": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002389868
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002444512
+      }
+    ],
+    "3.2 Write unit tests for the adapter and provider selection": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002390975
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002445407
+      }
+    ],
+    "4.3 Write property test for chain verification and tamper location": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002391675
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002446463
+      }
+    ],
+    "5. Orchestration with `gate_purchase`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002593083
+      }
+    ],
+    "5.3 Write property tests for result shape and input rejection": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002603890
+      }
+    ],
+    "5.4 Write property tests for determinism, spans, and skipped checks": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002603927
       }
     ]
   }
