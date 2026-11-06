@@ -646,6 +646,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960250
+      },
+      {
+        "executionId": "d1474968-64a5-4d1d-80c1-7fb7ba6b63ed",
+        "chatSessionId": "sess_cfbd9c05-d64b-4a53-99d6-72ccd51a688f",
+        "timestamp": 1793996314271
+      },
+      {
+        "executionId": "d1474968-64a5-4d1d-80c1-7fb7ba6b63ed",
+        "chatSessionId": "sess_cfbd9c05-d64b-4a53-99d6-72ccd51a688f",
+        "timestamp": 1793996370543
       }
     ],
     "13.1 Implement the real provider (Anthropic or OpenAI) in `llm/`": [
@@ -653,6 +663,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960282
+      },
+      {
+        "executionId": "f1132084-7cad-43a0-b702-1bfffbc90266",
+        "chatSessionId": "sess_9ee1274d-d922-42d0-b9e5-7f76ddfaadb0",
+        "timestamp": 1793997819524
+      },
+      {
+        "executionId": "f1132084-7cad-43a0-b702-1bfffbc90266",
+        "chatSessionId": "sess_9ee1274d-d922-42d0-b9e5-7f76ddfaadb0",
+        "timestamp": 1793997936039
       }
     ],
     "13.2 Run `intenttrace bench --provider <real> --n 300` and commit RESULTS.md labeled with provider and model": [
@@ -674,6 +694,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960384
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793998064541
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793998890410
       }
     ],
     "14.2 Record a 30–60 second demo GIF: open a MANIPULATED case, show the highlighted injection and the replay result": [
@@ -681,6 +711,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960428
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793998890552
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793999064928
       }
     ],
     "3. Simulator and case generator (~90 min)": [
@@ -723,6 +763,25 @@
         "executionId": "02227f5c-558a-4a66-bc72-0fe1e22ea30a",
         "chatSessionId": "sess_8ca6895b-4fd7-4857-bd29-1d563abdf871",
         "timestamp": 1793993319043
+      }
+    ],
+    "12. CI (~15 min)": [
+      {
+        "executionId": "d1474968-64a5-4d1d-80c1-7fb7ba6b63ed",
+        "chatSessionId": "sess_cfbd9c05-d64b-4a53-99d6-72ccd51a688f",
+        "timestamp": 1793996370619
+      }
+    ],
+    "14. README and demo (~45 min)": [
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793998062569
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793999064992
       }
     ]
   }

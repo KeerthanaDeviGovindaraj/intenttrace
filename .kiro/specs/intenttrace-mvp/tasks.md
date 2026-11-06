@@ -87,19 +87,19 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 11.6 `npm run build` succeeds; the API serves `web/dist`
   - _Requirements: 11.1–11.4_
 
-- [ ] 12. CI (~15 min)
-  - [~] 12.1 Enable the benchmark gate and web build jobs in `.github/workflows/ci.yml`
+- [x] 12. CI (~15 min)
+  - [x] 12.1 Enable the benchmark gate and web build jobs in `.github/workflows/ci.yml`
   - _Requirements: 13.2_
 
 ## Phase D: Real-model run and launch (target: 1.5 hours)
 
-- [ ] 13. Real-provider benchmark (human-supervised, ~30 min)
-  - [~] 13.1 Implement the real provider (Anthropic or OpenAI) in `llm/`
+- [~] 13. Real-provider benchmark (human-supervised, ~30 min)
+  - [x] 13.1 Implement the real provider (Anthropic or OpenAI) in `llm/`
   - [~] 13.2 Run `intenttrace bench --provider <real> --n 300` and commit RESULTS.md labeled with provider and model
   - [~] 13.3 Optional: a 20-case live set with the LLM shopping agent, reported separately
   - _Requirements: 9.3, 12.1, 12.4_
 
-- [ ] 14. README and demo (~45 min)
-  - [~] 14.1 README: problem (with sources), how it works, quickstart, results table from RESULTS.md, methodology, limitations, "AP2-style, not AP2-compliant" note
-  - [~] 14.2 Record a 30–60 second demo GIF: open a MANIPULATED case, show the highlighted injection and the replay result
+- [x] 14. README and demo (~45 min)
+  - [x] 14.1 README: problem (with sources), how it works, quickstart, results table from RESULTS.md, methodology, limitations, "AP2-style, not AP2-compliant" note
+  - [x] 14.2 Record a 30–60 second demo GIF: open a MANIPULATED case, show the highlighted injection and the replay result
   - _Requirements: 13.3_
