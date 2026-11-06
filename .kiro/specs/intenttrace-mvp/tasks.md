@@ -30,17 +30,17 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 3.8 Tests: determinism (same seed gives byte-identical output), every bucket filled, MANIPULATED label only when the counterfactual differs, attack-present-but-not-fooled cases labeled LEGITIMATE, every generated case passes validation
   - _Requirements: 8.1–8.7_
 
-- [~] 4. Checkpoint A (human, ~10 min)
+- [x] 4. Checkpoint A (human, ~10 min)
   - Run `intenttrace generate --n 30 --seed 1` and open two case files. Confirm they read like real purchases.
 
 ## Phase B: Investigation pipeline (target: 3 hours)
 
-- [ ] 5. Detection and influence (~60 min)
-  - [~] 5.1 `forensics/detect.py` rules R1–R5 with spans and rule IDs (6.1)
-  - [~] 5.2 `llm/base.py` provider protocol with usage tracking; `llm/fake.py`; `llm/prompts.py` with PROMPT_VERSION
-  - [~] 5.3 LLM classifier integration in detection, recording `method`
-  - [~] 5.4 `forensics/influence.py` lexical score plus LLM judgment and the combination rule (6.3)
-  - [~] 5.5 Tests: each rule fires on its example and not on bland descriptions; hidden-text detection; influence math; LLM failure degrades to lexical with an `llm_unavailable` finding
+- [x] 5. Detection and influence (~60 min)
+  - [x] 5.1 `forensics/detect.py` rules R1–R5 with spans and rule IDs (6.1)
+  - [x] 5.2 `llm/base.py` provider protocol with usage tracking; `llm/fake.py`; `llm/prompts.py` with PROMPT_VERSION
+  - [x] 5.3 LLM classifier integration in detection, recording `method`
+  - [x] 5.4 `forensics/influence.py` lexical score plus LLM judgment and the combination rule (6.3)
+  - [x] 5.5 Tests: each rule fires on its example and not on bland descriptions; hidden-text detection; influence math; LLM failure degrades to lexical with an `llm_unavailable` finding
   - _Requirements: 5.1–5.5, 12.1–12.3_
 
 - [ ] 6. Replay, verdict, evidence (~60 min)

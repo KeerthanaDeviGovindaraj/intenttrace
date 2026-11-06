@@ -185,6 +185,7 @@ class Span(_Model):
     end: int
     rule_id: str | None = None
     reason: str | None = None
+    method: Literal["rule", "llm"] | None = None
 
 
 class Finding(_Model):
