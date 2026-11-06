@@ -9,6 +9,11 @@ from intenttrace import __version__
 app = typer.Typer(help="Forensic investigator for AI agent purchases.", no_args_is_help=True)
 
 
+@app.callback()
+def main() -> None:
+    """Forensic investigator for AI agent purchases."""
+
+
 @app.command()
 def version() -> None:
     """Print the IntentTrace version."""
