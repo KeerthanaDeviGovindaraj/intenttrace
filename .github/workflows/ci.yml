@@ -16,19 +16,21 @@ jobs:
       - run: pip install -e ".[dev]"
       - run: ruff check . && ruff format --check .
       - run: pytest -q
-      # Task 8 (checkpoint B): enable the benchmark gate at baseline minus 0.03, e.g.
-      # - run: intenttrace generate --n 300 --seed 7
-      # - run: intenttrace bench --provider fake --min-macro-f1 0.80 --max-false-accusation 0.05
+      # Gate: baseline macro F1 0.969 (Checkpoint B) minus 0.03. Fake provider, no network/keys.
+      - run: intenttrace generate --n 300 --seed 7
+      - run: intenttrace bench --provider fake --min-macro-f1 0.94 --max-false-accusation 0.05
+
 
   web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - id: check
-        run: echo "exists=$([ -f web/package.json ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-      - if: steps.check.outputs.exists == 'true'
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - if: steps.check.outputs.exists == 'true'
-        run: cd web && npm ci && npm run build
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+        working-directory: web
+      - run: npm run build
+        working-directory: web
