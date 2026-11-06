@@ -50,3 +50,10 @@ def generate_keypair() -> tuple[Ed25519PrivateKey, str]:
     private_key = Ed25519PrivateKey.generate()
     raw = private_key.public_key().public_bytes_raw()
     return private_key, base64.b64encode(raw).decode("ascii")
+
+
+def keypair_from_seed(seed_material: bytes) -> tuple[Ed25519PrivateKey, str]:
+    """Deterministic Ed25519 key pair derived from ``seed_material`` (for reproducible simulations only)."""
+    private_key = Ed25519PrivateKey.from_private_bytes(hashlib.sha256(seed_material).digest())
+    raw = private_key.public_key().public_bytes_raw()
+    return private_key, base64.b64encode(raw).decode("ascii")
