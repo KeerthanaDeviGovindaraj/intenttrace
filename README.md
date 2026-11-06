@@ -4,6 +4,8 @@
 
 ![IntentTrace demo: a MANIPULATED case with the highlighted injection and the replay result](docs/demo.gif)
 
+**Live demo:** https://intenttrace.onrender.com (free tier, so the first load after idle can take about a minute; sample data only)
+
 
 IntentTrace is a forensic investigator for AI agent purchases. Give it the record of a purchase and it decides whether the purchase was legitimate, out of scope, manipulated, a merchant misrepresentation, or tampered with. It then writes a dispute-ready evidence packet.
 
