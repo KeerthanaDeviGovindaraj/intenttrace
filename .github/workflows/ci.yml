@@ -22,14 +22,13 @@ jobs:
 
   web:
     runs-on: ubuntu-latest
-    if: ${{ hashFiles('web/package.json') != '' }}
-    defaults:
-      run:
-        working-directory: web
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - id: check
+        run: echo "exists=$([ -f web/package.json ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - if: steps.check.outputs.exists == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - run: npm ci
-      - run: npm run build
+      - if: steps.check.outputs.exists == 'true'
+        run: cd web && npm ci && npm run build
