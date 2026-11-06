@@ -36,12 +36,10 @@ FAKE_NOTICE = (
 
 
 def make_provider(name: str) -> LLMProvider:
-    """Build a provider by name. Only ``fake`` exists until task 13."""
-    if name == "fake":
-        from intenttrace.llm.fake import FakeProvider
+    """Build a provider by name (``fake``, ``anthropic`` or ``openai``)."""
+    from intenttrace.llm.factory import make_provider as _make
 
-        return FakeProvider()
-    raise ValueError(f"Unsupported provider: {name!r} (only 'fake' is available)")
+    return _make(name)
 
 
 def _percentile(values: list[float], pct: float) -> float:

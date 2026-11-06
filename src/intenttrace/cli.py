@@ -48,16 +48,17 @@ def _json_path(loc: tuple) -> str:
 
 
 def _select_provider():
-    """Fake provider unless INTENTTRACE_LLM_PROVIDER names another one (none are wired up yet)."""
+    """Fake provider unless INTENTTRACE_LLM_PROVIDER names another one."""
     import os
 
-    name = os.environ.get("INTENTTRACE_LLM_PROVIDER", "fake").strip().lower() or "fake"
-    if name == "fake":
-        from intenttrace.llm.fake import FakeProvider
+    from intenttrace.llm.factory import make_provider
 
-        return FakeProvider()
-    typer.echo(f"Unsupported INTENTTRACE_LLM_PROVIDER: {name!r} (only 'fake' is available)", err=True)
-    raise typer.Exit(code=2)
+    name = os.environ.get("INTENTTRACE_LLM_PROVIDER", "fake").strip().lower() or "fake"
+    try:
+        return make_provider(name)
+    except ValueError as exc:
+        typer.echo(f"INTENTTRACE_LLM_PROVIDER: {exc}", err=True)
+        raise typer.Exit(code=2) from exc
 
 
 @app.command()
