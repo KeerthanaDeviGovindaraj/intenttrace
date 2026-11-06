@@ -78,14 +78,14 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - **Validates: Requirements 2.3, 4.2**
     - **Property 6: Skipped checks are reported**
     - **Validates: Requirements 1.2, 3.9, 6.5**
-  - [ ]* 5.5 Write property tests for fail-safe, record count, and leakage
+  - [x]* 5.5 Write property tests for fail-safe, record count, and leakage
     - **Property 7: Fail-safe on check failure or missing keys**
     - **Validates: Requirements 5.1, 5.2, 5.5**
     - **Property 8: One record per call, and records round trip**
     - **Validates: Requirements 6.4, 9.1, 9.2**
     - **Property 10: Untrusted text never leaks into stored or returned text**
     - **Validates: Requirements 2.5, 9.11**
-  - [ ]* 5.6 Write unit tests for the rule table and fail-safe paths
+  - [x]* 5.6 Write unit tests for the rule table and fail-safe paths
     - One case per rule row including replay `unavailable` falling through to rows 4 to 6, spies showing reused functions are called and later checks are skipped after a `BLOCK`, one monkeypatched exception per check, failing log, failing provider, `socket.socket` guard when `provider=None`
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 4.1, 4.4, 5.1, 5.3, 5.4, 13.1_
 
@@ -97,7 +97,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - `POST /api/paygate/check?replay=true` (200 for every Decision, 422 with an `INPUT_MALFORMED` body for non-JSON), `GET /api/paygate/decisions` (newest first, `decision` filter, `limit` 1 to 500, 422 on a bad filter), `GET /api/paygate/decisions/{id}/evidence.md` (404 if unknown), `GET /api/paygate/chain`
     - Use `provider_from_env()`; keep existing routes, `127.0.0.1` binding, and CORS unchanged
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 10.6_
-  - [ ]* 7.2 Write API tests with `TestClient`
+  - [x]* 7.2 Write API tests with `TestClient`
     - 200 for ALLOW, BLOCK, ASK_HUMAN, and shape-invalid; 422 for non-JSON; newest-first list; filter; 404; evidence Markdown includes the notice; chain status; existing routes still pass
     - _Requirements: 7.2, 7.3, 7.4, 7.5, 7.6, 13.2_
 
@@ -105,7 +105,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 8.1 Add `check_purchase(request_json)` to `mcp_server.py` and register it in `create_server`
     - Parse the string, route unparseable input through `gate_purchase` so it yields `INPUT_MALFORMED`, return `model_dump(mode="json")`; leave the three existing tools unchanged
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5_
-  - [ ]* 8.2 Write tests for the MCP tool
+  - [x]* 8.2 Write tests for the MCP tool
     - Direct calls for valid and unparseable input, same record as the Python function, `create_server` lists four tools
     - _Requirements: 8.1, 8.3, 8.4, 8.5, 13.2_
 

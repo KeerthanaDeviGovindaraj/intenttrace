@@ -300,3 +300,179 @@ def test_no_network_when_provider_none(monkeypatch, log):
     monkeypatch.setattr(socket, "create_connection", guard)
     res = gate_purchase(_signed(content=[{"source": "review", "text": INJECTION}]), provider=None, log=log)
     assert res.decision == "ASK_HUMAN"
+
+
+# ---- Task 5.6: rule table rows, spies, and provider fail-safe paths ----
+
+_ROWS = [
+    (paygate.Facts(integrity_codes=("INTEGRITY_TOTAL_MISMATCH",)), "BLOCK", ["INTEGRITY_TOTAL_MISMATCH"]),
+    (paygate.Facts(scope_violations=2), "BLOCK", ["SCOPE_VIOLATION"]),
+    (
+        paygate.Facts(flagged_spans=1, replay="changed"),
+        "BLOCK",
+        ["INJECTION_DETECTED", "REPLAY_CHANGED_CHOICE"],
+    ),
+    (
+        paygate.Facts(flagged_spans=1, replay="unchanged", deviation="deviates"),
+        "BLOCK",
+        ["INJECTION_DETECTED", "BEST_MATCH_DEVIATION"],
+    ),
+    (
+        paygate.Facts(flagged_spans=1, replay="unchanged", deviation="matches"),
+        "ASK_HUMAN",
+        ["INJECTION_DETECTED"],
+    ),
+    (paygate.Facts(deviation="deviates"), "ASK_HUMAN", ["BEST_MATCH_DEVIATION"]),
+    (paygate.Facts(deviation="matches"), "ALLOW", ["CLEAN"]),
+    # replay "unavailable" falls through to rows 4 to 6
+    (
+        paygate.Facts(flagged_spans=1, replay="unavailable", deviation="deviates"),
+        "BLOCK",
+        ["INJECTION_DETECTED", "BEST_MATCH_DEVIATION"],
+    ),
+    (
+        paygate.Facts(flagged_spans=1, replay="unavailable", deviation="matches"),
+        "ASK_HUMAN",
+        ["INJECTION_DETECTED"],
+    ),
+    (
+        paygate.Facts(flagged_spans=1, replay="unavailable", deviation="unavailable"),
+        "ASK_HUMAN",
+        ["INJECTION_DETECTED"],
+    ),
+    (paygate.Facts(replay="unavailable", deviation="deviates"), "ASK_HUMAN", ["BEST_MATCH_DEVIATION"]),
+    (paygate.Facts(replay="unavailable"), "ALLOW", ["CLEAN"]),
+]
+
+
+@pytest.mark.parametrize(("facts", "decision", "codes"), _ROWS)
+def test_rule_table_rows(facts, decision, codes):
+    out = paygate.decide_from_facts(facts)
+    assert out.decision == decision and list(out.reason_codes) == codes
+
+
+def _spy(monkeypatch, target: str) -> list:
+    calls: list = []
+    real = getattr(paygate, target)
+
+    def wrapper(*a, **k):
+        calls.append(a)
+        return real(*a, **k)
+
+    monkeypatch.setattr(paygate, target, wrapper)
+    return calls
+
+
+_TARGETS = ("check_integrity", "check_scope", "detect", "check_deviation", "run_replay")
+
+
+def test_clean_request_calls_reused_functions(monkeypatch, log):
+    spies = {t: _spy(monkeypatch, t) for t in _TARGETS}
+    g = next(_sim("MANIPULATED", need_config=True))
+    res = gate_purchase(case_to_request(g.case), log=log)
+    assert res.reason_codes != ["CHECK_FAILED"]
+    for t in ("check_integrity", "check_scope", "detect", "check_deviation", "run_replay"):
+        assert len(spies[t]) == 1, t
+
+
+def test_clean_content_calls_integrity_scope_detect_only(monkeypatch, log):
+    spies = {t: _spy(monkeypatch, t) for t in _TARGETS}
+    res = gate_purchase(_signed(), log=log)
+    assert res.decision == "ALLOW"
+    assert [len(spies[t]) for t in _TARGETS] == [1, 1, 1, 0, 0]
+
+
+def test_later_checks_skipped_after_integrity_block(monkeypatch, log):
+    spies = {t: _spy(monkeypatch, t) for t in _TARGETS}
+    raw = _signed(content=[{"source": "merchant", "text": INJECTION}])
+    raw["cart"]["total_cents"] = 1
+    res = gate_purchase(raw, log=log)
+    assert res.decision == "BLOCK"
+    assert [len(spies[t]) for t in _TARGETS] == [1, 0, 0, 0, 0]
+
+
+def test_later_checks_skipped_after_scope_block(monkeypatch, log):
+    g = next(_sim("OUT_OF_SCOPE"))
+    spies = {t: _spy(monkeypatch, t) for t in _TARGETS}
+    res = gate_purchase(case_to_request(g.case), log=log)
+    assert res.decision == "BLOCK" and res.reason_codes == ["SCOPE_VIOLATION"]
+    assert [len(spies[t]) for t in _TARGETS] == [1, 1, 0, 0, 0]
+
+
+class _Stub:
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
+
+
+def _listing_request(content):
+    g = next(_sim("LEGITIMATE"))
+    listings = case_to_request(g.case)["listings"]
+    assert listings
+    return _signed(content=content, listings=listings)
+
+
+@pytest.mark.parametrize(
+    ("deviates", "decision", "codes"),
+    [
+        (True, "BLOCK", ["INJECTION_DETECTED", "BEST_MATCH_DEVIATION"]),
+        (False, "ASK_HUMAN", ["INJECTION_DETECTED"]),
+    ],
+)
+def test_replay_unavailable_falls_through_to_deviation(monkeypatch, log, deviates, decision, codes):
+    g = next(_sim("MANIPULATED", need_config=True))
+    monkeypatch.setattr(paygate, "run_replay", lambda *a, **k: _Stub(result="unavailable", reason="no model"))
+    monkeypatch.setattr(
+        paygate, "check_deviation", lambda *a, **k: _Stub(eligible_count=1, deviation=deviates)
+    )
+    res = gate_purchase(case_to_request(g.case), log=log)
+    assert res.decision == decision and res.reason_codes == codes
+    assert "replay: no model" in res.skipped_checks
+
+
+def test_deviation_only_asks_human(monkeypatch, log):
+    monkeypatch.setattr(paygate, "check_deviation", lambda *a, **k: _Stub(eligible_count=1, deviation=True))
+    res = gate_purchase(_listing_request([]), log=log)
+    assert res.decision == "ASK_HUMAN" and res.reason_codes == ["BEST_MATCH_DEVIATION"]
+
+
+class _RaisingProvider:
+    name, model = "bad", "bad"
+
+    def __init__(self, exc):
+        self.exc = exc
+        self.calls = 0
+
+    def complete_json(self, system, user, schema):
+        self.calls += 1
+        raise self.exc
+
+
+def test_provider_llm_error_gives_unavailable_note(log):
+    from intenttrace.llm.base import LLMError
+
+    prov = _RaisingProvider(LLMError("down"))
+    res = gate_purchase(
+        _signed(content=[{"source": "review", "text": "Nice product, fast shipping."}]),
+        provider=prov,
+        log=log,
+    )
+    assert prov.calls >= 1
+    assert "llm_unavailable" in res.notes
+    assert res.decision == "ALLOW" and res.reason_codes == ["CLEAN"]
+
+
+def test_provider_still_detects_rule_hits_when_failing(log):
+    prov = _RaisingProvider(RuntimeError("never reached"))
+    res = gate_purchase(_signed(content=[{"source": "merchant", "text": INJECTION}]), provider=prov, log=log)
+    assert res.decision == "ASK_HUMAN" and res.reason_codes == ["INJECTION_DETECTED"]
+
+
+def test_provider_unexpected_exception_fails_toward_human(log):
+    prov = _RaisingProvider(RuntimeError("secret detail"))
+    res = gate_purchase(
+        _signed(content=[{"source": "review", "text": "Nice product, fast shipping."}]),
+        provider=prov,
+        log=log,
+    )
+    assert res.decision == "ASK_HUMAN" and res.reason_codes == ["CHECK_FAILED"]
+    assert "detect." in res.explanation and "secret detail" not in res.explanation
