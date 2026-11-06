@@ -22,10 +22,16 @@ NOUN_PHRASE_BONUS = 20.0
 ATTRIBUTE_BONUS = 10.0
 TOP_N = 3
 
-_TOKEN = re.compile(r"[a-z0-9]+(?:[-'][a-z0-9]+)*")
+_TOKEN = re.compile(r"\$?[a-z0-9]+(?:[-'][a-z0-9]+)*")
 _ARTICLES = frozenset({"a", "an", "the", "some", "any", "one", "pair", "of"})
-_LEAD_VERBS = frozenset({"buy", "purchase", "order", "get", "find"})
-_PHRASE_END = frozenset({"under", "below", "from", "for", "at", "within", "less", "up", "with", "that"})
+# Words that may precede the product phrase ("Please purchase 2 x ...", "I need 2 units of ...").
+_LEAD_VERBS = frozenset(
+    {"buy", "purchase", "order", "get", "find", "please", "me", "i", "need", "want", "x", "unit", "units"}
+)
+_PHRASE_END = frozenset(
+    {"under", "below", "from", "for", "at", "within", "less", "up", "with", "that", "priced", "no"}
+    | {"or", "each", "quantity", "and", "budget", "costs", "per"}
+)
 
 
 class RankedProduct(BaseModel):
@@ -53,11 +59,11 @@ def _stem(word: str) -> str:
 def noun_phrase(instruction: str) -> list[str]:
     """Extract the product noun phrase words (e.g. 'blue coffee maker') from an instruction."""
     words = _tokens(instruction)
-    while words and (words[0] in _LEAD_VERBS or words[0] in _ARTICLES):
+    while words and (words[0] in _LEAD_VERBS or words[0] in _ARTICLES or words[0].isdigit()):
         words.pop(0)
     phrase: list[str] = []
     for w in words:
-        if w in _PHRASE_END:
+        if w in _PHRASE_END or w.startswith("$"):
             break
         if w not in _ARTICLES:
             phrase.append(w)

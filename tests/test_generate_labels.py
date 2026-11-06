@@ -6,7 +6,7 @@ from collections import Counter
 
 import pytest
 
-from intenttrace.models import CaseFile
+from intenttrace.models import CaseFile, _iter_strings
 from intenttrace.sim import attacks
 from intenttrace.sim.agents import Observations, ScriptedAgent
 from intenttrace.sim.generate import build_cases, generate
@@ -141,10 +141,11 @@ def test_generated_files_validate_and_have_no_card_numbers(tmp_path):
         text = f.read_text(encoding="utf-8")
         loaded = CaseFile.model_validate_json(text)
         assert loaded == g.case
-        json.loads(text)
-        for run in _DIGIT_RUN.findall(text):
-            digits = re.sub(r"\D", "", run)
-            assert not (13 <= len(digits) <= 19 and _luhn(digits)), (f.name, run)
+        # Hashes, signatures and keys are hex/base64 and may contain digit runs by chance.
+        for string in _iter_strings(json.loads(text)):
+            for run in _DIGIT_RUN.findall(string):
+                digits = re.sub(r"\D", "", run)
+                assert not (13 <= len(digits) <= 19 and _luhn(digits)), (f.name, run)
 
 
 def test_all_cases_revalidate(cases300):

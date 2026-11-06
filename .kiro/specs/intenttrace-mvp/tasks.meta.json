@@ -269,6 +269,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959169
+      },
+      {
+        "executionId": "dfcb7fc9-6bb1-4b04-806b-2402c5f672f0",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793988657799
+      },
+      {
+        "executionId": "dfcb7fc9-6bb1-4b04-806b-2402c5f672f0",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793989179558
       }
     ],
     "5.1 `forensics/detect.py` rules R1–R5 with spans and rule IDs (6.1)": [
@@ -311,6 +321,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959366
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793989466481
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793989643789
       }
     ],
     "6.2 `verdict.py` with rules V1–V10 and thresholds in `config.py`": [
@@ -318,6 +338,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959400
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793989646095
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793989777346
       }
     ],
     "6.3 `pipeline.py` with `investigate(case, replay=True, provider=...) -> Report` running stages in order with early exit": [
@@ -325,6 +355,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959435
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793989780480
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793990048413
       }
     ],
     "6.4 `evidence.py` JSON and Markdown packets with templated summaries and the legal notice": [
@@ -332,6 +372,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959466
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793990050829
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793990133314
       }
     ],
     "6.5 CLI command `intenttrace investigate`": [
@@ -339,6 +389,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959501
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793990135894
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793990181899
       }
     ],
     "6.6 Tests: one test per verdict rule; replay changed and unchanged; full pipeline on hand-built cases; Markdown contains the notice": [
@@ -346,6 +406,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959533
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793990184597
+      },
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793990571479
       }
     ],
     "7.1 `bench.py` metrics from design.md section 12, replay on and off, per attack type, usage and cost": [
@@ -388,6 +458,11 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959766
+      },
+      {
+        "executionId": "3fb8467d-0dc7-4b57-be51-bb99e6b40bf1",
+        "chatSessionId": "sess_fe77bfbc-ee50-4218-baa7-40fe4def9218",
+        "timestamp": 1793991023621
       }
     ],
     "9.1 `store.py` with the schema in section 13": [
@@ -423,6 +498,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959932
+      },
+      {
+        "executionId": "02227f5c-558a-4a66-bc72-0fe1e22ea30a",
+        "chatSessionId": "sess_8ca6895b-4fd7-4857-bd29-1d563abdf871",
+        "timestamp": 1793992827436
+      },
+      {
+        "executionId": "02227f5c-558a-4a66-bc72-0fe1e22ea30a",
+        "chatSessionId": "sess_8ca6895b-4fd7-4857-bd29-1d563abdf871",
+        "timestamp": 1793993060709
       }
     ],
     "10.2 CLI `intenttrace mcp`": [
@@ -430,6 +515,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959966
+      },
+      {
+        "executionId": "02227f5c-558a-4a66-bc72-0fe1e22ea30a",
+        "chatSessionId": "sess_8ca6895b-4fd7-4857-bd29-1d563abdf871",
+        "timestamp": 1793993063732
+      },
+      {
+        "executionId": "02227f5c-558a-4a66-bc72-0fe1e22ea30a",
+        "chatSessionId": "sess_8ca6895b-4fd7-4857-bd29-1d563abdf871",
+        "timestamp": 1793993094269
       }
     ],
     "10.3 Tests calling the tool functions directly": [
@@ -437,6 +532,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985959999
+      },
+      {
+        "executionId": "02227f5c-558a-4a66-bc72-0fe1e22ea30a",
+        "chatSessionId": "sess_8ca6895b-4fd7-4857-bd29-1d563abdf871",
+        "timestamp": 1793993096347
+      },
+      {
+        "executionId": "02227f5c-558a-4a66-bc72-0fe1e22ea30a",
+        "chatSessionId": "sess_8ca6895b-4fd7-4857-bd29-1d563abdf871",
+        "timestamp": 1793993318982
       }
     ],
     "11.1 Scaffold `web/` with Vite React-TS, Tailwind, React Router; strict TypeScript; types mirroring the Report and CaseFile models": [
@@ -444,6 +549,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960034
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993369012
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993533057
       }
     ],
     "11.2 Case list page with filters and badges": [
@@ -451,6 +566,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960079
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993535009
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993583588
       }
     ],
     "11.3 Case detail page: verdict banner, intent-versus-cart table, trace timeline with highlighted spans, replay card, evidence download": [
@@ -458,6 +583,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960116
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993587182
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993670475
       }
     ],
     "11.4 Benchmark page: metric cards, confusion matrix, recall by attack type": [
@@ -465,6 +600,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960149
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993673060
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993819611
       }
     ],
     "11.5 Light and dark themes; check at 390px width": [
@@ -472,6 +617,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960182
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793993822406
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793996194471
       }
     ],
     "11.6 `npm run build` succeeds; the API serves `web/dist`": [
@@ -479,6 +634,11 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960214
+      },
+      {
+        "executionId": "3a0f9769-4ddc-4ef6-a2be-ed052907af00",
+        "chatSessionId": "sess_252fc7f4-5341-4236-a75d-97d62e30de8e",
+        "timestamp": 1793996197738
       }
     ],
     "12.1 Enable the benchmark gate and web build jobs in `.github/workflows/ci.yml`": [
@@ -486,6 +646,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960250
+      },
+      {
+        "executionId": "d1474968-64a5-4d1d-80c1-7fb7ba6b63ed",
+        "chatSessionId": "sess_cfbd9c05-d64b-4a53-99d6-72ccd51a688f",
+        "timestamp": 1793996314271
+      },
+      {
+        "executionId": "d1474968-64a5-4d1d-80c1-7fb7ba6b63ed",
+        "chatSessionId": "sess_cfbd9c05-d64b-4a53-99d6-72ccd51a688f",
+        "timestamp": 1793996370543
       }
     ],
     "13.1 Implement the real provider (Anthropic or OpenAI) in `llm/`": [
@@ -493,6 +663,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960282
+      },
+      {
+        "executionId": "f1132084-7cad-43a0-b702-1bfffbc90266",
+        "chatSessionId": "sess_9ee1274d-d922-42d0-b9e5-7f76ddfaadb0",
+        "timestamp": 1793997819524
+      },
+      {
+        "executionId": "f1132084-7cad-43a0-b702-1bfffbc90266",
+        "chatSessionId": "sess_9ee1274d-d922-42d0-b9e5-7f76ddfaadb0",
+        "timestamp": 1793997936039
       }
     ],
     "13.2 Run `intenttrace bench --provider <real> --n 300` and commit RESULTS.md labeled with provider and model": [
@@ -514,6 +694,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960384
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793998064541
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793998890410
       }
     ],
     "14.2 Record a 30–60 second demo GIF: open a MANIPULATED case, show the highlighted injection and the replay result": [
@@ -521,6 +711,16 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793985960428
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793998890552
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793999064928
       }
     ],
     "3. Simulator and case generator (~90 min)": [
@@ -528,6 +728,60 @@
         "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
         "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
         "timestamp": 1793988356841
+      }
+    ],
+    "5. Detection and influence (~60 min)": [
+      {
+        "executionId": "78519f63-860c-4f72-bde2-29be5ae2d93a",
+        "chatSessionId": "sess_a69c3d95-be8a-462d-a1e0-f51f0e4c5405",
+        "timestamp": 1793989227504
+      }
+    ],
+    "6. Replay, verdict, evidence (~60 min)": [
+      {
+        "executionId": "007fbce0-7eb3-464d-967a-3a7a1984bf48",
+        "chatSessionId": "sess_48473437-4351-4a43-9ff7-5bc9ebbbc9be",
+        "timestamp": 1793990571546
+      }
+    ],
+    "7. Benchmark (~45 min)": [
+      {
+        "executionId": "a71480b3-f295-48de-ad70-588762e7dee1",
+        "chatSessionId": "sess_fe77bfbc-ee50-4218-baa7-40fe4def9218",
+        "timestamp": 1793990610980
+      }
+    ],
+    "9. Store, API, CLI wiring (~45 min)": [
+      {
+        "executionId": "3cfc928a-8715-4bc4-82d6-b76f75a1fc56",
+        "chatSessionId": "sess_3540426a-a473-4332-b637-a5a69eea043f",
+        "timestamp": 1793992172214
+      }
+    ],
+    "10. MCP server (~30 min)": [
+      {
+        "executionId": "02227f5c-558a-4a66-bc72-0fe1e22ea30a",
+        "chatSessionId": "sess_8ca6895b-4fd7-4857-bd29-1d563abdf871",
+        "timestamp": 1793993319043
+      }
+    ],
+    "12. CI (~15 min)": [
+      {
+        "executionId": "d1474968-64a5-4d1d-80c1-7fb7ba6b63ed",
+        "chatSessionId": "sess_cfbd9c05-d64b-4a53-99d6-72ccd51a688f",
+        "timestamp": 1793996370619
+      }
+    ],
+    "14. README and demo (~45 min)": [
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793998062569
+      },
+      {
+        "executionId": "b100415f-e622-408f-b9ac-68ee7d6970e3",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1793999064992
       }
     ]
   }

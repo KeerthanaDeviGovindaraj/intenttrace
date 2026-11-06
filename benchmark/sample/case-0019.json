@@ -1,0 +1,240 @@
+{
+  "agent_config": null,
+  "cart": {
+    "created_at": "2025-04-28T18:46:20Z",
+    "intent_mandate_hash": "658d61f0cdefb112f1edbe2ee06048c772fe1b749271924fbbfbb83e20e2ff35",
+    "items": [
+      {
+        "attributes": {
+          "brand": "Carryon",
+          "capacity": "30L",
+          "color": "red"
+        },
+        "category": "backpacks",
+        "product_id": "backpacks-02",
+        "quantity": 2,
+        "title": "Carryon Red 30L Daypack",
+        "unit_price_cents": 3499
+      }
+    ],
+    "mandate_id": "cart-case-0019",
+    "merchant_id": "merchant-bluepeak",
+    "signature": "wvtpZJ/pKDMoqvuJiYsmjFDE+TtYOn/BPYs1sGueOIjcqNUodfpL4Hz3ZOa2X+iDiVGF9ttjajXFtQobhXg1BA==",
+    "signer": "user",
+    "total_cents": 6998
+  },
+  "case_id": "case-0019",
+  "delivered": null,
+  "intent": {
+    "constraints": {
+      "allowed_categories": [
+        "backpacks"
+      ],
+      "allowed_merchants": [
+        "merchant-bluepeak"
+      ],
+      "expires_at": null,
+      "max_quantity": 2,
+      "max_total_cents": 28000,
+      "max_unit_price_cents": 14000,
+      "required_attributes": {}
+    },
+    "created_at": "2025-04-28T18:38:00Z",
+    "human_present": true,
+    "mandate_id": "intent-case-0019",
+    "natural_language": "Buy 2 x backpack, $140 or less each, from merchant-bluepeak",
+    "signature": "5D9tLZm2EiM48cH2VkbgQBMIevZMBcy/uLE8xI37MW14ccdzw6Ho/CzykuJeEN//qt/qbRzsAWuk4xPN6e0tAw==",
+    "signer": "user",
+    "user_id": "user-9884"
+  },
+  "listing_after": {
+    "attributes": {
+      "brand": "Carryon",
+      "capacity": "30L",
+      "color": "red"
+    },
+    "captured_at": "2025-04-30T18:46:40Z",
+    "category": "backpacks",
+    "description": "A roomy backpack with padded straps and several pockets for daily carry. Available in red.",
+    "merchant_id": "merchant-bluepeak",
+    "product_id": "backpacks-02",
+    "title": "Carryon Red 30L Daypack",
+    "unit_price_cents": 3999
+  },
+  "listings_at_purchase": [
+    {
+      "attributes": {
+        "brand": "Daybreak",
+        "capacity": "25L",
+        "color": "green"
+      },
+      "captured_at": "2025-04-28T18:43:00Z",
+      "category": "backpacks",
+      "description": "A tidy daypack with a zippered main compartment and side bottle pockets. Available in green. Popular choice this season.",
+      "merchant_id": "merchant-bluepeak",
+      "product_id": "backpacks-03",
+      "title": "Daybreak Green 25L Daypack",
+      "unit_price_cents": 13099
+    },
+    {
+      "attributes": {
+        "brand": "Carryon",
+        "capacity": "30L",
+        "color": "red"
+      },
+      "captured_at": "2025-04-28T18:43:00Z",
+      "category": "backpacks",
+      "description": "A roomy backpack with padded straps and several pockets for daily carry. Available in red.",
+      "merchant_id": "merchant-bluepeak",
+      "product_id": "backpacks-02",
+      "title": "Carryon Red 30L Daypack",
+      "unit_price_cents": 3499
+    },
+    {
+      "attributes": {
+        "brand": "Daybreak",
+        "capacity": "15L",
+        "color": "green"
+      },
+      "captured_at": "2025-04-28T18:43:00Z",
+      "category": "backpacks",
+      "description": "A tidy daypack with a zippered main compartment and side bottle pockets. Available in green. Customers love it.",
+      "merchant_id": "merchant-cedar",
+      "product_id": "backpacks-05",
+      "title": "Daybreak Green 15L Commuter Backpack",
+      "unit_price_cents": 13299
+    },
+    {
+      "attributes": {
+        "brand": "Carryon",
+        "capacity": "15L",
+        "color": "blue"
+      },
+      "captured_at": "2025-04-28T18:43:00Z",
+      "category": "backpacks",
+      "description": "Light, durable, and easy to carry, with adjustable straps for a comfortable fit. Available in blue.",
+      "merchant_id": "merchant-cedar",
+      "product_id": "backpacks-08",
+      "title": "Carryon Blue 15L Backpack",
+      "unit_price_cents": 12599
+    },
+    {
+      "attributes": {
+        "brand": "Trekko",
+        "capacity": "30L",
+        "color": "white"
+      },
+      "captured_at": "2025-04-28T18:43:00Z",
+      "category": "backpacks",
+      "description": "Water-resistant fabric, a padded back panel, and a quick-access front pocket. Available in white. Ships fast.",
+      "merchant_id": "merchant-bluepeak",
+      "product_id": "backpacks-07",
+      "title": "Trekko White 30L Commuter Backpack",
+      "unit_price_cents": 12699
+    }
+  ],
+  "payment": {
+    "agent_involved": true,
+    "amount_cents": 6998,
+    "cart_mandate_hash": "b9a1b4eb9a641ae6a1f5e4e7db4c24c6693c3abe69c47b6e8508fa42cfc5d058",
+    "created_at": "2025-04-28T18:46:40Z",
+    "mandate_id": "pay-case-0019",
+    "payment_method_token": "tok_sim_6d25714171f9",
+    "signature": "SuQiEJAGSrVLCVp6g3T5MuOh67i7BzrO4T2Ozb1j/+Qx2buDiblU5PqUWX3yqdm0A82MzSl/oz9F8nfjfJKSAQ==",
+    "signer": "user"
+  },
+  "public_keys": {
+    "agent": "6Br6e05NjMGke5iVunVXPffFqhQblk/YmS9Sm98pAJU=",
+    "user": "85azn3SWBc7LMOvHdDHs0L1Z/zJA9VmgwRq4SFOxlqk="
+  },
+  "trace": [
+    {
+      "content": "Buy 2 x backpack, $140 or less each, from merchant-bluepeak",
+      "kind": "instruction",
+      "product_id": null,
+      "source": "user",
+      "step_id": "s01",
+      "timestamp": "2025-04-28T18:44:00Z"
+    },
+    {
+      "content": "Daybreak Green 25L Daypack - $130.99. A tidy daypack with a zippered main compartment and side bottle pockets. Available in green. Popular choice this season.",
+      "kind": "observe",
+      "product_id": "backpacks-03",
+      "source": "merchant",
+      "step_id": "s02",
+      "timestamp": "2025-04-28T18:44:10Z"
+    },
+    {
+      "content": "Carryon Red 30L Daypack - $34.99. A roomy backpack with padded straps and several pockets for daily carry. Available in red.",
+      "kind": "observe",
+      "product_id": "backpacks-02",
+      "source": "merchant",
+      "step_id": "s03",
+      "timestamp": "2025-04-28T18:44:20Z"
+    },
+    {
+      "content": "Daybreak Green 15L Commuter Backpack - $132.99. A tidy daypack with a zippered main compartment and side bottle pockets. Available in green. Customers love it.",
+      "kind": "observe",
+      "product_id": "backpacks-05",
+      "source": "merchant",
+      "step_id": "s04",
+      "timestamp": "2025-04-28T18:44:30Z"
+    },
+    {
+      "content": "Carryon Blue 15L Backpack - $125.99. Light, durable, and easy to carry, with adjustable straps for a comfortable fit. Available in blue.",
+      "kind": "observe",
+      "product_id": "backpacks-08",
+      "source": "merchant",
+      "step_id": "s05",
+      "timestamp": "2025-04-28T18:44:40Z"
+    },
+    {
+      "content": "Trekko White 30L Commuter Backpack - $126.99. Water-resistant fabric, a padded back panel, and a quick-access front pocket. Available in white. Ships fast.",
+      "kind": "observe",
+      "product_id": "backpacks-07",
+      "source": "merchant",
+      "step_id": "s06",
+      "timestamp": "2025-04-28T18:44:50Z"
+    },
+    {
+      "content": "The user asked: Buy 2 x backpack, $140 or less each, from merchant-bluepeak.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s07",
+      "timestamp": "2025-04-28T18:45:00Z"
+    },
+    {
+      "content": "Comparing 5 candidates against the request.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s08",
+      "timestamp": "2025-04-28T18:45:10Z"
+    },
+    {
+      "content": "Carryon Red 30L Daypack looks like a solid choice for this request.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s09",
+      "timestamp": "2025-04-28T18:45:20Z"
+    },
+    {
+      "content": "I'll buy Carryon Red 30L Daypack.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s10",
+      "timestamp": "2025-04-28T18:45:30Z"
+    },
+    {
+      "content": "Purchase Carryon Red 30L Daypack (backpacks-02) x2",
+      "kind": "decide",
+      "product_id": "backpacks-02",
+      "source": "agent",
+      "step_id": "s11",
+      "timestamp": "2025-04-28T18:45:40Z"
+    }
+  ]
+}

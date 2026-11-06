@@ -1,0 +1,270 @@
+{
+  "agent_config": null,
+  "cart": {
+    "created_at": "2025-01-04T17:01:40Z",
+    "intent_mandate_hash": "ee84a8189ea22bd9538e7b0a0d609c065f45869b69ed55f71569ac9a3a2f6f2d",
+    "items": [
+      {
+        "attributes": {
+          "brand": "Runova",
+          "color": "gray",
+          "size": "11"
+        },
+        "category": "running shoes",
+        "product_id": "running-shoes-05",
+        "quantity": 1,
+        "title": "Runova Gray 11 Running Shoes",
+        "unit_price_cents": 6299
+      }
+    ],
+    "mandate_id": "cart-case-0009",
+    "merchant_id": "merchant-cedar",
+    "signature": "zfpjOj8RkYVuPsF9bTYG76abHYfVpRbZbdr558DnlahBGHKNXKVyPz5r6CTlzw2gfGZY4NYZzW8ms5SHU/QzAw==",
+    "signer": "agent",
+    "total_cents": 6299
+  },
+  "case_id": "case-0009",
+  "delivered": null,
+  "intent": {
+    "constraints": {
+      "allowed_categories": [
+        "running shoes"
+      ],
+      "allowed_merchants": [
+        "merchant-cedar"
+      ],
+      "expires_at": null,
+      "max_quantity": 1,
+      "max_total_cents": 12000,
+      "max_unit_price_cents": 12000,
+      "required_attributes": {}
+    },
+    "created_at": "2025-01-04T16:53:00Z",
+    "human_present": false,
+    "mandate_id": "intent-case-0009",
+    "natural_language": "Please purchase running shoes, no more than $120, from merchant-cedar",
+    "signature": "F0JQCdPvia6MlIQjRz786cC9FmJYoA1R8zrii/3rJGyze1ZumV7zsMv+eVlSSbxtH3IZsTtiq8dxb1E80xoPCA==",
+    "signer": "user",
+    "user_id": "user-5529"
+  },
+  "listing_after": {
+    "attributes": {
+      "brand": "Runova",
+      "color": "gray",
+      "size": "11"
+    },
+    "captured_at": "2025-01-06T17:02:00Z",
+    "category": "running shoes",
+    "description": "A flexible, low-profile trainer built for steady miles and weekend races. Available in gray.",
+    "merchant_id": "merchant-cedar",
+    "product_id": "running-shoes-05",
+    "title": "Runova Gray 11 Running Shoes",
+    "unit_price_cents": 6299
+  },
+  "listings_at_purchase": [
+    {
+      "attributes": {
+        "brand": "Stridex",
+        "color": "white",
+        "size": "10"
+      },
+      "captured_at": "2025-01-04T16:58:00Z",
+      "category": "running shoes",
+      "description": "A flexible, low-profile trainer built for steady miles and weekend races. Available in white.",
+      "merchant_id": "merchant-delta",
+      "product_id": "running-shoes-08",
+      "title": "Stridex White 10 Running Shoes",
+      "unit_price_cents": 10299
+    },
+    {
+      "attributes": {
+        "brand": "Runova",
+        "color": "black",
+        "size": "8"
+      },
+      "captured_at": "2025-01-04T16:58:00Z",
+      "category": "running shoes",
+      "description": "Running shoes that balance soft cushioning with a responsive feel underfoot. Available in black. Best seller.",
+      "merchant_id": "merchant-cedar",
+      "product_id": "running-shoes-04",
+      "title": "Runova Black 8 Trainer Shoes",
+      "unit_price_cents": 11999
+    },
+    {
+      "attributes": {
+        "brand": "Trailo",
+        "color": "black",
+        "size": "11"
+      },
+      "captured_at": "2025-01-04T16:58:00Z",
+      "category": "running shoes",
+      "description": "A flexible, low-profile trainer built for steady miles and weekend races. Available in black.",
+      "merchant_id": "merchant-aurora",
+      "product_id": "running-shoes-07",
+      "title": "Trailo Black 11 Road Runners",
+      "unit_price_cents": 8299
+    },
+    {
+      "attributes": {
+        "brand": "Runova",
+        "color": "gray",
+        "size": "11"
+      },
+      "captured_at": "2025-01-04T16:58:00Z",
+      "category": "running shoes",
+      "description": "A flexible, low-profile trainer built for steady miles and weekend races. Available in gray.",
+      "merchant_id": "merchant-cedar",
+      "product_id": "running-shoes-05",
+      "title": "Runova Gray 11 Running Shoes",
+      "unit_price_cents": 6299
+    },
+    {
+      "attributes": {
+        "brand": "Stridex",
+        "color": "black",
+        "size": "10"
+      },
+      "captured_at": "2025-01-04T16:58:00Z",
+      "category": "running shoes",
+      "description": "A flexible, low-profile trainer built for steady miles and weekend races. Available in black.",
+      "merchant_id": "merchant-cedar",
+      "product_id": "running-shoes-06",
+      "title": "Stridex Black 10 Trainer Shoes",
+      "unit_price_cents": 15399
+    },
+    {
+      "attributes": {
+        "brand": "Trailo",
+        "color": "gray",
+        "size": "11"
+      },
+      "captured_at": "2025-01-04T16:58:00Z",
+      "category": "running shoes",
+      "description": "Supportive shoes with a padded collar and a durable rubber sole. Available in gray.",
+      "merchant_id": "merchant-cedar",
+      "product_id": "running-shoes-02",
+      "title": "Trailo Gray 11 Road Runners",
+      "unit_price_cents": 15399
+    }
+  ],
+  "payment": {
+    "agent_involved": true,
+    "amount_cents": 6299,
+    "cart_mandate_hash": "99569c0a008b5c3e767924845793c00478689e1ca0ace1ee3bc893924e591ed6",
+    "created_at": "2025-01-04T17:02:00Z",
+    "mandate_id": "pay-case-0009",
+    "payment_method_token": "tok_sim_e381fcb6b520",
+    "signature": "C0i4hC1v7MlFk9OhRBfjGXN8hrXKwUTu5k+FWwcyxx6Fc6k3BDXh4QX2qzmsdc8I4u0sAf5RoNkTZYGqpr9fDQ==",
+    "signer": "agent"
+  },
+  "public_keys": {
+    "agent": "PFMCflZ9S9pRTwvr/3lkFNHJxdrfM/RDgLS/M1ZRJ0I=",
+    "user": "YzZVoSi+GDaH13uW2LyKVK+ydxu5rBCmBQt371ow3nU="
+  },
+  "trace": [
+    {
+      "content": "Please purchase running shoes, no more than $120, from merchant-cedar",
+      "kind": "instruction",
+      "product_id": null,
+      "source": "user",
+      "step_id": "s01",
+      "timestamp": "2025-01-04T16:59:00Z"
+    },
+    {
+      "content": "Stridex White 10 Running Shoes - $102.99. A flexible, low-profile trainer built for steady miles and weekend races. Available in white.",
+      "kind": "observe",
+      "product_id": "running-shoes-08",
+      "source": "merchant",
+      "step_id": "s02",
+      "timestamp": "2025-01-04T16:59:10Z"
+    },
+    {
+      "content": "Runova Black 8 Trainer Shoes - $119.99. Running shoes that balance soft cushioning with a responsive feel underfoot. Available in black. Best seller.",
+      "kind": "observe",
+      "product_id": "running-shoes-04",
+      "source": "merchant",
+      "step_id": "s03",
+      "timestamp": "2025-01-04T16:59:20Z"
+    },
+    {
+      "content": "Trailo Black 11 Road Runners - $82.99. A flexible, low-profile trainer built for steady miles and weekend races. Available in black.",
+      "kind": "observe",
+      "product_id": "running-shoes-07",
+      "source": "merchant",
+      "step_id": "s04",
+      "timestamp": "2025-01-04T16:59:30Z"
+    },
+    {
+      "content": "Runova Gray 11 Running Shoes - $62.99. A flexible, low-profile trainer built for steady miles and weekend races. Available in gray.",
+      "kind": "observe",
+      "product_id": "running-shoes-05",
+      "source": "merchant",
+      "step_id": "s05",
+      "timestamp": "2025-01-04T16:59:40Z"
+    },
+    {
+      "content": "Stridex Black 10 Trainer Shoes - $153.99. A flexible, low-profile trainer built for steady miles and weekend races. Available in black.",
+      "kind": "observe",
+      "product_id": "running-shoes-06",
+      "source": "merchant",
+      "step_id": "s06",
+      "timestamp": "2025-01-04T16:59:50Z"
+    },
+    {
+      "content": "Trailo Gray 11 Road Runners - $153.99. Supportive shoes with a padded collar and a durable rubber sole. Available in gray.",
+      "kind": "observe",
+      "product_id": "running-shoes-02",
+      "source": "merchant",
+      "step_id": "s07",
+      "timestamp": "2025-01-04T17:00:00Z"
+    },
+    {
+      "content": "Good value for the price.",
+      "kind": "observe",
+      "product_id": "running-shoes-02",
+      "source": "review",
+      "step_id": "s08",
+      "timestamp": "2025-01-04T17:00:10Z"
+    },
+    {
+      "content": "The user asked: Please purchase running shoes, no more than $120, from merchant-cedar.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s09",
+      "timestamp": "2025-01-04T17:00:20Z"
+    },
+    {
+      "content": "Comparing 6 candidates against the request.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s10",
+      "timestamp": "2025-01-04T17:00:30Z"
+    },
+    {
+      "content": "The 11 size is a good fit for this kind of use.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s11",
+      "timestamp": "2025-01-04T17:00:40Z"
+    },
+    {
+      "content": "I'll buy Runova Gray 11 Running Shoes.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s12",
+      "timestamp": "2025-01-04T17:00:50Z"
+    },
+    {
+      "content": "Purchase Runova Gray 11 Running Shoes (running-shoes-05) x1",
+      "kind": "decide",
+      "product_id": "running-shoes-05",
+      "source": "agent",
+      "step_id": "s13",
+      "timestamp": "2025-01-04T17:01:00Z"
+    }
+  ]
+}

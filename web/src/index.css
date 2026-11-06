@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Tailwind's dark: variant follows the same data-theme attribute as the variables below. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Light and dark themes via CSS variables (design.md section 17).
+   <html data-theme> is set before first paint by the inline script in index.html. */
+:root {
+  color-scheme: light;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #4f46e5;
+  --accent-bg: #4f46e5;
+  --on-accent: #ffffff;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1120;
+  --surface: #131c31;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: #243049;
+  --accent: #818cf8;
+  --accent-bg: #4f46e5;
+  --on-accent: #ffffff;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
