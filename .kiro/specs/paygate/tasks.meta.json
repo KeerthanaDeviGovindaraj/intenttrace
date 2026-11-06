@@ -62,6 +62,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001986999
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002177996
       }
     ],
     "3.1 Implement `request_to_case(req)` and `provider_from_env()` in `paygate.py`": [
@@ -69,6 +74,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879424
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002183097
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002275799
       }
     ],
     "4.1 Create `src/intenttrace/paygate_log.py` with `DecisionLog`, `DecisionRecord`, key handling, and `verify_decision_log`": [
@@ -81,6 +96,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001987039
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002179009
       }
     ],
     "4.2 Add `decision_markdown(record)` to `paygate_log.py`": [
@@ -88,6 +108,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879475
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002183303
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002275827
       }
     ],
     "5.1 Implement `gate_purchase` in `paygate.py`": [
@@ -207,6 +237,39 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001979081
+      }
+    ],
+    "2. Models and the pure decision rule": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002178071
+      }
+    ],
+    "3. Request adapter and provider selection": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002275855
+      }
+    ],
+    "4. Signed, hash-chained decision log": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002275880
+      }
+    ],
+    "4.4 Write unit tests for the log": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002281631
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002377003
       }
     ]
   }

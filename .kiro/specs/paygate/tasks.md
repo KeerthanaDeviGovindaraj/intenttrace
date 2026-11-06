@@ -14,13 +14,13 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 1.2 Add the default PayGate key file pattern (`*.paygate.key`) to `.gitignore`
     - _Requirements: 9.10_
 
-- [ ] 2. Models and the pure decision rule
+- [x] 2. Models and the pure decision rule
   - [x] 2.1 Create `src/intenttrace/paygate.py` with the Pydantic v2 models
     - `ContentItem`, `GateRequest`, `HighlightedSpan`, `ErrorItem`, `GateResult`, `Facts`, `Outcome`, and the `Decision` and `ReasonCode` literals, built on `models._Model` (extra fields forbidden)
     - Validators: at least one cart item, unique content `item_id` (default `c{index}`), Luhn-valid 13 to 19 digit numbers rejected in any string field
     - A `validate_request(raw)` helper that rejects payloads over 1 MB and maps Pydantic errors to JSON paths without echoing values
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 2.1, 2.2, 2.3, 5.6_
-  - [-] 2.2 Implement `decide_from_facts(facts)` and the explanation templates in `paygate.py`
+  - [x] 2.2 Implement `decide_from_facts(facts)` and the explanation templates in `paygate.py`
     - Ordered rule table rows 1 to 7, integrity finding to Reason_Code mapping, first match wins
     - Template dict keyed by Reason_Code, no LLM, no caller-supplied text, explanation capped at 400 characters and ending with "Technical signal on synthetic data. Not legal advice."
     - _Requirements: 2.2, 2.4, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 5.5, 12.2_
@@ -29,8 +29,8 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Use a flat `if` chain in the test as an independent oracle over generated `Facts`
     - **Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 5.5**
 
-- [ ] 3. Request adapter and provider selection
-  - [~] 3.1 Implement `request_to_case(req)` and `provider_from_env()` in `paygate.py`
+- [x] 3. Request adapter and provider selection
+  - [x] 3.1 Implement `request_to_case(req)` and `provider_from_env()` in `paygate.py`
     - Build the placeholder `PaymentMandate`, the synthetic trace (instruction, one `observe` step per content item, one `decide` step), and the source mapping (`qa` to `review`, `hidden` to `external_agent`)
     - Step ID equals content item ID so spans need no translation
     - `provider_from_env()` returns `(None, [])` for unset, empty, or `none`; returns `(None, ["llm_unavailable"])` when `make_provider` raises
@@ -39,21 +39,21 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Source mapping table, placeholder payment yields only a `payment.signature` finding, empty cart and duplicate item IDs rejected, `provider_from_env` cases
     - _Requirements: 1.2, 4.6, 5.3_
 
-- [ ] 4. Signed, hash-chained decision log
-  - [-] 4.1 Create `src/intenttrace/paygate_log.py` with `DecisionLog`, `DecisionRecord`, key handling, and `verify_decision_log`
+- [x] 4. Signed, hash-chained decision log
+  - [x] 4.1 Create `src/intenttrace/paygate_log.py` with `DecisionLog`, `DecisionRecord`, key handling, and `verify_decision_log`
     - Create the `decisions` and `decision_keys` tables with `CREATE TABLE IF NOT EXISTS` in `DecisionLog.__init__`; do not edit `Store.SCHEMA`
     - Key rules: `PAYGATE_KEY_FILE` loaded when set (never auto-created), otherwise `<db_path>.paygate.key` created with `O_CREAT|O_EXCL` and mode 0600; public key recorded in `decision_keys`
     - `append` runs `BEGIN IMMEDIATE`, signs with `crypto.sign`, hashes with `crypto.mandate_hash`, uses 64 zeros for the first `previous_hash`, and raises `LogWriteError` on failure
     - `list`, `get`, `close`, and `chain_status`; the record stores a request hash and span offsets, never content text
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 9.10, 9.11_
-  - [~] 4.2 Add `decision_markdown(record)` to `paygate_log.py`
+  - [x] 4.2 Add `decision_markdown(record)` to `paygate_log.py`
     - Build an `EvidencePacket` from the record and render it with `evidence.to_markdown`; append the "Decision record" section and the sentence that content text is not stored; include the legal notice
     - _Requirements: 4.3, 12.2_
   - [ ]* 4.3 Write property test for chain verification and tamper location
     - **Property 9: Chain verifies, and any tamper is located**
     - Strategy `tampered_log()` appends N records to a temp log, then tampers one field of record k, or deletes a middle record
     - **Validates: Requirements 9.3, 9.4, 9.5, 9.7**
-  - [ ]* 4.4 Write unit tests for the log
+  - [x]* 4.4 Write unit tests for the log
     - Genesis hash, 8 concurrent writer threads produce one linear chain, key file mode 0600, explicit missing key file fails, `decision_keys` row present, tamper test returns the tampered record ID
     - _Requirements: 9.5, 9.8, 9.9, 9.10, 13.1, 13.3_
 
