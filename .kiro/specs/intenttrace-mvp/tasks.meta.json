@@ -1,0 +1,534 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Data model and crypto (~45 min)": [
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985288109
+      },
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985491907
+      }
+    ],
+    "1.1 Implement all models in `models.py` exactly as in design.md section 1, including the Luhn card-number guard": [
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985291890
+      },
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985342726
+      }
+    ],
+    "1.2 Implement `crypto.py`: canonical JSON, sign, verify, mandate_hash, generate_keypair": [
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985344893
+      },
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985394604
+      }
+    ],
+    "1.3 Export the CaseFile JSON Schema to `docs/case-file.schema.json` via a small script `scripts/export_schema.py`": [
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985396425
+      },
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985427243
+      }
+    ],
+    "1.4 Tests: sign/verify round trip, tamper detection on every mandate, card-number rejection, schema export": [
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985429590
+      },
+      {
+        "executionId": "2cefe6b4-4638-45b7-8f00-0bfc2cae0108",
+        "chatSessionId": "sess_6a1f4558-c756-42e3-a469-d62c22fd57aa",
+        "timestamp": 1793985491861
+      }
+    ],
+    "2.1 `checks/integrity.py` with every check in design.md section 3": [
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985543010
+      },
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985585410
+      }
+    ],
+    "2.2 `checks/scope.py` with every constraint in design.md section 4": [
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985588443
+      },
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985648328
+      }
+    ],
+    "2.3 `checks/merchant.py` with material versus non-material differences (design.md section 5)": [
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985651963
+      },
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985708078
+      }
+    ],
+    "2.4 Shared `Finding` model in `models.py` (kind, detail, field, expected, actual, step_ids, spans, method)": [
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985710283
+      },
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985739944
+      }
+    ],
+    "2.5 Tests: one passing and one failing case per check, including expiry and human-present signer rule": [
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985742379
+      },
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985828418
+      }
+    ],
+    "2. Integrity, scope, and merchant checks (~60 min)": [
+      {
+        "executionId": "da307131-633d-4a5c-b4c3-4505c5752212",
+        "chatSessionId": "sess_e5cf9cf3-8be3-40f6-88f8-30217a48a120",
+        "timestamp": 1793985828461
+      }
+    ],
+    "3.1 `sim/catalog.py` seeded catalog (design.md 11.1)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985958881
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985963481
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986010938
+      }
+    ],
+    "3.2 `sim/tasks.py` instructions plus constraints plus candidate sets (11.2)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985958917
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986011520
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986064916
+      }
+    ],
+    "3.3 `sim/attacks.py` with all five attack types (11.3)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985958950
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986066736
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986190141
+      }
+    ],
+    "3.4 `forensics/deviation.py` best-match ranking (6.2); the scripted agent reuses it": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985958985
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986196074
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986523767
+      }
+    ],
+    "3.5 `sim/agents.py` ScriptedAgent with seeded susceptibility and think-step generation (11.4); LLMAgent stub behind the provider interface": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959034
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986525906
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986756028
+      }
+    ],
+    "3.6 `sim/generate.py` with the bucket mix, counterfactual labeling, signing with generated keys, and the output layout (11.5)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959066
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793986758123
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793988166843
+      }
+    ],
+    "3.7 CLI command `intenttrace generate --n --seed`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959099
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793988168757
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793988235447
+      }
+    ],
+    "3.8 Tests: determinism (same seed gives byte-identical output), every bucket filled, MANIPULATED label only when the counterfactual differs, attack-present-but-not-fooled cases labeled LEGITIMATE, every generated case passes validation": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959132
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793988238161
+      },
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793988356781
+      }
+    ],
+    "4. Checkpoint A (human, ~10 min)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959169
+      }
+    ],
+    "5.1 `forensics/detect.py` rules R1–R5 with spans and rule IDs (6.1)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959201
+      }
+    ],
+    "5.2 `llm/base.py` provider protocol with usage tracking; `llm/fake.py`; `llm/prompts.py` with PROMPT_VERSION": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959233
+      }
+    ],
+    "5.3 LLM classifier integration in detection, recording `method`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959267
+      }
+    ],
+    "5.4 `forensics/influence.py` lexical score plus LLM judgment and the combination rule (6.3)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959301
+      }
+    ],
+    "5.5 Tests: each rule fires on its example and not on bland descriptions; hidden-text detection; influence math; LLM failure degrades to lexical with an `llm_unavailable` finding": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959333
+      }
+    ],
+    "6.1 `forensics/replay.py` (section 7) for scripted agents": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959366
+      }
+    ],
+    "6.2 `verdict.py` with rules V1–V10 and thresholds in `config.py`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959400
+      }
+    ],
+    "6.3 `pipeline.py` with `investigate(case, replay=True, provider=...) -> Report` running stages in order with early exit": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959435
+      }
+    ],
+    "6.4 `evidence.py` JSON and Markdown packets with templated summaries and the legal notice": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959466
+      }
+    ],
+    "6.5 CLI command `intenttrace investigate`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959501
+      }
+    ],
+    "6.6 Tests: one test per verdict rule; replay changed and unchanged; full pipeline on hand-built cases; Markdown contains the notice": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959533
+      }
+    ],
+    "7.1 `bench.py` metrics from design.md section 12, replay on and off, per attack type, usage and cost": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959567
+      }
+    ],
+    "7.2 RESULTS.md and results.json writers, with provider labeling rules (Requirement 12.4)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959599
+      }
+    ],
+    "7.3 CLI `intenttrace bench` with threshold flags and exit codes": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959636
+      }
+    ],
+    "7.4 Generate and commit the 12-case sample in `benchmark/sample/` (2 per ground-truth bucket) plus `tests/test_sample_cases.py`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959689
+      }
+    ],
+    "7.5 Test: `--n 30` smoke run completes with the fake provider": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959727
+      }
+    ],
+    "8. Checkpoint B (human, ~15 min)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959766
+      }
+    ],
+    "9.1 `store.py` with the schema in section 13": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959799
+      }
+    ],
+    "9.2 `api.py` endpoints in section 15, CORS for the dev server, static dashboard serving": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959833
+      }
+    ],
+    "9.3 CLI `serve` and `load-sample`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959866
+      }
+    ],
+    "9.4 Tests with TestClient for every endpoint, including 422 on invalid cases": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959899
+      }
+    ],
+    "10.1 `mcp_server.py` with the three tools over stdio (section 16); check the installed `mcp` package's docs for the current server API": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959932
+      }
+    ],
+    "10.2 CLI `intenttrace mcp`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959966
+      }
+    ],
+    "10.3 Tests calling the tool functions directly": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985959999
+      }
+    ],
+    "11.1 Scaffold `web/` with Vite React-TS, Tailwind, React Router; strict TypeScript; types mirroring the Report and CaseFile models": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960034
+      }
+    ],
+    "11.2 Case list page with filters and badges": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960079
+      }
+    ],
+    "11.3 Case detail page: verdict banner, intent-versus-cart table, trace timeline with highlighted spans, replay card, evidence download": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960116
+      }
+    ],
+    "11.4 Benchmark page: metric cards, confusion matrix, recall by attack type": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960149
+      }
+    ],
+    "11.5 Light and dark themes; check at 390px width": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960182
+      }
+    ],
+    "11.6 `npm run build` succeeds; the API serves `web/dist`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960214
+      }
+    ],
+    "12.1 Enable the benchmark gate and web build jobs in `.github/workflows/ci.yml`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960250
+      }
+    ],
+    "13.1 Implement the real provider (Anthropic or OpenAI) in `llm/`": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960282
+      }
+    ],
+    "13.2 Run `intenttrace bench --provider <real> --n 300` and commit RESULTS.md labeled with provider and model": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960314
+      }
+    ],
+    "13.3 Optional: a 20-case live set with the LLM shopping agent, reported separately": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960348
+      }
+    ],
+    "14.1 README: problem (with sources), how it works, quickstart, results table from RESULTS.md, methodology, limitations, \"AP2-style, not AP2-compliant\" note": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960384
+      }
+    ],
+    "14.2 Record a 30–60 second demo GIF: open a MANIPULATED case, show the highlighted injection and the replay result": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793985960428
+      }
+    ],
+    "3. Simulator and case generator (~90 min)": [
+      {
+        "executionId": "5499c7ae-8f7b-41b0-b1ae-fc5a81b221a1",
+        "chatSessionId": "sess_3db160dd-a15c-48fb-932d-93e10029947b",
+        "timestamp": 1793988356841
+      }
+    ]
+  }
+}
