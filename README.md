@@ -9,6 +9,33 @@ IntentTrace is a forensic investigator for AI agent purchases. Give it the recor
 
 > **AP2-style, not AP2-compliant.** IntentTrace uses a local, AP2-style mandate model (signed intent, cart, and payment mandates). It does not use the official AP2 SDK and makes no claim of AP2 compliance.
 
+## Why we built it
+
+Agent payment protocols prove that a purchase was signed. They do not prove the agent was acting for the user when it signed. A shopping agent that reads a poisoned review can buy the wrong item with a perfectly valid signature, and today nobody can say whether the user, the merchant, or the agent's inputs are at fault. IntentTrace turns that argument into evidence: what the agent read, what it would have chosen without the suspicious text, and which check flags it.
+
+## Who it is for
+
+- **Payment providers and dispute teams** who need a defensible first-pass triage of "my agent bought something I didn't want" claims.
+- **Agent and shopping-assistant builders** who want to test whether their agent can be redirected, and track it as a regression metric.
+- **Merchants and marketplaces** who need to show a listing was not misrepresented, or spot content that manipulates agents.
+- **Security and AI-safety researchers** who want a labeled, reproducible benchmark for agent purchase manipulation.
+
+## How it works at a glance
+
+```mermaid
+flowchart LR
+    A["Case file: signed mandates,<br/>agent trace, merchant records"] --> B["1. Integrity<br/>signatures + hash chain"]
+    B --> C["2. Scope<br/>cart vs signed constraints"]
+    C --> D["3. Merchant consistency<br/>listed vs delivered"]
+    D --> E["4. Trace forensics<br/>injection rules + ranking"]
+    E --> F["5. Counterfactual replay<br/>re-run without suspicious text"]
+    F --> G{"Verdict"}
+    G --> H["LEGITIMATE, MANIPULATED, OUT_OF_SCOPE,<br/>MERCHANT_MISREPRESENTATION,<br/>INTEGRITY_FAILURE, INCONCLUSIVE"]
+    G --> I["Evidence packet<br/>JSON + Markdown"]
+    H --> J["Dashboard, API, MCP tool"]
+    I --> J
+```
+
 ## The problem
 
 Agent payment protocols such as Google's [Agent Payments Protocol (AP2)](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol) and the [Agentic Commerce Protocol (ACP)](https://docs.stripe.com/agentic-commerce/protocols/acp) from Stripe, OpenAI, and Meta let AI agents buy things for people. AP2 does this with signed mandates that record what the user authorized.
@@ -60,9 +87,20 @@ cd web && npm install && npm run build
 
 `intenttrace mcp` starts an MCP server over stdio so other agents can call the investigator as a tool. Run `intenttrace --help` for all options.
 
+## Deploy
+
+A `Dockerfile` and `render.yaml` run the API and the built dashboard as one service on the deterministic `fake` provider, with the sample cases preloaded. No API keys go into the image.
+
+```bash
+docker build -t intenttrace-demo .
+docker run -p 8787:8787 intenttrace-demo   # http://localhost:8787
+```
+
+To host it, create a Render Blueprint from this repo (it reads `render.yaml`). The free tier sleeps when idle, and the database lives in `/tmp`, so submitted cases reset on restart. Vercel is not a fit because the app needs a long-running server and a writable SQLite file.
+
 ## Results
 
-> **Pipeline test, not model accuracy.** These numbers come from the deterministic `fake` provider, which tests the pipeline. They say nothing about how a real model performs. Results for a real provider are pending (task 13.2) and will be reported separately and labeled with provider and model.
+> **Pipeline test, not model accuracy.** These numbers come from the deterministic `fake` provider, which tests the pipeline. They say nothing about how a real model performs. A real-provider run (task 13.2) has not been done yet because it needs a paid API key. When it is run, it will be reported separately and labeled with provider and model.
 
 Run: provider `fake` (`fake-deterministic`), prompt version 1, seed 7, 300 synthetic cases. Full tables are in [`benchmark/RESULTS.md`](benchmark/RESULTS.md).
 

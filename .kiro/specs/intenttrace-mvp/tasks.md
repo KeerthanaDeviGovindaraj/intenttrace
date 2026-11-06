@@ -95,8 +95,8 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
 
 - [~] 13. Real-provider benchmark (human-supervised, ~30 min)
   - [x] 13.1 Implement the real provider (Anthropic or OpenAI) in `llm/`
-  - [~] 13.2 Run `intenttrace bench --provider <real> --n 300` and commit RESULTS.md labeled with provider and model
-  - [~] 13.3 Optional: a 20-case live set with the LLM shopping agent, reported separately
+  - [~] 13.2 Run `intenttrace bench --provider <real> --n 300` and commit RESULTS.md labeled with provider and model (not run: no API key available; README states this)
+  - [~] 13.3 Optional: a 20-case live set with the LLM shopping agent, reported separately (not run: no API key available)
   - _Requirements: 9.3, 12.1, 12.4_
 
 - [x] 14. README and demo (~45 min)

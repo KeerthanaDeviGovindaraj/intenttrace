@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: intenttrace
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/cases
+    envVars:
+      - key: INTENTTRACE_LLM_PROVIDER
+        value: fake
