@@ -100,7 +100,7 @@ To host it, create a Render Blueprint from this repo (it reads `render.yaml`). T
 
 ## Results
 
-> **Pipeline test, not model accuracy.** These numbers come from the deterministic `fake` provider, which tests the pipeline. They say nothing about how a real model performs. Results for a real provider are pending (task 13.2) and will be reported separately and labeled with provider and model.
+> **Pipeline test, not model accuracy.** These numbers come from the deterministic `fake` provider, which tests the pipeline. They say nothing about how a real model performs. A real-provider run (task 13.2) has not been done yet because it needs a paid API key. When it is run, it will be reported separately and labeled with provider and model.
 
 Run: provider `fake` (`fake-deterministic`), prompt version 1, seed 7, 300 synthetic cases. Full tables are in [`benchmark/RESULTS.md`](benchmark/RESULTS.md).
 
