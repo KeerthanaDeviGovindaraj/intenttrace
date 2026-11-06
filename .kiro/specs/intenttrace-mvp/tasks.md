@@ -72,19 +72,19 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 9.4 Tests with TestClient for every endpoint, including 422 on invalid cases
   - _Requirements: 10.1, 10.2, 10.4_
 
-- [ ] 10. MCP server (~30 min)
-  - [~] 10.1 `mcp_server.py` with the three tools over stdio (section 16); check the installed `mcp` package's docs for the current server API
-  - [~] 10.2 CLI `intenttrace mcp`
-  - [~] 10.3 Tests calling the tool functions directly
+- [x] 10. MCP server (~30 min)
+  - [x] 10.1 `mcp_server.py` with the three tools over stdio (section 16); check the installed `mcp` package's docs for the current server API
+  - [x] 10.2 CLI `intenttrace mcp`
+  - [x] 10.3 Tests calling the tool functions directly
   - _Requirements: 10.3_
 
-- [ ] 11. Dashboard (~2 hours)
-  - [~] 11.1 Scaffold `web/` with Vite React-TS, Tailwind, React Router; strict TypeScript; types mirroring the Report and CaseFile models
-  - [~] 11.2 Case list page with filters and badges
-  - [~] 11.3 Case detail page: verdict banner, intent-versus-cart table, trace timeline with highlighted spans, replay card, evidence download
-  - [~] 11.4 Benchmark page: metric cards, confusion matrix, recall by attack type
-  - [~] 11.5 Light and dark themes; check at 390px width
-  - [~] 11.6 `npm run build` succeeds; the API serves `web/dist`
+- [x] 11. Dashboard (~2 hours)
+  - [x] 11.1 Scaffold `web/` with Vite React-TS, Tailwind, React Router; strict TypeScript; types mirroring the Report and CaseFile models
+  - [x] 11.2 Case list page with filters and badges
+  - [x] 11.3 Case detail page: verdict banner, intent-versus-cart table, trace timeline with highlighted spans, replay card, evidence download
+  - [x] 11.4 Benchmark page: metric cards, confusion matrix, recall by attack type
+  - [x] 11.5 Light and dark themes; check at 390px width
+  - [x] 11.6 `npm run build` succeeds; the API serves `web/dist`
   - _Requirements: 11.1–11.4_
 
 - [ ] 12. CI (~15 min)

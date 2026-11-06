@@ -121,3 +121,45 @@ def test_cli_load_sample(tmp_path, monkeypatch):
 def test_cli_serve_help():
     res = CliRunner().invoke(cli_app, ["serve", "--help"])
     assert res.exit_code == 0 and "--port" in res.output
+
+
+@pytest.fixture
+def web_client(tmp_path, monkeypatch):
+    dist = tmp_path / "dist"
+    (dist / "assets").mkdir(parents=True)
+    (dist / "index.html").write_text("<html>SPA</html>")
+    (dist / "assets" / "app.js").write_text("console.log(1)")
+    (tmp_path / "secret.txt").write_text("secret")
+    monkeypatch.setenv("INTENTTRACE_DB", str(tmp_path / "t.db"))
+    monkeypatch.setenv("INTENTTRACE_RESULTS", str(tmp_path / "results.json"))
+    monkeypatch.setenv("INTENTTRACE_WEB_DIST", str(dist))
+    return TestClient(create_app())
+
+
+def test_serves_index_and_assets(web_client):
+    assert "SPA" in web_client.get("/").text
+    r = web_client.get("/assets/app.js")
+    assert r.status_code == 200 and "console.log" in r.text
+
+
+@pytest.mark.parametrize("path", ["/benchmark", "/cases/case-0007", "/cases"])
+def test_spa_fallback(web_client, path):
+    r = web_client.get(path)
+    assert r.status_code == 200 and "SPA" in r.text
+
+
+def test_api_unknown_is_json_404(web_client):
+    for path in ("/api/nope", "/api/cases/missing", "/api"):
+        r = web_client.get(path)
+        assert r.status_code == 404
+        assert "detail" in r.json()
+
+
+def test_api_routes_still_work_with_dist(web_client):
+    assert web_client.get("/api/cases").json() == []
+
+
+def test_no_path_traversal(web_client):
+    for path in ("/../secret.txt", "/%2e%2e/secret.txt", "/assets/..%2f..%2fsecret.txt"):
+        r = web_client.get(path)
+        assert "secret" not in r.text

@@ -9,8 +9,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, PlainTextResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from pydantic import ValidationError
 
 from intenttrace.evidence import build_packet, to_markdown
@@ -112,7 +111,22 @@ def create_app() -> FastAPI:
 
     dist = Path(os.environ.get("INTENTTRACE_WEB_DIST") or DEFAULT_DIST)
     if dist.is_dir():
-        app.mount("/", StaticFiles(directory=dist, html=True), name="web")
+        root = dist.resolve()
+        index = root / "index.html"
+
+        @app.get("/{full_path:path}", include_in_schema=False)
+        def spa(full_path: str):
+            if full_path == "api" or full_path.startswith("api/"):
+                return _error(404, "Not Found")
+            if full_path:
+                candidate = (root / full_path).resolve()
+                if not candidate.is_relative_to(root):
+                    return _error(404, "Not Found")
+                if candidate.is_file():
+                    return FileResponse(candidate)
+            if index.is_file():
+                return FileResponse(index)
+            return _error(404, "Not Found")
 
     return app
 
