@@ -25,6 +25,15 @@ def test_noun_phrase():
     assert noun_phrase(INSTR) == ["blue", "desk", "lamp"]
 
 
+def test_noun_phrase_for_every_template():
+    from intenttrace.sim.tasks import TEMPLATES, render_instruction
+
+    for tid in range(len(TEMPLATES)):
+        for merchant in (None, "merchant-aurora"):
+            text = render_instruction(tid, "blue 8-cup coffee maker", 5000, 2, merchant)
+            assert noun_phrase(text) == ["blue", "8-cup", "coffee", "maker"], text
+
+
 def test_cheapest_wins_and_scores():
     r = rank_listings(INSTR, C, [_p("b", 3000), _p("a", 2000)])
     assert [x.product_id for x in r] == ["a", "b"]

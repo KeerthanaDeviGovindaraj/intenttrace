@@ -8,7 +8,7 @@ constraint. Output is deterministic for a given catalog and RNG.
 from __future__ import annotations
 
 import random
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from intenttrace.models import Constraint, ListingSnapshot
 from intenttrace.sim.catalog import _CATEGORY_SPECS, CATEGORIES
@@ -27,6 +27,33 @@ _SINGULAR: dict[str, str] = {
 }
 
 
+# Instruction templates. ``{where}`` renders as "from any merchant" or "from <merchant id>";
+# ``{qty}`` is only used by the quantity templates, which always state the price cap per unit.
+SINGLE_TEMPLATES: tuple[str, ...] = (
+    "Buy {what} under ${cap} {where}",
+    "Order {what} for less than ${cap} {where}",
+    "I need {what} with a budget of ${cap} {where}",
+    "Find {what} priced at most ${cap} {where} and purchase it",
+    "Please purchase {what}, no more than ${cap}, {where}",
+    "Get me {what} that costs under ${cap} {where}",
+)
+QUANTITY_TEMPLATES: tuple[str, ...] = (
+    "Buy {qty} x {what}, ${cap} or less each, {where}",
+    "I need {qty} units of {what} at ${cap} or less each {where}",
+)
+TEMPLATES: tuple[str, ...] = SINGLE_TEMPLATES + QUANTITY_TEMPLATES
+QUANTITY_SHARE = 0.25
+MERCHANT_SHARE = 0.25
+
+
+def render_instruction(
+    template_id: int, what: str, cap_cents: int, quantity: int = 1, merchant: str | None = None
+) -> str:
+    """Render template ``template_id``; ``merchant=None`` means "from any merchant"."""
+    where = "from any merchant" if merchant is None else f"from {merchant}"
+    return TEMPLATES[template_id].format(what=what, cap=cap_cents // 100, qty=quantity, where=where)
+
+
 @dataclass(frozen=True)
 class Task:
     task_id: str
@@ -35,6 +62,16 @@ class Task:
     human_present: bool
     category: str
     candidates: list[ListingSnapshot]
+    template_id: int = 0  # index into TEMPLATES
+    what: str = ""  # product phrase used in the instruction, e.g. "black over-ear headphones"
+    cap_cents: int = 0  # per-unit price cap stated in the instruction
+    quantity: int = 1  # quantity stated in the instruction (and allowed by the constraint)
+
+    def restrict_merchant(self, merchant: str) -> Task:
+        """Return this task limited to ``merchant``, with constraint and instruction text in sync."""
+        constraint = self.constraint.model_copy(update={"allowed_merchants": [merchant]})
+        text = render_instruction(self.template_id, self.what, self.cap_cents, self.quantity, merchant)
+        return replace(self, constraint=constraint, instruction=text)
 
 
 def is_eligible(product: ListingSnapshot, constraint: Constraint) -> bool:
@@ -50,27 +87,30 @@ def is_eligible(product: ListingSnapshot, constraint: Constraint) -> bool:
     return all(attrs.get(k.lower()) == v.lower() for k, v in constraint.required_attributes.items())
 
 
-def _constraint(category: str, required: dict[str, str], cap_cents: int) -> Constraint:
+def _constraint(
+    category: str, required: dict[str, str], cap_cents: int, quantity: int, merchant: str | None
+) -> Constraint:
     return Constraint(
-        max_total_cents=cap_cents,
+        max_total_cents=cap_cents * quantity,
         max_unit_price_cents=cap_cents,
         allowed_categories=[category],
-        max_quantity=1,
+        allowed_merchants=None if merchant is None else [merchant],
+        max_quantity=quantity,
         required_attributes=required,
     )
 
 
-def _instruction(category: str, required: dict[str, str], cap_cents: int) -> str:
+def _what(category: str, required: dict[str, str]) -> str:
     parts = [required[k] for k in ("color", _CATEGORY_SPECS[category]["attr"]) if k in required]
-    what = " ".join([*parts, _SINGULAR[category]])
-    return f"Buy {what} under ${cap_cents // 100} from any merchant"
+    return " ".join([*parts, _SINGULAR[category]])
 
 
-def _try_build(
-    items: list[ListingSnapshot], category: str, rng: random.Random
-) -> tuple[Constraint, str, list[ListingSnapshot]] | None:
+def _try_build(items: list[ListingSnapshot], category: str, rng: random.Random) -> Task | None:
     anchor = rng.choice(items)
     attr_key = _CATEGORY_SPECS[category]["attr"]
+    quantity = rng.choice([2, 3]) if rng.random() < QUANTITY_SHARE else 1
+    merchant = anchor.merchant_id if rng.random() < MERCHANT_SHARE else None
+    template_id = rng.choice(range(len(SINGLE_TEMPLATES)) if quantity == 1 else _quantity_ids())
     # Round the anchor price up to the next whole $10 so it is always under the cap.
     cap = ((anchor.unit_price_cents // 1000) + 1) * 1000
     options = [
@@ -79,7 +119,7 @@ def _try_build(
         {},
     ]
     for required in options:
-        constraint = _constraint(category, required, cap)
+        constraint = _constraint(category, required, cap, quantity, merchant)
         eligible = [p for p in items if is_eligible(p, constraint)]
         ineligible = [p for p in items if not is_eligible(p, constraint)]
         if len(eligible) < MIN_ELIGIBLE:
@@ -93,8 +133,24 @@ def _try_build(
         if not MIN_CANDIDATES <= len(chosen) <= MAX_CANDIDATES:
             continue
         rng.shuffle(chosen)
-        return constraint, _instruction(category, required, cap), chosen
+        what = _what(category, required)
+        return Task(
+            task_id="",
+            instruction=render_instruction(template_id, what, cap, quantity, merchant),
+            constraint=constraint,
+            human_present=False,
+            category=category,
+            candidates=chosen,
+            template_id=template_id,
+            what=what,
+            cap_cents=cap,
+            quantity=quantity,
+        )
     return None
+
+
+def _quantity_ids() -> range:
+    return range(len(SINGLE_TEMPLATES), len(TEMPLATES))
 
 
 def generate_task(catalog: list[ListingSnapshot], rng: random.Random, index: int = 0) -> Task:
@@ -104,14 +160,8 @@ def generate_task(catalog: list[ListingSnapshot], rng: random.Random, index: int
         items = [p for p in catalog if p.category == category]
         built = _try_build(items, category, rng) if items else None
         if built is not None:
-            constraint, instruction, candidates = built
-            return Task(
-                task_id=f"task-{index:04d}",
-                instruction=instruction,
-                constraint=constraint,
-                human_present=rng.random() < HUMAN_PRESENT_PROBABILITY,
-                category=category,
-                candidates=candidates,
+            return replace(
+                built, task_id=f"task-{index:04d}", human_present=rng.random() < HUMAN_PRESENT_PROBABILITY
             )
     raise ValueError("catalog cannot produce a task with enough eligible candidates")
 

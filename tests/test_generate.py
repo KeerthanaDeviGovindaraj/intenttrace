@@ -1,4 +1,5 @@
 import json
+import re
 from collections import Counter
 
 import pytest
@@ -6,9 +7,12 @@ import pytest
 from intenttrace.checks.integrity import check_integrity
 from intenttrace.checks.merchant import check_merchant
 from intenttrace.checks.scope import check_scope
+from intenttrace.forensics.deviation import rank_listings
 from intenttrace.models import CaseFile
-from intenttrace.sim.agents import Observations, detect_attacks
+from intenttrace.sim.agents import Observations, ScriptedAgent, detect_attack_type, detect_attacks
+from intenttrace.sim.catalog import MARKETING_CLAIMS
 from intenttrace.sim.generate import allocate, build_cases, generate
+from intenttrace.sim.tasks import Task
 
 
 @pytest.fixture(scope="module")
@@ -100,10 +104,88 @@ def test_attack_detectable_in_trace_only_for_attacked_cases(cases):
         assert found == expected
 
 
-def test_manipulated_think_steps_show_switch_and_legit_do_not(cases):
+_COMPARATIVE = re.compile(
+    r"\b(instead|rather than|over the|switch\w*|original\w*|other options?|alternatives?)\b", re.I
+)
+
+
+def _thoughts(g):
+    return " ".join(s.content for s in g.case.trace if s.kind == "think")
+
+
+def test_think_steps_never_leak_baseline_or_comparatives(cases):
+    checked = 0
     for g in cases:
-        thoughts = " ".join(s.content for s in g.case.trace if s.kind == "think")
-        if g.label["label"] == "MANIPULATED":
-            assert "instead" in thoughts
-        elif g.label["label"] == "LEGITIMATE":
-            assert "instead" not in thoughts
+        text = _thoughts(g)
+        assert _COMPARATIVE.search(text) is None, g.case.case_id
+        if g.label["label"] != "MANIPULATED":
+            continue
+        c = g.case
+        chosen_id = c.cart.items[0].product_id
+        # Baseline = top-ranked product on the clean listings (ranking ignores descriptions).
+        baseline = rank_listings(c.intent.natural_language, c.intent.constraints, c.listings_at_purchase)[0]
+        assert baseline.product_id != chosen_id
+        base_title = next(p.title for p in c.listings_at_purchase if p.product_id == baseline.product_id)
+        assert baseline.product_id not in text
+        if base_title != c.cart.items[0].title:
+            assert base_title not in text
+        checked += 1
+    assert checked > 10
+
+
+def test_benign_marketing_appears_in_legitimate_cases_and_never_flips_labels(cases):
+    def strip(desc):
+        for claim in MARKETING_CLAIMS:
+            desc = desc.replace(f" {claim}", "")
+        return desc
+
+    seen = 0
+    for g in cases:
+        c = g.case
+        has_marketing = any(
+            claim in p.description for p in c.listings_at_purchase for claim in MARKETING_CLAIMS
+        )
+        if g.label["label"] == "LEGITIMATE" and has_marketing:
+            seen += 1
+        # Marketing is never on an attacked product.
+        if g.label["attack_type"] and g.label["attack_type"] != "review_injection":
+            attacked = [p for p in c.listings_at_purchase if detect_attack_type(p.description) is not None]
+            assert attacked and not any(cl in p.description for p in attacked for cl in MARKETING_CLAIMS)
+        # Removing marketing does not change the agent's choice, so the label cannot flip.
+        if c.agent_config and g.label["label"] in ("LEGITIMATE", "MANIPULATED"):
+            reviews: dict[str, list[str]] = {}
+            for s in c.trace:
+                if s.source == "review" and s.product_id:
+                    reviews.setdefault(s.product_id, []).append(s.content)
+            plain = [
+                p.model_copy(update={"description": strip(p.description)}) for p in c.listings_at_purchase
+            ]
+            task = Task("t", c.intent.natural_language, c.intent.constraints, False, "", plain)
+            cfg = c.agent_config
+            pick = ScriptedAgent(cfg.seed, cfg.susceptibility).decide(task, Observations(plain, reviews))
+            assert pick == c.cart.items[0].product_id, c.case_id
+    assert seen >= 3
+
+
+def test_instruction_variety_and_constraint_consistency(cases):
+    texts = {g.case.intent.natural_language for g in cases}
+    assert len(texts) > 20
+    for g in cases:
+        c = g.case.intent.constraints
+        text = g.case.intent.natural_language
+        if c.allowed_merchants:
+            assert f"from {c.allowed_merchants[0]}" in text
+        else:
+            assert "from any merchant" in text
+        if g.label["cause"] != "scope_quantity":
+            assert g.case.cart.items[0].quantity <= c.max_quantity
+        else:
+            assert g.case.cart.items[0].quantity > c.max_quantity
+
+
+def test_hundred_case_run_uses_six_templates():
+    from intenttrace.sim.catalog import build_catalog
+    from intenttrace.sim.tasks import generate_tasks
+
+    tasks = generate_tasks(build_catalog(5), 100, seed=5)
+    assert len({t.template_id for t in tasks}) >= 6

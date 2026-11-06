@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import random
+import re
 
 import pytest
 
@@ -10,6 +11,9 @@ from intenttrace.sim.attacks import ATTACK_TYPES, apply_attack
 from intenttrace.sim.catalog import build_catalog
 from intenttrace.sim.tasks import generate_tasks
 
+_COMPARATIVE = re.compile(
+    r"\b(instead|rather than|over the|switch\w*|original\w*|other options?|alternatives?)\b", re.I
+)
 TASKS = generate_tasks(build_catalog(1), 8, 3)
 
 
@@ -39,7 +43,7 @@ def test_clean_observations_pick_top_with_baseline_reasoning():
     agent = ScriptedAgent(1, _susc(1.0))
     assert agent.decide(task, Observations(task.candidates)) == top
     assert agent.last_decision is not None and not agent.last_decision.switched
-    assert "fits best" in " ".join(agent.last_decision.think_steps)
+    assert agent.last_decision.think_steps[-1].startswith("I'll buy ")
 
 
 def test_attack_on_top_product_does_not_change_choice():
@@ -57,16 +61,46 @@ def test_deterministic_for_same_seed_and_observations():
         assert a == b
 
 
-def test_think_steps_paraphrase_attack_when_switching():
+def test_think_steps_are_deterministic_and_independent_of_baseline():
     task = TASKS[0]
     _, target, obs = _setup(task, "review_injection", 2)
     agent = ScriptedAgent(1, _susc(1.0))
     agent.decide(task, obs)
     d = agent.last_decision
     assert d is not None and d.switched and d.attack_type == "review_injection"
-    text = " ".join(d.think_steps)
-    assert "review" in text and "instead" in text
-    assert not any(step in text for r in obs.reviews.values() for step in r)  # paraphrase, not verbatim
+    again = ScriptedAgent(1, _susc(1.0)).decide_with_thoughts(task, obs)
+    assert again.think_steps == d.think_steps
+    title = next(p.title for p in obs.listings if p.product_id == target)
+    assert d.think_steps[-1] == f"I'll buy {title}."
+    assert not any(step in " ".join(d.think_steps) for r in obs.reviews.values() for step in r)  # no verbatim
+
+
+def test_think_styles_all_occur_and_reasoning_never_mentions_baseline():
+    seen = set()
+    for i, task in enumerate(TASKS):
+        for attack_type in ATTACK_TYPES:
+            top, target, obs = _setup(task, attack_type, i)
+            top_listing = next(p for p in task.candidates if p.product_id == top)
+            for seed in range(6):
+                d = ScriptedAgent(seed, _susc(1.0)).decide_with_thoughts(task, obs)
+                assert d.switched and d.product_id == target
+                text = " ".join(d.think_steps)
+                assert top not in text and _COMPARATIVE.search(text) is None
+                if top_listing.title != next(p.title for p in task.candidates if p.product_id == target):
+                    assert top_listing.title not in text
+                seen.add(d.think_steps[2].split()[0:2].__str__())
+    assert len(seen) >= 3
+
+
+def test_paraphrase_style_keeps_word_overlap_with_attack_text():
+    from intenttrace.sim.agents import _OWN_REASONING
+    from intenttrace.sim.attacks import attack_text
+
+    for attack_type in ATTACK_TYPES:
+        words = lambda t: set(re.findall(r"[a-z0-9]+", t.lower()))  # noqa: E731
+        reason = words(_OWN_REASONING[attack_type])
+        overlaps = [len(reason & words(attack_text(attack_type, random.Random(s)))) for s in range(20)]
+        assert max(overlaps) >= 3, attack_type
 
 
 def test_removing_attack_span_removes_effect():

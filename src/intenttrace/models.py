@@ -43,7 +43,11 @@ def contains_card_number(text: str) -> bool:
 
 # Machine-generated fields (hex hashes, base64 signatures/keys) can contain Luhn-valid digit
 # runs by chance, so the guard skips them and scans free-text and identifier fields only.
-_GUARD_SKIP_KEYS = frozenset({"signature", "intent_mandate_hash", "cart_mandate_hash", "public_keys"})
+# ``Finding.expected``/``actual`` are skipped because integrity findings carry those hashes; they
+# only echo values already validated in the case file.
+_GUARD_SKIP_KEYS = frozenset(
+    {"signature", "intent_mandate_hash", "cart_mandate_hash", "public_keys", "expected", "actual"}
+)
 
 
 def _iter_strings(obj: Any):

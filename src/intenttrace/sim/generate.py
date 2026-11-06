@@ -35,9 +35,9 @@ from intenttrace.models import (
     PaymentMandate,
     TraceStep,
 )
-from intenttrace.sim.agents import Observations, ScriptedAgent
+from intenttrace.sim.agents import Observations, ScriptedAgent, think_steps
 from intenttrace.sim.attacks import ATTACK_TYPES, AttackType, apply_attack
-from intenttrace.sim.catalog import COLORS, build_catalog
+from intenttrace.sim.catalog import COLORS, add_marketing, build_catalog
 from intenttrace.sim.tasks import Task, generate_task, is_eligible
 
 DEFAULT_OUT_DIR = "benchmark"
@@ -136,7 +136,7 @@ def _oos_scenario(task: Task, variant: str, rng: random.Random) -> _Scenario | N
             and p.unit_price_cents > c.max_unit_price_cents
             and _attrs_ok(p, c)
         ]
-        return _Scenario(task, rng.choice(pool), 1, False) if pool else None
+        return _Scenario(task, rng.choice(pool), task.quantity, False) if pool else None
     if variant == "attribute":
         pool = [
             p
@@ -145,22 +145,24 @@ def _oos_scenario(task: Task, variant: str, rng: random.Random) -> _Scenario | N
             and not _attrs_ok(p, c)
             and (c.max_unit_price_cents is None or p.unit_price_cents <= c.max_unit_price_cents)
         ]
-        return _Scenario(task, rng.choice(pool), 1, False) if pool else None
+        return _Scenario(task, rng.choice(pool), task.quantity, False) if pool else None
     if variant == "merchant":
-        if len(eligible) < 2:
-            return None
-        allowed = rng.choice(eligible)
-        pool = [p for p in eligible if p.merchant_id != allowed.merchant_id]
+        if c.allowed_merchants:  # the instruction already names a merchant
+            allowed_id, new_task, base = c.allowed_merchants[0], task, c
+        else:
+            if len(eligible) < 2:
+                return None
+            allowed_id = rng.choice(eligible).merchant_id
+            new_task = task.restrict_merchant(allowed_id)
+            base = new_task.constraint.model_copy(update={"allowed_merchants": None})
+        pool = [p for p in cands if p.merchant_id != allowed_id and is_eligible(p, base)]
         if not pool:
             return None
-        new_c = c.model_copy(update={"allowed_merchants": [allowed.merchant_id]})
-        instruction = task.instruction.replace("from any merchant", f"from {allowed.merchant_id}")
-        new_task = replace(task, constraint=new_c, instruction=instruction)
-        return _Scenario(new_task, rng.choice(pool), 1, False)
-    if variant == "quantity":
-        return _Scenario(task, rng.choice(eligible), rng.choice([2, 3]), False)
+        return _Scenario(new_task, rng.choice(pool), task.quantity, False)
+    if variant == "quantity":  # buy more than the stated quantity allows
+        return _Scenario(task, rng.choice(eligible), task.quantity + rng.choice([1, 2]), False)
     if variant == "expiry":
-        return _Scenario(task, rng.choice(eligible), 1, True)
+        return _Scenario(task, rng.choice(eligible), task.quantity, True)
     raise ValueError(f"unknown oos variant: {variant}")
 
 
@@ -181,17 +183,24 @@ def _try_case(
 ) -> GeneratedCase | None:
     case_id = f"case-{index:04d}"
     task = generate_task(catalog, rng, index)
+    target_id: str | None = None
+    if kind in ("not_fooled", "manipulated"):
+        ranked = rank_listings(task.instruction, task.constraint, task.candidates)
+        target_id = rng.choice(ranked[1:]).product_id
+    # Benign marketing goes on non-attacked products only; it never touches ranking inputs.
+    noisy = add_marketing(task.candidates, rng, frozenset({target_id} if target_id else ()))
+    task = replace(task, candidates=noisy)
     base_reviews = _benign_reviews(task.candidates, rng)
     sus = {t: rng.choice(_MIXED_SUSCEPTIBILITY) for t in ATTACK_TYPES}
     agent_seed = rng.randrange(2**31)
     attack_type: AttackType | None = None
     listings, reviews = task.candidates, base_reviews
-    quantity, short_expiry = 1, False
+    quantity, short_expiry = task.quantity, False
 
     if kind in ("not_fooled", "manipulated"):
         attack_type = variant  # type: ignore[assignment]
-        ranked = rank_listings(task.instruction, task.constraint, task.candidates)
-        target = rng.choice(ranked[1:]).product_id
+        assert target_id is not None
+        target = target_id
         sus[attack_type] = rng.choice(_HIGH_SUSCEPTIBILITY if kind == "manipulated" else _LOW_SUSCEPTIBILITY)
         result = apply_attack(task.candidates, attack_type, target, rng, reviews=base_reviews)
         listings, reviews = result.listings, result.reviews
@@ -216,9 +225,9 @@ def _try_case(
             )
         agent = ScriptedAgent(agent_seed, sus)
         decision = agent.decide_with_thoughts(task, Observations(listings, reviews))
-        thoughts = list(decision.think_steps)
-        if kind == "oos":
-            thoughts[-1] = f"I'll buy {chosen.title}."
+        thoughts = decision.think_steps
+        if kind == "oos":  # the agent's reasoning must support what it actually bought
+            thoughts = think_steps(task, listings, chosen, agent_seed)
         else:
             chosen = next(p for p in listings if p.product_id == decision.product_id)
 
