@@ -166,5 +166,41 @@ def bench(
         raise typer.Exit(code=1)
 
 
+@app.command()
+def serve(
+    port: int = typer.Option(8787, "--port", help="Port to listen on."),
+    host: str = typer.Option("127.0.0.1", "--host", help="Interface to bind."),
+) -> None:
+    """Serve the API (and the dashboard when web/dist exists)."""
+    import uvicorn
+
+    from intenttrace.api import app as api_app
+
+    uvicorn.run(api_app, host=host, port=port)
+
+
+@app.command("load-sample")
+def load_sample(
+    sample_dir: Path = typer.Option(Path("benchmark/sample"), "--dir", help="Directory of sample cases."),
+) -> None:
+    """Investigate the sample cases and store them with their reports."""
+    from contextlib import closing
+
+    from intenttrace.models import CaseFile
+    from intenttrace.pipeline import investigate as run_investigation
+    from intenttrace.store import Store
+
+    files = sorted(sample_dir.glob("case-*.json"))
+    if not files:
+        typer.echo(f"No sample cases found in {sample_dir}", err=True)
+        raise typer.Exit(code=2)
+    provider = _select_provider()
+    with closing(Store()) as store:
+        for f in files:
+            case = CaseFile.model_validate_json(f.read_text(encoding="utf-8"))
+            store.save_case(case, run_investigation(case, replay=True, provider=provider))
+    typer.echo(f"Stored {len(files)} sample cases in {store.path}")
+
+
 if __name__ == "__main__":
     app()

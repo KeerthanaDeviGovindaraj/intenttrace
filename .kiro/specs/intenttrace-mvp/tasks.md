@@ -60,16 +60,16 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 7.5 Test: `--n 30` smoke run completes with the fake provider
   - _Requirements: 9.1–9.5_
 
-- [~] 8. Checkpoint B (human, ~15 min)
+- [x] 8. Checkpoint B (human, ~15 min)
   - Run `intenttrace generate --n 300 --seed 7 && intenttrace bench --provider fake`. Read RESULTS.md. Look at three misclassified cases and decide whether the investigator or the spec is wrong. Record the baseline; add the CI gate at baseline minus 0.03 macro F1.
 
 ## Phase C: Interfaces (target: 3.5 hours)
 
-- [ ] 9. Store, API, CLI wiring (~45 min)
-  - [~] 9.1 `store.py` with the schema in section 13
-  - [~] 9.2 `api.py` endpoints in section 15, CORS for the dev server, static dashboard serving
-  - [~] 9.3 CLI `serve` and `load-sample`
-  - [~] 9.4 Tests with TestClient for every endpoint, including 422 on invalid cases
+- [x] 9. Store, API, CLI wiring (~45 min)
+  - [x] 9.1 `store.py` with the schema in section 13
+  - [x] 9.2 `api.py` endpoints in section 15, CORS for the dev server, static dashboard serving
+  - [x] 9.3 CLI `serve` and `load-sample`
+  - [x] 9.4 Tests with TestClient for every endpoint, including 422 on invalid cases
   - _Requirements: 10.1, 10.2, 10.4_
 
 - [ ] 10. MCP server (~30 min)
