@@ -1,0 +1,213 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Add `hypothesis` with a pinned version to the `dev` extra in `pyproject.toml`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879297
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001884690
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001977580
+      }
+    ],
+    "1.2 Add the default PayGate key file pattern (`*.paygate.key`) to `.gitignore`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879337
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001885720
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001979049
+      }
+    ],
+    "2.1 Create `src/intenttrace/paygate.py` with the Pydantic v2 models": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879371
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001886258
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001979975
+      }
+    ],
+    "2.2 Implement `decide_from_facts(facts)` and the explanation templates in `paygate.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879396
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001986999
+      }
+    ],
+    "3.1 Implement `request_to_case(req)` and `provider_from_env()` in `paygate.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879424
+      }
+    ],
+    "4.1 Create `src/intenttrace/paygate_log.py` with `DecisionLog`, `DecisionRecord`, key handling, and `verify_decision_log`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879449
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001987039
+      }
+    ],
+    "4.2 Add `decision_markdown(record)` to `paygate_log.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879475
+      }
+    ],
+    "5.1 Implement `gate_purchase` in `paygate.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879506
+      }
+    ],
+    "5.2 Create hypothesis strategies in `tests/strategies_paygate.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879545
+      }
+    ],
+    "6. Checkpoint - core gate": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879576
+      }
+    ],
+    "7.1 Add the PayGate routes to `api.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879604
+      }
+    ],
+    "8.1 Add `check_purchase(request_json)` to `mcp_server.py` and register it in `create_server`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879629
+      }
+    ],
+    "9.1 Add `case_to_request` and `run_paygate_bench` to `bench.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879656
+      }
+    ],
+    "9.2 Add `render_paygate_section` and `write_paygate_results`, and update `write_results` in `bench.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879680
+      }
+    ],
+    "9.5 Add the `paygate-bench` command to `cli.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879707
+      }
+    ],
+    "10.1 Add a golden file of expected Decisions and `tests/test_paygate_samples.py`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879735
+      }
+    ],
+    "11.1 Add `DecisionLabel` and `DecisionRecordItem` to `web/src/types.ts` and `listDecisions`, `getChainStatus`, `decisionEvidenceUrl` to `web/src/api.ts`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879763
+      }
+    ],
+    "11.2 Create `web/src/components/DecisionBadge.tsx`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879793
+      }
+    ],
+    "11.3 Create `web/src/pages/DecisionsPage.tsx` and wire the `/decisions` route and \"Decisions\" nav link in `web/src/App.tsx`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879822
+      }
+    ],
+    "12. Checkpoint - interfaces and benchmark": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879847
+      }
+    ],
+    "13.1 Add the `paygate-bench` step to `.github/workflows/ci.yml` after the existing bench step": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879874
+      }
+    ],
+    "13.2 Add a PayGate section to `README.md`": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879904
+      }
+    ],
+    "14. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001879951
+      }
+    ],
+    "1. Project setup": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794001979081
+      }
+    ]
+  }
+}

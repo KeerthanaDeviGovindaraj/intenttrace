@@ -8,6 +8,7 @@ build/
 .ruff_cache/
 .env
 intenttrace.db
+*.paygate.key
 benchmark/cases/
 benchmark/labels.jsonl
 web/node_modules/
