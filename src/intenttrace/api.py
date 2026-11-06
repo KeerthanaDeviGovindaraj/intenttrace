@@ -6,16 +6,20 @@ import json
 import os
 from contextlib import closing
 from pathlib import Path
+from typing import Literal
 
 from fastapi import FastAPI, Query, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from pydantic import ValidationError
 
 from intenttrace.evidence import build_packet, to_markdown
 from intenttrace.models import CaseFile
+from intenttrace.paygate import GateResult, gate_purchase, provider_from_env
+from intenttrace.paygate_log import DecisionLog, chain_status, decision_markdown
 from intenttrace.pipeline import investigate
-from intenttrace.store import Store
+from intenttrace.store import Store, db_path
 
 DEV_ORIGIN = "http://localhost:5173"
 DEFAULT_RESULTS = Path("benchmark/results.json")
@@ -108,6 +112,44 @@ def create_app() -> FastAPI:
             if body is None:
                 return _error(404, "No benchmark results available")
             return json.loads(body)
+
+    @app.post("/api/paygate/check")
+    async def paygate_check(request: Request, replay: bool = Query(True)):
+        raw = await request.body()
+        try:
+            json.loads(raw)
+            valid_json = True
+        except ValueError:
+            valid_json = False
+        provider, env_notes = provider_from_env()
+
+        def run() -> GateResult:
+            result = gate_purchase(raw, provider, replay)
+            extra = [n for n in env_notes if n not in result.notes]
+            return result.model_copy(update={"notes": [*result.notes, *extra]}) if extra else result
+
+        result = await run_in_threadpool(run)
+        return JSONResponse(status_code=200 if valid_json else 422, content=result.model_dump(mode="json"))
+
+    @app.get("/api/paygate/decisions")
+    def paygate_decisions(
+        decision: Literal["ALLOW", "BLOCK", "ASK_HUMAN"] | None = Query(None),
+        limit: int = Query(100, ge=1, le=500),
+    ):
+        with closing(DecisionLog()) as log:
+            return [r.model_dump(mode="json") for r in log.list(decision, limit)]
+
+    @app.get("/api/paygate/decisions/{record_id}/evidence.md")
+    def paygate_evidence(record_id: str):
+        with closing(DecisionLog()) as log:
+            record = log.get(record_id)
+        if record is None:
+            return _error(404, f"Decision not found: {record_id}")
+        return PlainTextResponse(decision_markdown(record), media_type="text/markdown; charset=utf-8")
+
+    @app.get("/api/paygate/chain")
+    def paygate_chain():
+        return chain_status(db_path())
 
     dist = Path(os.environ.get("INTENTTRACE_WEB_DIST") or DEFAULT_DIST)
     if dist.is_dir():

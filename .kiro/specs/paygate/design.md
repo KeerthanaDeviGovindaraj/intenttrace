@@ -426,13 +426,13 @@ For any valid request, calling `gate_purchase` twice, once with the `GateRequest
 
 ### Property 5: Highlighted spans are well formed
 
-For any valid request and any returned span, the span's `item_id` is the ID of a content item in the request, `0 <= start < end <= len(text)` of that item, and the set of spans equals the spans that `detect` returns on the adapted case.
+For any valid request whose integrity and scope checks pass (the decision is not an integrity or scope BLOCK) and any returned span, the span's `item_id` is the ID of a content item in the request, `0 <= start < end <= len(text)` of that item, and the set of spans equals the spans that `detect` returns on the adapted case. Requests blocked by integrity or scope stop before detection, replay and deviation run (Req 3.8), so they carry no spans.
 
 **Validates: Requirements 2.3, 4.2**
 
 ### Property 6: Skipped checks are reported
 
-For any valid request, `skipped_checks` contains a replay entry whenever `replay=False` or `agent_config` is absent, and a deviation entry whenever `listings` is absent or empty.
+For any valid request whose integrity and scope checks pass (the decision is not an integrity or scope BLOCK), `skipped_checks` contains a replay entry whenever `replay=False` or `agent_config` is absent, and a deviation entry whenever `listings` is absent or empty. Requests blocked by integrity or scope stop before detection, replay and deviation run (Req 3.8), so they carry no skipped-check entries.
 
 **Validates: Requirements 1.2, 3.9, 6.5**
 

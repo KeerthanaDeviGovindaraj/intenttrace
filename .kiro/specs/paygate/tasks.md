@@ -66,12 +66,12 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 5.2 Create hypothesis strategies in `tests/strategies_paygate.py`
     - `facts()`, `signed_request()` (valid signed `GateRequest` varying price, quantity, content, listings, `agent_config`, with benign text mixed with R1 to R5 trigger phrases), `mutated_request()` (extra key, card number, removed field, oversize)
     - _Requirements: 13.1_
-  - [-]* 5.3 Write property tests for result shape and input rejection
+  - [x]* 5.3 Write property tests for result shape and input rejection
     - **Property 2: Result shape invariant**
     - **Validates: Requirements 2.1, 2.2, 2.4, 6.3, 12.2**
     - **Property 3: Invalid requests are rejected with paths**
     - **Validates: Requirements 1.3, 1.4, 1.5, 5.6**
-  - [-]* 5.4 Write property tests for determinism, spans, and skipped checks
+  - [x]* 5.4 Write property tests for determinism, spans, and skipped checks
     - **Property 4: Determinism and input independence**
     - **Validates: Requirements 3.10, 6.2, 4.6**
     - **Property 5: Highlighted spans are well formed**
@@ -92,8 +92,8 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
 - [~] 6. Checkpoint - core gate
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 7. HTTP endpoints
-  - [-] 7.1 Add the PayGate routes to `api.py`
+- [x] 7. HTTP endpoints
+  - [x] 7.1 Add the PayGate routes to `api.py`
     - `POST /api/paygate/check?replay=true` (200 for every Decision, 422 with an `INPUT_MALFORMED` body for non-JSON), `GET /api/paygate/decisions` (newest first, `decision` filter, `limit` 1 to 500, 422 on a bad filter), `GET /api/paygate/decisions/{id}/evidence.md` (404 if unknown), `GET /api/paygate/chain`
     - Use `provider_from_env()`; keep existing routes, `127.0.0.1` binding, and CORS unchanged
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 10.6_
@@ -101,8 +101,8 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - 200 for ALLOW, BLOCK, ASK_HUMAN, and shape-invalid; 422 for non-JSON; newest-first list; filter; 404; evidence Markdown includes the notice; chain status; existing routes still pass
     - _Requirements: 7.2, 7.3, 7.4, 7.5, 7.6, 13.2_
 
-- [ ] 8. MCP tool
-  - [-] 8.1 Add `check_purchase(request_json)` to `mcp_server.py` and register it in `create_server`
+- [x] 8. MCP tool
+  - [x] 8.1 Add `check_purchase(request_json)` to `mcp_server.py` and register it in `create_server`
     - Parse the string, route unparseable input through `gate_purchase` so it yields `INPUT_MALFORMED`, return `model_dump(mode="json")`; leave the three existing tools unchanged
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5_
   - [ ]* 8.2 Write tests for the MCP tool
@@ -110,7 +110,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - _Requirements: 8.1, 8.3, 8.4, 8.5, 13.2_
 
 - [ ] 9. Benchmark mode and CLI
-  - [-] 9.1 Add `case_to_request` and `run_paygate_bench` to `bench.py`
+  - [x] 9.1 Add `case_to_request` and `run_paygate_bench` to `bench.py`
     - Convert `merchant`, `review`, and `external_agent` trace steps to content items; drop payment, delivered item, and `listing_after`
     - Run `gate_purchase` per case with a temp database and key in `tempfile.TemporaryDirectory`, time with `perf_counter`
     - Groups: Attack_Cases (`MANIPULATED`, `OUT_OF_SCOPE`, `INTEGRITY_FAILURE` except payment-only causes), Legitimate_Cases, and two excluded groups (`MERCHANT_MISREPRESENTATION`; `INTEGRITY_FAILURE` with cause `amount_altered` or `cart_hash_altered`) counted with their reasons

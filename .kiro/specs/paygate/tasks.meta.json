@@ -180,6 +180,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794002600806
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002743686
       }
     ],
     "8.1 Add `check_purchase(request_json)` to `mcp_server.py` and register it in `create_server`": [
@@ -192,6 +197,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794002603816
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002743629
       }
     ],
     "9.1 Add `case_to_request` and `run_paygate_bench` to `bench.py`": [
@@ -204,6 +214,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794002603839
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002743797
       }
     ],
     "9.2 Add `render_paygate_section` and `write_paygate_results`, and update `write_results` in `bench.py`": [
@@ -364,6 +379,11 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794002603890
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002744437
       }
     ],
     "5.4 Write property tests for determinism, spans, and skipped checks": [
@@ -371,6 +391,25 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794002603927
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002888791
+      }
+    ],
+    "8. MCP tool": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002743708
+      }
+    ],
+    "7. HTTP endpoints": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794002743739
       }
     ]
   }

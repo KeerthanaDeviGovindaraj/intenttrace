@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import math
+import tempfile
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -18,6 +19,8 @@ from pathlib import Path
 from intenttrace.llm.base import LLMProvider
 from intenttrace.llm.prompts import PROMPT_VERSION
 from intenttrace.models import CaseFile
+from intenttrace.paygate import ContentItem, GateRequest, gate_purchase
+from intenttrace.paygate_log import DecisionLog
 from intenttrace.pipeline import investigate
 
 DECIDABLE = (
@@ -155,6 +158,140 @@ def run_bench(
             "cost_usd": provider.usage.cost_usd,
         },
     }
+
+
+PAYGATE_DECISIONS = ("BLOCK", "ASK_HUMAN", "ALLOW")
+_PAYMENT_ONLY_CAUSES = frozenset({"amount_altered", "cart_hash_altered"})
+_PAYGATE_SOURCES = {"merchant": "merchant", "review": "review", "external_agent": "external_agent"}
+EXCLUDED_REASONS = {
+    "merchant_misrepresentation": "The failure appears only after purchase.",
+    "payment_only_integrity": (
+        "These causes alter only the payment mandate, which does not exist before payment."
+    ),
+}
+
+
+def case_to_request(case: CaseFile) -> GateRequest:
+    """Pre-purchase view of a case: no payment, delivered item or listing_after."""
+    content = [
+        ContentItem(
+            item_id=step.step_id,
+            source=_PAYGATE_SOURCES[step.source],  # type: ignore[arg-type]
+            text=step.content,
+            product_id=step.product_id,
+        )
+        for step in case.trace
+        if step.source in _PAYGATE_SOURCES
+    ]
+    return GateRequest(
+        public_keys=case.public_keys,
+        intent=case.intent,
+        cart=case.cart,
+        content=content,
+        listings=list(case.listings_at_purchase) or None,
+        agent_config=case.agent_config,
+    )
+
+
+def _paygate_group(label: dict) -> str:
+    kind, cause = label["label"], label.get("cause")
+    if kind == "MERCHANT_MISREPRESENTATION":
+        return "merchant_misrepresentation"
+    if kind == "INTEGRITY_FAILURE" and cause in _PAYMENT_ONLY_CAUSES:
+        return "payment_only_integrity"
+    if kind == "LEGITIMATE":
+        return "legitimate"
+    return "attack"
+
+
+def _decision_rates(rows: list[dict]) -> dict:
+    n = len(rows)
+    out: dict = {"n": n}
+    for d in PAYGATE_DECISIONS:
+        out[f"{d.lower()}_rate"] = _ratio(sum(1 for r in rows if r["decision"] == d), n)
+    return out
+
+
+def _block_rate_by(rows: list[dict], key: str) -> dict[str, dict]:
+    groups: dict[str, list[dict]] = {}
+    for r in rows:
+        if r[key]:
+            groups.setdefault(r[key], []).append(r)
+    return {
+        k: {"n": len(v), "block_rate": _ratio(sum(1 for r in v if r["decision"] == "BLOCK"), len(v))}
+        for k, v in sorted(groups.items())
+    }
+
+
+def run_paygate_bench(
+    cases: list[CaseFile],
+    labels: dict[str, dict],
+    provider: LLMProvider | None,
+    seed: int | None = None,
+    now: datetime | None = None,
+) -> dict:
+    """Run every case through the pre-purchase gate using a temporary decision log."""
+    missing = [c.case_id for c in cases if c.case_id not in labels]
+    if missing:
+        raise ValueError(f"No label for case(s): {', '.join(missing[:5])}")
+    when = now or datetime.now(UTC)
+    rows: list[dict] = []
+    latencies_ms: list[float] = []
+    with tempfile.TemporaryDirectory(prefix="paygate-bench-") as tmp:
+        # An explicit key file is never auto-created, so make one in the temp dir. It also
+        # overrides PAYGATE_KEY_FILE, so the user's key is never touched.
+        _seed_key(Path(tmp) / "bench.key")
+        log = DecisionLog(Path(tmp) / "bench.db", Path(tmp) / "bench.key")
+        try:
+            for case in cases:
+                label = labels[case.case_id]
+                request = case_to_request(case)
+                start = time.perf_counter()
+                result = gate_purchase(request, provider, log=log)
+                latencies_ms.append((time.perf_counter() - start) * 1000)
+                rows.append(
+                    {
+                        "group": _paygate_group(label),
+                        "label": label["label"],
+                        "attack_type": label.get("attack_type"),
+                        "cause": label.get("cause"),
+                        "decision": result.decision,
+                    }
+                )
+        finally:
+            log.close()
+
+    attack = [r for r in rows if r["group"] == "attack"]
+    legit = [r for r in rows if r["group"] == "legitimate"]
+    included = attack + legit
+    excluded = {
+        name: {"count": sum(1 for r in rows if r["group"] == name), "reason": reason}
+        for name, reason in EXCLUDED_REASONS.items()
+    }
+    legit_rates = _decision_rates(legit)
+    return {
+        "provider": provider.name if provider else "none",
+        "model": provider.model if provider else "none",
+        "seed": seed,
+        "n": len(cases),
+        "date": when.strftime("%Y-%m-%d"),
+        "pipeline_test_only": provider is None or provider.name == "fake",
+        "attack": _decision_rates(attack),
+        "legitimate": legit_rates,
+        "false_block_rate": legit_rates["block_rate"],
+        "excluded": excluded,
+        "block_rate_by_label": _block_rate_by(included, "label"),
+        "block_rate_by_attack_type": _block_rate_by(included, "attack_type"),
+        "block_rate_by_cause": _block_rate_by(included, "cause"),
+        "latency_ms": {"p50": _percentile(latencies_ms, 50), "p95": _percentile(latencies_ms, 95)},
+    }
+
+
+def _seed_key(path: Path) -> None:
+    """Create a gate key at ``path`` (inside the benchmark's temporary directory only)."""
+    from intenttrace.paygate_log import _create_key
+
+    _create_key(path)
 
 
 def read_manifest_seed(manifest_path: Path) -> int | None:

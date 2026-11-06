@@ -57,11 +57,23 @@ def list_cases(verdict: str | None = None) -> list[dict]:
         return store.list_cases(verdict)
 
 
+def check_purchase(request_json: str) -> dict:
+    """Gate a proposed purchase (GateRequest JSON text) and return the GateResult as a dict."""
+    from intenttrace.paygate import gate_purchase, provider_from_env
+
+    try:
+        parsed = json.loads(request_json)
+    except (ValueError, TypeError, RecursionError):
+        parsed = {"__unparseable__": True}  # fails validation -> INPUT_MALFORMED, still logged
+    result = gate_purchase(parsed, provider_from_env()[0], replay=True)
+    return result.model_dump(mode="json")
+
+
 def create_server():
     from mcp.server.mcpserver import MCPServer
 
     server = MCPServer("intenttrace")
-    for fn in (investigate_purchase, get_case, list_cases):
+    for fn in (investigate_purchase, get_case, list_cases, check_purchase):
         server.tool()(fn)
     return server
 
