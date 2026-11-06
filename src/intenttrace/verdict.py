@@ -1,4 +1,4 @@
-"""Verdict rules V1-V10 (design.md section 8). Ordered, first match wins, never raises."""
+"""Verdict rules V1-V10 (plus V5b, V6a) (design.md section 8). Ordered, first match wins, never raises."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from intenttrace.forensics.detect import DetectionResult
 from intenttrace.forensics.deviation import DeviationResult
 from intenttrace.forensics.influence import InfluenceResult
 from intenttrace.forensics.replay import ReplayResult
-from intenttrace.models import Finding
+from intenttrace.models import CaseFile, Finding, Span
 
 VerdictLabel = Literal[
     "LEGITIMATE",
@@ -60,6 +60,28 @@ def _secondary(
     return [f for f in pool if not any(f is p for p in primary)]
 
 
+def _span_on_purchased_product(case: CaseFile | None, spans: list[Span], product_id: str | None) -> bool:
+    """True when a flagged span sits in a merchant listing or review step of the purchased product."""
+    if case is None or product_id is None:
+        return False
+    steps = {s.step_id: s for s in case.trace}
+    for span in spans:
+        step = steps.get(span.step_id)
+        if step and step.source in ("merchant", "review") and step.product_id == product_id:
+            return True
+    return False
+
+
+def _unexplained(detail: str, deviation: DeviationResult | None) -> Finding:
+    return Finding(
+        kind="unexplained_deviation",
+        detail=detail,
+        expected=deviation.top_ranked_product_id if deviation else None,
+        actual=deviation.chosen_product_id if deviation else None,
+        method="deterministic",
+    )
+
+
 def decide(
     integrity: IntegrityResult | None = None,
     scope: ScopeResult | None = None,
@@ -69,6 +91,7 @@ def decide(
     influence: InfluenceResult | None = None,
     replay: ReplayResult | None = None,
     thresholds: Thresholds = DEFAULT_THRESHOLDS,
+    case: CaseFile | None = None,
 ) -> Verdict:
     """Apply V1-V10 in order. Stages that did not run are passed as None."""
     flagged = bool(detection and detection.spans)
@@ -107,9 +130,33 @@ def decide(
         label, conf, rule, primary = "MERCHANT_MISREPRESENTATION", "high", "V3", list(merchant.material)
     elif replay_outcome == "changed":
         label, conf, rule = "MANIPULATED", "high", "V4"
-    elif replay_outcome == "unchanged" and replay is not None and replay.removed_span_count > 0:
-        # A replay that removed nothing re-runs the original input, so "unchanged" proves nothing.
+    elif replay_outcome == "unchanged" and not deviated:
         label, conf, rule = "LEGITIMATE", "high", "V5"
+    elif replay_outcome == "unchanged" and deviated:
+        # Replay only clears what it tested: the deviation is not explained by the flagged content.
+        label, conf, rule = "INCONCLUSIVE", "low", "V5b"
+        primary = [
+            _unexplained(
+                "deviation not explained by flagged content; possible undetected manipulation.", deviation
+            )
+        ]
+    elif (
+        deviated
+        and detection
+        and _span_on_purchased_product(
+            case, detection.spans, deviation.chosen_product_id if deviation else None
+        )
+    ):
+        label, conf, rule = "MANIPULATED", "medium", "V6a"
+        primary = [
+            Finding(
+                kind="attribution_purchased_product",
+                detail="suspicious content attached to purchased product.",
+                step_ids=detection.flagged_step_ids,
+                spans=list(detection.spans),
+                method="deterministic",
+            )
+        ]
     elif flagged and deviated and score >= thresholds.influence_manipulated:
         label, conf, rule = "MANIPULATED", "medium", "V6"
     elif not flagged and not deviated:
@@ -117,15 +164,9 @@ def decide(
     elif flagged and not deviated and score < thresholds.influence_legitimate:
         label, conf, rule = "LEGITIMATE", "medium", "V8"
     elif not flagged and deviated:
-        label, conf, rule = "LEGITIMATE", "low", "V9"
+        label, conf, rule = "INCONCLUSIVE", "low", "V9"
         primary = [
-            Finding(
-                kind="unexplained_deviation",
-                detail="Choice differs from the best match but no manipulation was found.",
-                expected=deviation.top_ranked_product_id if deviation else None,
-                actual=deviation.chosen_product_id if deviation else None,
-                method="deterministic",
-            )
+            _unexplained("Choice differs from the best match but no manipulation was found.", deviation)
         ]
     else:
         label, conf, rule = "INCONCLUSIVE", "low", "V10"

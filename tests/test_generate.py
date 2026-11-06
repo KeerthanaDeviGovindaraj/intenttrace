@@ -38,8 +38,10 @@ def test_allocate_sums_and_fills_buckets():
 def test_output_is_byte_identical_for_same_seed(tmp_path):
     generate(12, 5, tmp_path / "a")
     generate(12, 5, tmp_path / "b")
-    files_a = sorted((tmp_path / "a").rglob("*.*"))
+    # manifest.json carries a wall-clock generated_at, so it is excluded; its seed/n are checked.
+    files_a = sorted(f for f in (tmp_path / "a").rglob("*.*") if f.name != "manifest.json")
     assert len(files_a) == 13
+    assert (tmp_path / "a" / "manifest.json").exists()
     for f in files_a:
         assert f.read_bytes() == (tmp_path / "b" / f.relative_to(tmp_path / "a")).read_bytes()
 

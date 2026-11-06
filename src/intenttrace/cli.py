@@ -119,7 +119,7 @@ def bench(
     out: Path = typer.Option(Path("benchmark"), "--out", help="Where RESULTS.md and results.json go."),
 ) -> None:
     """Score the investigator against labeled cases and write RESULTS.md / results.json."""
-    from intenttrace.bench import load_cases, make_provider, run_bench, write_results
+    from intenttrace.bench import load_cases, make_provider, read_manifest_seed, run_bench, write_results
     from intenttrace.sim.generate import build_cases
 
     try:
@@ -134,7 +134,7 @@ def bench(
         cases = [g.case for g in generated]
         label_map = {g.case.case_id: g.label for g in generated}
     else:
-        used_seed = seed
+        used_seed = seed if seed is not None else read_manifest_seed(labels.parent / "manifest.json")
         try:
             cases, label_map = load_cases(cases_dir, labels)
         except (OSError, ValueError) as exc:

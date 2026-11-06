@@ -159,6 +159,15 @@ def run_bench(
     }
 
 
+def read_manifest_seed(manifest_path: Path) -> int | None:
+    """Seed recorded by ``intenttrace generate``; None when the manifest is missing or unreadable."""
+    try:
+        seed = json.loads(manifest_path.read_text(encoding="utf-8")).get("seed")
+    except (OSError, ValueError, AttributeError):
+        return None
+    return seed if isinstance(seed, int) and not isinstance(seed, bool) else None
+
+
 def load_cases(cases_dir: Path, labels_path: Path) -> tuple[list[CaseFile], dict[str, dict]]:
     """Load cases and labels written by ``intenttrace generate``."""
     labels: dict[str, dict] = {}

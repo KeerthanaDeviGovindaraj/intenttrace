@@ -151,7 +151,7 @@ MANIPULATED = Spec(
 
 def test_legit_purchase() -> None:
     _, r = _run(Spec())
-    assert (r.verdict, r.rule_id, r.confidence) == ("LEGITIMATE", "V7", "high")
+    assert (r.verdict, r.rule_id, r.confidence) == ("LEGITIMATE", "V5", "high")
     assert not r.detection_spans and r.deviation is not None and not r.deviation.deviation
 
 
@@ -191,7 +191,7 @@ def test_manipulated_with_replay_changed() -> None:
 def test_manipulated_without_replay_is_not_high_confidence_v4_v5() -> None:
     _, r = _run(MANIPULATED, replay=False)
     assert r.replay is not None and r.replay.result == "unavailable"
-    assert (r.verdict, r.rule_id, r.confidence) == ("MANIPULATED", "V6", "medium")
+    assert (r.verdict, r.rule_id, r.confidence) == ("MANIPULATED", "V6a", "medium")
 
 
 def test_regression_undetected_attack_with_zero_removed_spans_is_not_high_confidence_v5() -> None:
@@ -207,7 +207,7 @@ def test_regression_undetected_attack_with_zero_removed_spans_is_not_high_confid
     assert r.replay is not None
     assert (r.replay.result, r.replay.removed_span_count) == ("unchanged", 0)
     assert r.rule_id != "V5"
-    assert (r.verdict, r.rule_id, r.confidence) == ("LEGITIMATE", "V9", "low")
+    assert (r.verdict, r.rule_id, r.confidence) == ("INCONCLUSIVE", "V5b", "low")
     assert r.findings[0].kind == "unexplained_deviation"
 
 

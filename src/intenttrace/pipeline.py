@@ -85,7 +85,9 @@ def investigate(
         replay_result: ReplayResult | None = None,
         early: bool = False,
     ) -> Report:
-        v = decide(integrity, scope, merchant, detection, deviation, influence, replay_result, thresholds)
+        v = decide(
+            integrity, scope, merchant, detection, deviation, influence, replay_result, thresholds, case
+        )
         done = {n.stage for n in notes}
         for stage in STAGES:
             if stage not in done:

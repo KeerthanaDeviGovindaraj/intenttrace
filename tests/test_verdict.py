@@ -1,4 +1,4 @@
-"""Tests for verdict.py (rules V1-V10)."""
+"""Tests for verdict.py (rules V1-V10, V5b, V6a)."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from intenttrace.forensics.detect import DetectionResult
 from intenttrace.forensics.deviation import DeviationResult
 from intenttrace.forensics.influence import InfluenceResult
 from intenttrace.forensics.replay import ReplayResult
-from intenttrace.models import Finding, Span
+from intenttrace.models import CaseFile, Finding, Span, TraceStep
 from intenttrace.verdict import decide
 
 F = Finding(kind="x", detail="d")
@@ -60,19 +60,61 @@ def test_v4_replay_changed() -> None:
     _check(v, "MANIPULATED", "V4", "high")
 
 
-def test_v5_replay_unchanged_after_removing_spans() -> None:
+def test_v5_replay_unchanged_no_deviation() -> None:
     rep = ReplayResult(result="unchanged", removed_span_count=1)
-    v = decide(detection=SPANS, deviation=_dev(True), influence=_inf(0.9), replay=rep)
+    v = decide(detection=SPANS, deviation=_dev(False), influence=_inf(0.9), replay=rep)
     _check(v, "LEGITIMATE", "V5", "high")
 
 
-def test_v5_not_applied_when_replay_removed_nothing() -> None:
-    # Replay without removed spans re-runs the original input: no evidence, so fall through.
-    rep = ReplayResult(result="unchanged", removed_span_count=0)
-    v = decide(detection=NONE, deviation=_dev(True), replay=rep)
-    _check(v, "LEGITIMATE", "V9", "low")
-    v = decide(detection=NONE, deviation=_dev(False), replay=rep)
-    _check(v, "LEGITIMATE", "V7", "high")
+def test_v5b_replay_unchanged_with_deviation_is_inconclusive() -> None:
+    for removed in (0, 1):
+        rep = ReplayResult(result="unchanged", removed_span_count=removed)
+        v = decide(
+            detection=SPANS if removed else NONE, deviation=_dev(True), influence=_inf(0.9), replay=rep
+        )
+        _check(v, "INCONCLUSIVE", "V5b", "low")
+        assert "possible undetected manipulation" in v.findings[0].detail
+
+
+def _case_with_flagged_step(product_id: str, source: str = "merchant") -> CaseFile:
+    step = TraceStep(
+        step_id="s02", kind="observe", source=source, content="x", product_id=product_id, timestamp="t"
+    )  # type: ignore[arg-type]
+    return CaseFile.model_construct(trace=[step])
+
+
+def test_v6a_flagged_span_on_purchased_product() -> None:
+    for source in ("merchant", "review"):
+        v = decide(
+            detection=SPANS,
+            deviation=_dev(True),
+            influence=_inf(0.0),
+            replay=_rep("unavailable"),
+            case=_case_with_flagged_step("b", source),
+        )
+        _check(v, "MANIPULATED", "V6a", "medium")
+        assert v.findings[0].detail == "suspicious content attached to purchased product."
+
+
+def test_v6a_not_applied_when_span_is_on_another_product() -> None:
+    v = decide(
+        detection=SPANS,
+        deviation=_dev(True),
+        influence=_inf(0.0),
+        replay=_rep("unavailable"),
+        case=_case_with_flagged_step("c"),
+    )
+    _check(v, "INCONCLUSIVE", "V10", "low")
+
+
+def test_v6a_comes_after_v5b() -> None:
+    v = decide(
+        detection=SPANS,
+        deviation=_dev(True),
+        replay=ReplayResult(result="unchanged", removed_span_count=1),
+        case=_case_with_flagged_step("b"),
+    )
+    _check(v, "INCONCLUSIVE", "V5b", "low")
 
 
 def test_v6_flagged_deviation_high_influence() -> None:
@@ -91,7 +133,7 @@ def test_v8_flagged_no_deviation_low_influence() -> None:
 
 def test_v9_unexplained_deviation() -> None:
     v = decide(detection=NONE, deviation=_dev(True))
-    _check(v, "LEGITIMATE", "V9", "low")
+    _check(v, "INCONCLUSIVE", "V9", "low")
     assert v.findings[0].kind == "unexplained_deviation"
 
 

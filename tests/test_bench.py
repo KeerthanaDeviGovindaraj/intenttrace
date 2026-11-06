@@ -91,3 +91,17 @@ def test_bench_reads_generated_cases_from_disk(tmp_path):
 def test_bench_rejects_unknown_provider(tmp_path):
     result = runner.invoke(app, ["bench", "--provider", "nope", "--n", "6", "--out", str(tmp_path)])
     assert result.exit_code == 2
+
+
+def test_generate_writes_manifest_and_bench_reads_seed(tmp_path):
+    import json
+
+    gen = tmp_path / "gen"
+    assert runner.invoke(app, ["generate", "--n", "6", "--seed", "5", "--out", str(gen)]).exit_code == 0
+    manifest = json.loads((gen / "manifest.json").read_text(encoding="utf-8"))
+    assert (manifest["seed"], manifest["n"]) == (5, 6) and manifest["generated_at"]
+    args = ["bench", "--cases-dir", str(gen / "cases"), "--labels", str(gen / "labels.jsonl")]
+    assert runner.invoke(app, [*args, "--out", str(tmp_path / "a")]).exit_code == 0
+    assert json.loads((tmp_path / "a" / "results.json").read_text(encoding="utf-8"))["seed"] == 5
+    assert runner.invoke(app, [*args, "--seed", "9", "--out", str(tmp_path / "b")]).exit_code == 0
+    assert json.loads((tmp_path / "b" / "results.json").read_text(encoding="utf-8"))["seed"] == 9

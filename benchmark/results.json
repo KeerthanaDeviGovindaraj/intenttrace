@@ -1,0 +1,249 @@
+{
+  "date": "2026-11-06",
+  "llm": {
+    "calls": 2498,
+    "cost_usd": 0.0,
+    "input_tokens": 403850,
+    "output_tokens": 19524
+  },
+  "model": "fake-deterministic",
+  "n": 300,
+  "pipeline_test_only": true,
+  "prompt_version": "1",
+  "provider": "fake",
+  "replay_off": {
+    "confusion_matrix": {
+      "INTEGRITY_FAILURE": {
+        "INCONCLUSIVE": 0,
+        "INTEGRITY_FAILURE": 42,
+        "LEGITIMATE": 0,
+        "MANIPULATED": 0,
+        "MERCHANT_MISREPRESENTATION": 0,
+        "OUT_OF_SCOPE": 0
+      },
+      "LEGITIMATE": {
+        "INCONCLUSIVE": 5,
+        "INTEGRITY_FAILURE": 0,
+        "LEGITIMATE": 94,
+        "MANIPULATED": 0,
+        "MERCHANT_MISREPRESENTATION": 0,
+        "OUT_OF_SCOPE": 0
+      },
+      "MANIPULATED": {
+        "INCONCLUSIVE": 14,
+        "INTEGRITY_FAILURE": 0,
+        "LEGITIMATE": 0,
+        "MANIPULATED": 67,
+        "MERCHANT_MISREPRESENTATION": 0,
+        "OUT_OF_SCOPE": 0
+      },
+      "MERCHANT_MISREPRESENTATION": {
+        "INCONCLUSIVE": 0,
+        "INTEGRITY_FAILURE": 0,
+        "LEGITIMATE": 0,
+        "MANIPULATED": 0,
+        "MERCHANT_MISREPRESENTATION": 39,
+        "OUT_OF_SCOPE": 0
+      },
+      "OUT_OF_SCOPE": {
+        "INCONCLUSIVE": 0,
+        "INTEGRITY_FAILURE": 0,
+        "LEGITIMATE": 0,
+        "MANIPULATED": 0,
+        "MERCHANT_MISREPRESENTATION": 0,
+        "OUT_OF_SCOPE": 39
+      }
+    },
+    "coverage": 0.9366666666666666,
+    "false_accusation_rate": 0.0,
+    "latency_ms": {
+      "p50": 0.6173329893499613,
+      "p95": 1.3781670131720603
+    },
+    "llm": {
+      "calls": 1249,
+      "cost_usd": 0.0,
+      "input_tokens": 201925,
+      "output_tokens": 9762
+    },
+    "macro_f1": 0.975899733930822,
+    "manipulated_recall_by_attack": {
+      "explicit_instruction": {
+        "caught": 17,
+        "recall": 1.0,
+        "support": 17
+      },
+      "fake_urgency": {
+        "caught": 16,
+        "recall": 1.0,
+        "support": 16
+      },
+      "hidden_text": {
+        "caught": 16,
+        "recall": 1.0,
+        "support": 16
+      },
+      "review_injection": {
+        "caught": 16,
+        "recall": 1.0,
+        "support": 16
+      },
+      "subtle_persuasion": {
+        "caught": 2,
+        "recall": 0.125,
+        "support": 16
+      }
+    },
+    "n": 300,
+    "per_verdict": {
+      "INTEGRITY_FAILURE": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 42
+      },
+      "LEGITIMATE": {
+        "f1": 0.9740932642487047,
+        "precision": 1.0,
+        "recall": 0.9494949494949495,
+        "support": 99
+      },
+      "MANIPULATED": {
+        "f1": 0.9054054054054054,
+        "precision": 1.0,
+        "recall": 0.8271604938271605,
+        "support": 81
+      },
+      "MERCHANT_MISREPRESENTATION": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 39
+      },
+      "OUT_OF_SCOPE": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 39
+      }
+    }
+  },
+  "replay_on": {
+    "confusion_matrix": {
+      "INTEGRITY_FAILURE": {
+        "INCONCLUSIVE": 0,
+        "INTEGRITY_FAILURE": 42,
+        "LEGITIMATE": 0,
+        "MANIPULATED": 0,
+        "MERCHANT_MISREPRESENTATION": 0,
+        "OUT_OF_SCOPE": 0
+      },
+      "LEGITIMATE": {
+        "INCONCLUSIVE": 1,
+        "INTEGRITY_FAILURE": 0,
+        "LEGITIMATE": 98,
+        "MANIPULATED": 0,
+        "MERCHANT_MISREPRESENTATION": 0,
+        "OUT_OF_SCOPE": 0
+      },
+      "MANIPULATED": {
+        "INCONCLUSIVE": 21,
+        "INTEGRITY_FAILURE": 0,
+        "LEGITIMATE": 0,
+        "MANIPULATED": 60,
+        "MERCHANT_MISREPRESENTATION": 0,
+        "OUT_OF_SCOPE": 0
+      },
+      "MERCHANT_MISREPRESENTATION": {
+        "INCONCLUSIVE": 0,
+        "INTEGRITY_FAILURE": 0,
+        "LEGITIMATE": 0,
+        "MANIPULATED": 0,
+        "MERCHANT_MISREPRESENTATION": 39,
+        "OUT_OF_SCOPE": 0
+      },
+      "OUT_OF_SCOPE": {
+        "INCONCLUSIVE": 0,
+        "INTEGRITY_FAILURE": 0,
+        "LEGITIMATE": 0,
+        "MANIPULATED": 0,
+        "MERCHANT_MISREPRESENTATION": 0,
+        "OUT_OF_SCOPE": 39
+      }
+    },
+    "coverage": 0.9266666666666666,
+    "false_accusation_rate": 0.0,
+    "latency_ms": {
+      "p50": 0.7186249713413417,
+      "p95": 1.4114999794401228
+    },
+    "llm": {
+      "calls": 1249,
+      "cost_usd": 0.0,
+      "input_tokens": 201925,
+      "output_tokens": 9762
+    },
+    "macro_f1": 0.9691975375310509,
+    "manipulated_recall_by_attack": {
+      "explicit_instruction": {
+        "caught": 17,
+        "recall": 1.0,
+        "support": 17
+      },
+      "fake_urgency": {
+        "caught": 11,
+        "recall": 0.6875,
+        "support": 16
+      },
+      "hidden_text": {
+        "caught": 16,
+        "recall": 1.0,
+        "support": 16
+      },
+      "review_injection": {
+        "caught": 16,
+        "recall": 1.0,
+        "support": 16
+      },
+      "subtle_persuasion": {
+        "caught": 0,
+        "recall": 0.0,
+        "support": 16
+      }
+    },
+    "n": 300,
+    "per_verdict": {
+      "INTEGRITY_FAILURE": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 42
+      },
+      "LEGITIMATE": {
+        "f1": 0.9949238578680203,
+        "precision": 1.0,
+        "recall": 0.98989898989899,
+        "support": 99
+      },
+      "MANIPULATED": {
+        "f1": 0.851063829787234,
+        "precision": 1.0,
+        "recall": 0.7407407407407407,
+        "support": 81
+      },
+      "MERCHANT_MISREPRESENTATION": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 39
+      },
+      "OUT_OF_SCOPE": {
+        "f1": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 39
+      }
+    }
+  },
+  "seed": 7
+}

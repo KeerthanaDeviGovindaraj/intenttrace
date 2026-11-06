@@ -466,6 +466,10 @@ def generate(n: int, seed: int, out_dir: str | Path = DEFAULT_OUT_DIR) -> list[G
         (cases_dir / f"{g.case.case_id}.json").write_text(text, encoding="utf-8")
     lines = [json.dumps(g.label, sort_keys=True) for g in generated]
     (out / "labels.jsonl").write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    manifest = {"seed": seed, "n": n, "generated_at": datetime.now(UTC).isoformat(timespec="seconds")}
+    (out / "manifest.json").write_text(
+        json.dumps(manifest, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+    )
     return generated
 
 
