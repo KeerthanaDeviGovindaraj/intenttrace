@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -120,7 +121,9 @@ def test_cli_load_sample(tmp_path, monkeypatch):
 
 def test_cli_serve_help():
     res = CliRunner().invoke(cli_app, ["serve", "--help"])
-    assert res.exit_code == 0 and "--port" in res.output
+    # CI forces colour, so rich splits "--port" with ANSI codes; strip them.
+    plain = re.sub(r"\x1b\[[0-9;]*m", "", res.output)
+    assert res.exit_code == 0 and "--port" in plain
 
 
 @pytest.fixture
