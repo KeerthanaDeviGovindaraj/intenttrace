@@ -226,6 +226,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879680
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003060730
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003177786
       }
     ],
     "9.5 Add the `paygate-bench` command to `cli.py`": [
@@ -240,6 +250,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879735
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003061932
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003174020
       }
     ],
     "11.1 Add `DecisionLabel` and `DecisionRecordItem` to `web/src/types.ts` and `listDecisions`, `getChainStatus`, `decisionEvidenceUrl` to `web/src/api.ts`": [
@@ -247,6 +267,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879763
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003063533
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003175230
       }
     ],
     "11.2 Create `web/src/components/DecisionBadge.tsx`": [
@@ -254,6 +284,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879793
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003064655
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003176801
       }
     ],
     "11.3 Create `web/src/pages/DecisionsPage.tsx` and wire the `/decisions` route and \"Decisions\" nav link in `web/src/App.tsx`": [
@@ -458,6 +498,13 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794003053670
+      }
+    ],
+    "10. Sample-case golden test": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003174091
       }
     ]
   }

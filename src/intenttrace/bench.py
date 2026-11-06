@@ -381,10 +381,119 @@ def render_markdown(results: dict) -> str:
     return "\n".join(lines)
 
 
-def write_results(results: dict, out_dir: Path) -> tuple[Path, Path]:
-    """Write ``results.json`` and ``RESULTS.md`` under ``out_dir``."""
+PAYGATE_BEGIN = "<!-- paygate:begin -->"
+PAYGATE_END = "<!-- paygate:end -->"
+PAYGATE_PIPELINE_NOTICE = "Pipeline test on synthetic data. Not a measure of real-world accuracy."
+
+
+def render_paygate_section(results: dict) -> str:
+    """Markdown for the PayGate benchmark, wrapped in the begin/end markers."""
+    seed = results["seed"] if results.get("seed") is not None else "unknown"
+    attack, legit = results["attack"], results["legitimate"]
+    lines = [PAYGATE_BEGIN, "## PayGate benchmark (pre-purchase gate)", ""]
+    if results.get("pipeline_test_only"):
+        lines += [f"> **{PAYGATE_PIPELINE_NOTICE}**", ""]
+    lines += [
+        "| Field | Value |",
+        "|---|---|",
+        f"| Provider | {results['provider']} |",
+        f"| Model | {results['model']} |",
+        f"| Seed | {seed} |",
+        f"| N (cases) | {results['n']} |",
+        f"| Date | {results['date']} |",
+        "",
+        f"**Headline: PayGate blocked {_pct(attack['block_rate'])} of attack cases "
+        f"(n={attack['n']}) and {_pct(legit['block_rate'])} of legitimate cases (n={legit['n']}).**",
+        "",
+        "| Group | N | BLOCK | ASK_HUMAN | ALLOW |",
+        "|---|---|---|---|---|",
+    ]
+    for name, g in (("Attack", attack), ("Legitimate", legit)):
+        lines.append(
+            f"| {name} | {g['n']} | {_pct(g['block_rate'])} | {_pct(g['ask_human_rate'])} "
+            f"| {_pct(g['allow_rate'])} |"
+        )
+    lines += ["", f"False-block rate (legitimate cases blocked): {_pct(results['false_block_rate'])}", ""]
+    for title, key in (
+        ("Block rate by label", "block_rate_by_label"),
+        ("Block rate by attack type", "block_rate_by_attack_type"),
+        ("Block rate by cause", "block_rate_by_cause"),
+    ):
+        lines += [f"{title}:", "", "| Group | N | Block rate |", "|---|---|---|"]
+        for name, e in results[key].items():
+            lines.append(f"| {name} | {e['n']} | {_pct(e['block_rate'])} |")
+        lines.append("")
+    lat = results["latency_ms"]
+    lines += [
+        f"Latency per decision: p50 {lat['p50']:.1f} ms, p95 {lat['p95']:.1f} ms",
+        "",
+        "Excluded from every rate above:",
+        "",
+        "| Excluded group | Count | Reason |",
+        "|---|---|---|",
+    ]
+    for name, e in results["excluded"].items():
+        lines.append(f"| {name} | {e['count']} | {e['reason']} |")
+    lines += ["", PAYGATE_END]
+    return "\n".join(lines)
+
+
+def _extract_paygate_block(text: str) -> str | None:
+    start = text.find(PAYGATE_BEGIN)
+    end = text.find(PAYGATE_END, start + 1) if start != -1 else -1
+    if start == -1 or end == -1:
+        return None
+    return text[start : end + len(PAYGATE_END)]
+
+
+def _merge_paygate_block(text: str, block: str) -> str:
+    """Replace the existing PayGate block in place, or append it when absent."""
+    start = text.find(PAYGATE_BEGIN)
+    end = text.find(PAYGATE_END, start + 1) if start != -1 else -1
+    if start != -1 and end != -1:
+        return text[:start] + block + text[end + len(PAYGATE_END) :]
+    return text.rstrip("\n") + "\n\n" + block + "\n" if text.strip() else block + "\n"
+
+
+def _read_text(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError:
+        return ""
+
+
+def _read_json_object(path: Path) -> dict:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def write_paygate_results(results: dict, out_dir: Path) -> None:
+    """Add the PayGate section to ``RESULTS.md`` and the ``paygate`` key to ``results.json``."""
     out_dir.mkdir(parents=True, exist_ok=True)
     json_path, md_path = out_dir / "results.json", out_dir / "RESULTS.md"
-    json_path.write_text(json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    md_path.write_text(render_markdown(results), encoding="utf-8")
+    data = _read_json_object(json_path)
+    data["paygate"] = results
+    json_path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    md_path.write_text(
+        _merge_paygate_block(_read_text(md_path), render_paygate_section(results)), encoding="utf-8"
+    )
+
+
+def write_results(results: dict, out_dir: Path) -> tuple[Path, Path]:
+    """Write ``results.json`` and ``RESULTS.md`` under ``out_dir``, keeping any PayGate output."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    json_path, md_path = out_dir / "results.json", out_dir / "RESULTS.md"
+    old_paygate = _read_json_object(json_path).get("paygate")
+    old_block = _extract_paygate_block(_read_text(md_path))
+    data = dict(results)
+    if old_paygate is not None and "paygate" not in data:
+        data["paygate"] = old_paygate
+    json_path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    md = render_markdown(results)
+    if old_block:
+        md = _merge_paygate_block(md, old_block)
+    md_path.write_text(md, encoding="utf-8")
     return json_path, md_path

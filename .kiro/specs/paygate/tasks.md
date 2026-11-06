@@ -116,7 +116,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Groups: Attack_Cases (`MANIPULATED`, `OUT_OF_SCOPE`, `INTEGRITY_FAILURE` except payment-only causes), Legitimate_Cases, and two excluded groups (`MERCHANT_MISREPRESENTATION`; `INTEGRITY_FAILURE` with cause `amount_altered` or `cart_hash_altered`) counted with their reasons
     - Metrics: block, ASK_HUMAN, and ALLOW rates per group, false-block rate, block rate by label, `attack_type`, and `cause`, p50 and p95 latency
     - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.11_
-  - [~] 9.2 Add `render_paygate_section` and `write_paygate_results`, and update `write_results` in `bench.py`
+  - [x] 9.2 Add `render_paygate_section` and `write_paygate_results`, and update `write_results` in `bench.py`
     - Section between `<!-- paygate:begin -->` and `<!-- paygate:end -->`, replaced in place on rerun; includes provider, seed, N, date, the pipeline-test label for `fake` or scripted runs, and a separate "Excluded" table with count and reason per group
     - `results.json` gets a top-level `"paygate"` key; `write_results` preserves an existing PayGate block and key
     - _Requirements: 11.7, 11.8, 11.9, 12.3_
@@ -133,15 +133,15 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Threshold exit codes via Typer's runner, user database untouched, RESULTS.md keeps the IntentTrace block after `write_results`, payment-only and merchant cases land in the excluded tables and in no rate
     - _Requirements: 11.7, 11.8, 11.10, 11.11_
 
-- [ ] 10. Sample-case golden test
-  - [~] 10.1 Add a golden file of expected Decisions and `tests/test_paygate_samples.py`
+- [x] 10. Sample-case golden test
+  - [x] 10.1 Add a golden file of expected Decisions and `tests/test_paygate_samples.py`
     - Convert the committed cases in `benchmark/sample/` with `case_to_request`, generate the golden decisions once with the rule-only path, review them by hand, and assert `gate_purchase` matches
     - _Requirements: 13.4_
 
 - [ ] 11. Dashboard Decisions view
-  - [~] 11.1 Add `DecisionLabel` and `DecisionRecordItem` to `web/src/types.ts` and `listDecisions`, `getChainStatus`, `decisionEvidenceUrl` to `web/src/api.ts`
+  - [x] 11.1 Add `DecisionLabel` and `DecisionRecordItem` to `web/src/types.ts` and `listDecisions`, `getChainStatus`, `decisionEvidenceUrl` to `web/src/api.ts`
     - _Requirements: 10.2, 10.3, 10.6_
-  - [~] 11.2 Create `web/src/components/DecisionBadge.tsx`
+  - [x] 11.2 Create `web/src/components/DecisionBadge.tsx`
     - Mirror `VerdictBadge` with the same dark-mode class pattern: green ALLOW, red BLOCK, amber ASK_HUMAN
     - _Requirements: 10.2, 10.7_
   - [~] 11.3 Create `web/src/pages/DecisionsPage.tsx` and wire the `/decisions` route and "Decisions" nav link in `web/src/App.tsx`
