@@ -1,0 +1,565 @@
+{
+  "$defs": {
+    "AgentConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_type": {
+          "enum": [
+            "scripted",
+            "llm"
+          ],
+          "title": "Agent Type",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "seed": {
+          "title": "Seed",
+          "type": "integer"
+        },
+        "susceptibility": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Susceptibility",
+          "type": "object"
+        },
+        "system_prompt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "System Prompt"
+        }
+      },
+      "required": [
+        "agent_type",
+        "seed"
+      ],
+      "title": "AgentConfig",
+      "type": "object"
+    },
+    "CartItem": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Attributes",
+          "type": "object"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "product_id": {
+          "title": "Product Id",
+          "type": "string"
+        },
+        "quantity": {
+          "title": "Quantity",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "unit_price_cents": {
+          "title": "Unit Price Cents",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product_id",
+        "title",
+        "category",
+        "unit_price_cents",
+        "quantity",
+        "attributes"
+      ],
+      "title": "CartItem",
+      "type": "object"
+    },
+    "CartMandate": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "intent_mandate_hash": {
+          "title": "Intent Mandate Hash",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/CartItem"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "mandate_id": {
+          "title": "Mandate Id",
+          "type": "string"
+        },
+        "merchant_id": {
+          "title": "Merchant Id",
+          "type": "string"
+        },
+        "signature": {
+          "title": "Signature",
+          "type": "string"
+        },
+        "signer": {
+          "enum": [
+            "user",
+            "agent"
+          ],
+          "title": "Signer",
+          "type": "string"
+        },
+        "total_cents": {
+          "title": "Total Cents",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "mandate_id",
+        "intent_mandate_hash",
+        "merchant_id",
+        "items",
+        "total_cents",
+        "created_at",
+        "signer",
+        "signature"
+      ],
+      "title": "CartMandate",
+      "type": "object"
+    },
+    "Constraint": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_categories": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Allowed Categories"
+        },
+        "allowed_merchants": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Allowed Merchants"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expires At"
+        },
+        "max_quantity": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Quantity"
+        },
+        "max_total_cents": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Total Cents"
+        },
+        "max_unit_price_cents": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Unit Price Cents"
+        },
+        "required_attributes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Required Attributes",
+          "type": "object"
+        }
+      },
+      "title": "Constraint",
+      "type": "object"
+    },
+    "DeliveredItem": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Attributes",
+          "type": "object"
+        },
+        "product_id": {
+          "title": "Product Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_id",
+        "attributes"
+      ],
+      "title": "DeliveredItem",
+      "type": "object"
+    },
+    "IntentMandate": {
+      "additionalProperties": false,
+      "properties": {
+        "constraints": {
+          "$ref": "#/$defs/Constraint"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "human_present": {
+          "title": "Human Present",
+          "type": "boolean"
+        },
+        "mandate_id": {
+          "title": "Mandate Id",
+          "type": "string"
+        },
+        "natural_language": {
+          "title": "Natural Language",
+          "type": "string"
+        },
+        "signature": {
+          "title": "Signature",
+          "type": "string"
+        },
+        "signer": {
+          "const": "user",
+          "title": "Signer",
+          "type": "string"
+        },
+        "user_id": {
+          "title": "User Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mandate_id",
+        "user_id",
+        "natural_language",
+        "constraints",
+        "human_present",
+        "created_at",
+        "signer",
+        "signature"
+      ],
+      "title": "IntentMandate",
+      "type": "object"
+    },
+    "ListingSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Attributes",
+          "type": "object"
+        },
+        "captured_at": {
+          "title": "Captured At",
+          "type": "string"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "merchant_id": {
+          "title": "Merchant Id",
+          "type": "string"
+        },
+        "product_id": {
+          "title": "Product Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "unit_price_cents": {
+          "title": "Unit Price Cents",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product_id",
+        "merchant_id",
+        "title",
+        "description",
+        "unit_price_cents",
+        "category",
+        "attributes",
+        "captured_at"
+      ],
+      "title": "ListingSnapshot",
+      "type": "object"
+    },
+    "PaymentMandate": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_involved": {
+          "title": "Agent Involved",
+          "type": "boolean"
+        },
+        "amount_cents": {
+          "title": "Amount Cents",
+          "type": "integer"
+        },
+        "cart_mandate_hash": {
+          "title": "Cart Mandate Hash",
+          "type": "string"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "mandate_id": {
+          "title": "Mandate Id",
+          "type": "string"
+        },
+        "payment_method_token": {
+          "title": "Payment Method Token",
+          "type": "string"
+        },
+        "signature": {
+          "title": "Signature",
+          "type": "string"
+        },
+        "signer": {
+          "enum": [
+            "user",
+            "agent"
+          ],
+          "title": "Signer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mandate_id",
+        "cart_mandate_hash",
+        "amount_cents",
+        "payment_method_token",
+        "agent_involved",
+        "created_at",
+        "signer",
+        "signature"
+      ],
+      "title": "PaymentMandate",
+      "type": "object"
+    },
+    "TraceStep": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "instruction",
+            "observe",
+            "think",
+            "tool_call",
+            "decide"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "product_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Product Id"
+        },
+        "source": {
+          "enum": [
+            "user",
+            "merchant",
+            "review",
+            "external_agent",
+            "agent"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string"
+        }
+      },
+      "required": [
+        "step_id",
+        "kind",
+        "source",
+        "content",
+        "timestamp"
+      ],
+      "title": "TraceStep",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "agent_config": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AgentConfig"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "cart": {
+      "$ref": "#/$defs/CartMandate"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "delivered": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DeliveredItem"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "intent": {
+      "$ref": "#/$defs/IntentMandate"
+    },
+    "listing_after": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ListingSnapshot"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "listings_at_purchase": {
+      "items": {
+        "$ref": "#/$defs/ListingSnapshot"
+      },
+      "title": "Listings At Purchase",
+      "type": "array"
+    },
+    "payment": {
+      "$ref": "#/$defs/PaymentMandate"
+    },
+    "public_keys": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Public Keys",
+      "type": "object"
+    },
+    "trace": {
+      "items": {
+        "$ref": "#/$defs/TraceStep"
+      },
+      "title": "Trace",
+      "type": "array"
+    }
+  },
+  "required": [
+    "case_id",
+    "public_keys",
+    "intent",
+    "cart",
+    "payment",
+    "trace",
+    "listings_at_purchase"
+  ],
+  "title": "CaseFile",
+  "type": "object"
+}
