@@ -103,5 +103,68 @@ def investigate(
         typer.echo(markdown)
 
 
+@app.command()
+def bench(
+    provider: str = typer.Option("fake", "--provider", help="LLM provider name."),
+    n: int | None = typer.Option(
+        None, "--n", min=1, help="Generate N cases in memory instead of reading disk."
+    ),
+    seed: int | None = typer.Option(None, "--seed", help="Seed (used with --n; recorded in results)."),
+    min_macro_f1: float | None = typer.Option(None, "--min-macro-f1", help="Fail if macro F1 is lower."),
+    max_false_accusation: float | None = typer.Option(
+        None, "--max-false-accusation", help="Fail if the false accusation rate is higher."
+    ),
+    cases_dir: Path = typer.Option(Path("benchmark/cases"), "--cases-dir", help="Cases to score."),
+    labels: Path = typer.Option(Path("benchmark/labels.jsonl"), "--labels", help="Ground-truth labels."),
+    out: Path = typer.Option(Path("benchmark"), "--out", help="Where RESULTS.md and results.json go."),
+) -> None:
+    """Score the investigator against labeled cases and write RESULTS.md / results.json."""
+    from intenttrace.bench import load_cases, make_provider, run_bench, write_results
+    from intenttrace.sim.generate import build_cases
+
+    try:
+        llm = make_provider(provider.strip().lower())
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(code=2) from exc
+
+    if n is not None:
+        used_seed = 7 if seed is None else seed
+        generated = build_cases(n, used_seed)
+        cases = [g.case for g in generated]
+        label_map = {g.case.case_id: g.label for g in generated}
+    else:
+        used_seed = seed
+        try:
+            cases, label_map = load_cases(cases_dir, labels)
+        except (OSError, ValueError) as exc:
+            typer.echo(f"Cannot load benchmark cases: {exc}", err=True)
+            raise typer.Exit(code=2) from exc
+
+    results = run_bench(cases, label_map, llm, seed=used_seed)
+    json_path, md_path = write_results(results, out)
+    head = results["replay_on"]
+    typer.echo(f"Provider: {results['provider']} ({results['model']}), N={results['n']}")
+    if results["pipeline_test_only"]:
+        typer.echo("Note: fake provider numbers are pipeline tests, not model accuracy.")
+    typer.echo(f"Macro F1: {head['macro_f1']:.3f}")
+    typer.echo(f"Coverage: {head['coverage']:.3f}")
+    typer.echo(f"False accusation rate: {head['false_accusation_rate']:.3f}")
+    typer.echo(f"Wrote {md_path} and {json_path}")
+
+    failed = False
+    if min_macro_f1 is not None and head["macro_f1"] < min_macro_f1:
+        typer.echo(f"FAIL: macro F1 {head['macro_f1']:.3f} < {min_macro_f1}", err=True)
+        failed = True
+    if max_false_accusation is not None and head["false_accusation_rate"] > max_false_accusation:
+        typer.echo(
+            f"FAIL: false accusation rate {head['false_accusation_rate']:.3f} > {max_false_accusation}",
+            err=True,
+        )
+        failed = True
+    if failed:
+        raise typer.Exit(code=1)
+
+
 if __name__ == "__main__":
     app()

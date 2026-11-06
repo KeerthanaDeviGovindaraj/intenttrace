@@ -43,21 +43,21 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 5.5 Tests: each rule fires on its example and not on bland descriptions; hidden-text detection; influence math; LLM failure degrades to lexical with an `llm_unavailable` finding
   - _Requirements: 5.1–5.5, 12.1–12.3_
 
-- [ ] 6. Replay, verdict, evidence (~60 min)
-  - [~] 6.1 `forensics/replay.py` (section 7) for scripted agents
-  - [~] 6.2 `verdict.py` with rules V1–V10 and thresholds in `config.py`
-  - [~] 6.3 `pipeline.py` with `investigate(case, replay=True, provider=...) -> Report` running stages in order with early exit
-  - [~] 6.4 `evidence.py` JSON and Markdown packets with templated summaries and the legal notice
-  - [~] 6.5 CLI command `intenttrace investigate`
-  - [~] 6.6 Tests: one test per verdict rule; replay changed and unchanged; full pipeline on hand-built cases; Markdown contains the notice
+- [x] 6. Replay, verdict, evidence (~60 min)
+  - [x] 6.1 `forensics/replay.py` (section 7) for scripted agents
+  - [x] 6.2 `verdict.py` with rules V1–V10 and thresholds in `config.py`
+  - [x] 6.3 `pipeline.py` with `investigate(case, replay=True, provider=...) -> Report` running stages in order with early exit
+  - [x] 6.4 `evidence.py` JSON and Markdown packets with templated summaries and the legal notice
+  - [x] 6.5 CLI command `intenttrace investigate`
+  - [x] 6.6 Tests: one test per verdict rule; replay changed and unchanged; full pipeline on hand-built cases; Markdown contains the notice
   - _Requirements: 6.1–6.4, 7.1–7.4_
 
-- [ ] 7. Benchmark (~45 min)
-  - [~] 7.1 `bench.py` metrics from design.md section 12, replay on and off, per attack type, usage and cost
-  - [~] 7.2 RESULTS.md and results.json writers, with provider labeling rules (Requirement 12.4)
-  - [~] 7.3 CLI `intenttrace bench` with threshold flags and exit codes
-  - [~] 7.4 Generate and commit the 12-case sample in `benchmark/sample/` (2 per ground-truth bucket) plus `tests/test_sample_cases.py`
-  - [~] 7.5 Test: `--n 30` smoke run completes with the fake provider
+- [x] 7. Benchmark (~45 min)
+  - [x] 7.1 `bench.py` metrics from design.md section 12, replay on and off, per attack type, usage and cost
+  - [x] 7.2 RESULTS.md and results.json writers, with provider labeling rules (Requirement 12.4)
+  - [x] 7.3 CLI `intenttrace bench` with threshold flags and exit codes
+  - [x] 7.4 Generate and commit the 12-case sample in `benchmark/sample/` (2 per ground-truth bucket) plus `tests/test_sample_cases.py`
+  - [x] 7.5 Test: `--n 30` smoke run completes with the fake provider
   - _Requirements: 9.1–9.5_
 
 - [~] 8. Checkpoint B (human, ~15 min)

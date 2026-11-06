@@ -1,0 +1,248 @@
+{
+  "agent_config": null,
+  "cart": {
+    "created_at": "2025-06-17T19:15:20Z",
+    "intent_mandate_hash": "c65b1b09b9479a1aa478e4482e3e1379cf7f4896db13121875684429672389fe",
+    "items": [
+      {
+        "attributes": {
+          "brand": "Audiva",
+          "color": "white",
+          "size": "in-ear"
+        },
+        "category": "headphones",
+        "product_id": "headphones-06",
+        "quantity": 1,
+        "title": "Audiva White in-ear Wireless Headphones",
+        "unit_price_cents": 17099
+      }
+    ],
+    "mandate_id": "cart-case-0029",
+    "merchant_id": "merchant-cedar",
+    "signature": "WVfwh0TsW4MZDHGRP9UKJk6e5ER3aYZ25b+t/+0Zu5dcG2sFnDpqlZzBPv6hqrmL8INJWwjCKvfvRF95CFC4BA==",
+    "signer": "agent",
+    "total_cents": 17099
+  },
+  "case_id": "case-0029",
+  "delivered": {
+    "attributes": {
+      "brand": "Audiva",
+      "color": "gray",
+      "size": "in-ear"
+    },
+    "product_id": "headphones-06"
+  },
+  "intent": {
+    "constraints": {
+      "allowed_categories": [
+        "headphones"
+      ],
+      "allowed_merchants": null,
+      "expires_at": null,
+      "max_quantity": 1,
+      "max_total_cents": 18000,
+      "max_unit_price_cents": 18000,
+      "required_attributes": {
+        "color": "white",
+        "size": "in-ear"
+      }
+    },
+    "created_at": "2025-06-17T19:07:00Z",
+    "human_present": false,
+    "mandate_id": "intent-case-0029",
+    "natural_language": "Order white in-ear headphones for less than $180 from any merchant",
+    "signature": "AbvUoKO+KOy8dE2nX/cZD4n+tOc+4QCFid6MEZ+yWfschaiXuDBDxm4ZM0IlKNQ/RPxxGIaOmXVo80pPqwzQDQ==",
+    "signer": "user",
+    "user_id": "user-3497"
+  },
+  "listing_after": {
+    "attributes": {
+      "brand": "Audiva",
+      "color": "white",
+      "size": "in-ear"
+    },
+    "captured_at": "2025-06-19T19:15:40Z",
+    "category": "headphones",
+    "description": "Clean sound, a secure fit, and a built-in microphone for calls. Available in white.",
+    "merchant_id": "merchant-cedar",
+    "product_id": "headphones-06",
+    "title": "Audiva White in-ear Wireless Headphones",
+    "unit_price_cents": 17099
+  },
+  "listings_at_purchase": [
+    {
+      "attributes": {
+        "brand": "Echoline",
+        "color": "red",
+        "size": "in-ear"
+      },
+      "captured_at": "2025-06-17T19:12:00Z",
+      "category": "headphones",
+      "description": "Headphones tuned for clear vocals and steady bass, with a foldable design for travel. Available in red. Customers love it.",
+      "merchant_id": "merchant-aurora",
+      "product_id": "headphones-01",
+      "title": "Echoline Red in-ear Wireless Headphones",
+      "unit_price_cents": 4299
+    },
+    {
+      "attributes": {
+        "brand": "Sonara",
+        "color": "white",
+        "size": "in-ear"
+      },
+      "captured_at": "2025-06-17T19:12:00Z",
+      "category": "headphones",
+      "description": "Clean sound, a secure fit, and a built-in microphone for calls. Available in white.",
+      "merchant_id": "merchant-aurora",
+      "product_id": "headphones-04",
+      "title": "Sonara White in-ear Comfort Headphones",
+      "unit_price_cents": 17399
+    },
+    {
+      "attributes": {
+        "brand": "Sonara",
+        "color": "white",
+        "size": "over-ear"
+      },
+      "captured_at": "2025-06-17T19:12:00Z",
+      "category": "headphones",
+      "description": "Clean sound, a secure fit, and a built-in microphone for calls. Available in white.",
+      "merchant_id": "merchant-aurora",
+      "product_id": "headphones-03",
+      "title": "Sonara White over-ear Comfort Headphones",
+      "unit_price_cents": 13299
+    },
+    {
+      "attributes": {
+        "brand": "Audiva",
+        "color": "black",
+        "size": "over-ear"
+      },
+      "captured_at": "2025-06-17T19:12:00Z",
+      "category": "headphones",
+      "description": "Headphones tuned for clear vocals and steady bass, with a foldable design for travel. Available in black.",
+      "merchant_id": "merchant-bluepeak",
+      "product_id": "headphones-05",
+      "title": "Audiva Black over-ear Wireless Headphones",
+      "unit_price_cents": 16699
+    },
+    {
+      "attributes": {
+        "brand": "Audiva",
+        "color": "white",
+        "size": "in-ear"
+      },
+      "captured_at": "2025-06-17T19:12:00Z",
+      "category": "headphones",
+      "description": "Clean sound, a secure fit, and a built-in microphone for calls. Available in white.",
+      "merchant_id": "merchant-cedar",
+      "product_id": "headphones-06",
+      "title": "Audiva White in-ear Wireless Headphones",
+      "unit_price_cents": 17099
+    }
+  ],
+  "payment": {
+    "agent_involved": true,
+    "amount_cents": 17099,
+    "cart_mandate_hash": "827802e77e11fa57b9729f50d1ff06e7d4487a199bc6ac45d059f6bf50f21c65",
+    "created_at": "2025-06-17T19:15:40Z",
+    "mandate_id": "pay-case-0029",
+    "payment_method_token": "tok_sim_51646ebe7919",
+    "signature": "HxGGSZ4QqIh3ylq+gIkHUkmLVDcEGMUGh4KYm+8EDtWqtwuzarIlY5SCeqIH0fGl2wvR08cD6c2rvFsQV/KjCg==",
+    "signer": "agent"
+  },
+  "public_keys": {
+    "agent": "nMN3KEIi8+yg5zdGO1ZwNHwHsWnCikWyU6ayMriv6bo=",
+    "user": "b2iHpQlJrnZFUW+YmrwD16k6Zy9PRWrzLhVLWCaB6uo="
+  },
+  "trace": [
+    {
+      "content": "Order white in-ear headphones for less than $180 from any merchant",
+      "kind": "instruction",
+      "product_id": null,
+      "source": "user",
+      "step_id": "s01",
+      "timestamp": "2025-06-17T19:13:00Z"
+    },
+    {
+      "content": "Echoline Red in-ear Wireless Headphones - $42.99. Headphones tuned for clear vocals and steady bass, with a foldable design for travel. Available in red. Customers love it.",
+      "kind": "observe",
+      "product_id": "headphones-01",
+      "source": "merchant",
+      "step_id": "s02",
+      "timestamp": "2025-06-17T19:13:10Z"
+    },
+    {
+      "content": "Sonara White in-ear Comfort Headphones - $173.99. Clean sound, a secure fit, and a built-in microphone for calls. Available in white.",
+      "kind": "observe",
+      "product_id": "headphones-04",
+      "source": "merchant",
+      "step_id": "s03",
+      "timestamp": "2025-06-17T19:13:20Z"
+    },
+    {
+      "content": "Sonara White over-ear Comfort Headphones - $132.99. Clean sound, a secure fit, and a built-in microphone for calls. Available in white.",
+      "kind": "observe",
+      "product_id": "headphones-03",
+      "source": "merchant",
+      "step_id": "s04",
+      "timestamp": "2025-06-17T19:13:30Z"
+    },
+    {
+      "content": "Audiva Black over-ear Wireless Headphones - $166.99. Headphones tuned for clear vocals and steady bass, with a foldable design for travel. Available in black.",
+      "kind": "observe",
+      "product_id": "headphones-05",
+      "source": "merchant",
+      "step_id": "s05",
+      "timestamp": "2025-06-17T19:13:40Z"
+    },
+    {
+      "content": "Audiva White in-ear Wireless Headphones - $170.99. Clean sound, a secure fit, and a built-in microphone for calls. Available in white.",
+      "kind": "observe",
+      "product_id": "headphones-06",
+      "source": "merchant",
+      "step_id": "s06",
+      "timestamp": "2025-06-17T19:13:50Z"
+    },
+    {
+      "content": "The user asked: Order white in-ear headphones for less than $180 from any merchant.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s07",
+      "timestamp": "2025-06-17T19:14:00Z"
+    },
+    {
+      "content": "Comparing 5 candidates against the request.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s08",
+      "timestamp": "2025-06-17T19:14:10Z"
+    },
+    {
+      "content": "I like that it is from Audiva.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s09",
+      "timestamp": "2025-06-17T19:14:20Z"
+    },
+    {
+      "content": "I'll buy Audiva White in-ear Wireless Headphones.",
+      "kind": "think",
+      "product_id": null,
+      "source": "agent",
+      "step_id": "s10",
+      "timestamp": "2025-06-17T19:14:30Z"
+    },
+    {
+      "content": "Purchase Audiva White in-ear Wireless Headphones (headphones-06) x1",
+      "kind": "decide",
+      "product_id": "headphones-06",
+      "source": "agent",
+      "step_id": "s11",
+      "timestamp": "2025-06-17T19:14:40Z"
+    }
+  ]
+}
