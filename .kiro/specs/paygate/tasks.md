@@ -150,7 +150,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - `npm run build` succeeds
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7_
 
-- [-] 12. Checkpoint - interfaces and benchmark
+- [x] 12. Checkpoint - interfaces and benchmark
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 13. CI and README
@@ -163,7 +163,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x]* 13.3 Write a test that greps the README for the required limitation phrases
     - _Requirements: 12.1, 12.4, 12.5_
 
-- [~] 14. Final checkpoint - Ensure all tests pass
+- [x] 14. Final checkpoint - Ensure all tests pass
   - Run `ruff check . && ruff format --check . && pytest -q` and `npm run build` in `web/`. Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
