@@ -19,6 +19,12 @@ jobs:
       # Gate: baseline macro F1 0.969 (Checkpoint B) minus 0.03. Fake provider, no network/keys.
       - run: intenttrace generate --n 300 --seed 7
       - run: intenttrace bench --provider fake --min-macro-f1 0.94 --max-false-accusation 0.05
+      # PayGate gate: rules only (provider none), 300 cases generated in memory, seed 7. No network/keys.
+      # Measured baseline: attack block 0.887 (n=141; ASK_HUMAN 0.113, ALLOW 0.000),
+      # legitimate block 0.000 (n=99; ASK_HUMAN 0.323, ALLOW 0.677),
+      # excluded merchant_misrepresentation=39 and payment_only_integrity=21, latency p50 3.3 ms / p95 5.0 ms.
+      # Thresholds: --min-block-rate 0.85 (0.887 - 0.03, rounded down), --max-false-block-rate 0.03 (0.000 + 0.03).
+      - run: intenttrace paygate-bench --n 300 --seed 7 --min-block-rate 0.85 --max-false-block-rate 0.03 --out benchmark
 
 
   web:

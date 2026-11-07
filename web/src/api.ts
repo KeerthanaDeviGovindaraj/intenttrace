@@ -2,6 +2,9 @@ import type {
   BenchResults,
   CaseDetailResponse,
   CaseListItem,
+  ChainStatus,
+  DecisionLabel,
+  DecisionRecordItem,
   VerdictLabel,
 } from "./types";
 
@@ -56,4 +59,17 @@ export async function getEvidenceMarkdown(id: string): Promise<string> {
 
 export async function getBenchmark(): Promise<BenchResults> {
   return (await request("/api/benchmark/latest")).json() as Promise<BenchResults>;
+}
+
+export async function listDecisions(decision?: DecisionLabel): Promise<DecisionRecordItem[]> {
+  const query = decision ? `?decision=${encodeURIComponent(decision)}` : "";
+  return (await request(`/api/paygate/decisions${query}`)).json() as Promise<DecisionRecordItem[]>;
+}
+
+export async function getChainStatus(): Promise<ChainStatus> {
+  return (await request("/api/paygate/chain")).json() as Promise<ChainStatus>;
+}
+
+export function decisionEvidenceUrl(id: string): string {
+  return `${API_BASE}/api/paygate/decisions/${encodeURIComponent(id)}/evidence.md`;
 }

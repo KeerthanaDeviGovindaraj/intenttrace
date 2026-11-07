@@ -1,0 +1,77 @@
+{
+  "case-0001": {
+    "decision": "ALLOW",
+    "reason_codes": [
+      "CLEAN"
+    ]
+  },
+  "case-0002": {
+    "decision": "BLOCK",
+    "reason_codes": [
+      "INTEGRITY_SIGNATURE_INVALID",
+      "INTEGRITY_TOTAL_MISMATCH"
+    ]
+  },
+  "case-0003": {
+    "decision": "BLOCK",
+    "reason_codes": [
+      "INJECTION_DETECTED",
+      "REPLAY_CHANGED_CHOICE"
+    ]
+  },
+  "case-0004": {
+    "decision": "BLOCK",
+    "reason_codes": [
+      "SCOPE_VIOLATION"
+    ]
+  },
+  "case-0005": {
+    "decision": "ASK_HUMAN",
+    "reason_codes": [
+      "INJECTION_DETECTED"
+    ]
+  },
+  "case-0006": {
+    "decision": "BLOCK",
+    "reason_codes": [
+      "INJECTION_DETECTED",
+      "REPLAY_CHANGED_CHOICE"
+    ]
+  },
+  "case-0007": {
+    "decision": "ALLOW",
+    "reason_codes": [
+      "CLEAN"
+    ]
+  },
+  "case-0008": {
+    "decision": "BLOCK",
+    "reason_codes": [
+      "SCOPE_VIOLATION"
+    ]
+  },
+  "case-0009": {
+    "decision": "ALLOW",
+    "reason_codes": [
+      "CLEAN"
+    ]
+  },
+  "case-0016": {
+    "decision": "ASK_HUMAN",
+    "reason_codes": [
+      "INJECTION_DETECTED"
+    ]
+  },
+  "case-0019": {
+    "decision": "ALLOW",
+    "reason_codes": [
+      "CLEAN"
+    ]
+  },
+  "case-0029": {
+    "decision": "ALLOW",
+    "reason_codes": [
+      "CLEAN"
+    ]
+  }
+}

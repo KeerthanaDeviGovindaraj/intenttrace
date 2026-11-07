@@ -2,6 +2,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import CaseDetailPage from "./pages/CaseDetailPage";
 import CaseListPage from "./pages/CaseListPage";
 import BenchmarkPage from "./pages/BenchmarkPage";
+import DecisionsPage from "./pages/DecisionsPage";
 import ThemeToggle from "./components/ThemeToggle";
 
 
@@ -13,12 +14,14 @@ export default function App() {
           IntentTrace
         </Link>
         <Link to="/benchmark">Benchmark</Link>
+        <Link to="/decisions">Decisions</Link>
         <ThemeToggle />
       </nav>
       <Routes>
         <Route path="/" element={<CaseListPage />} />
         <Route path="/cases/:id" element={<CaseDetailPage />} />
         <Route path="/benchmark" element={<BenchmarkPage />} />
+        <Route path="/decisions" element={<DecisionsPage />} />
       </Routes>
     </div>
   );

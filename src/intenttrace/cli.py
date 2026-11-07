@@ -167,6 +167,89 @@ def bench(
         raise typer.Exit(code=1)
 
 
+@app.command("paygate-bench")
+def paygate_bench(
+    provider: str = typer.Option("none", "--provider", help="fake, none (rules only), anthropic or openai."),
+    n: int | None = typer.Option(
+        None, "--n", min=1, help="Generate N cases in memory instead of reading disk."
+    ),
+    seed: int | None = typer.Option(None, "--seed", help="Seed (used with --n; recorded in results)."),
+    min_block_rate: float | None = typer.Option(
+        None, "--min-block-rate", help="Fail if the attack block rate is lower."
+    ),
+    max_false_block_rate: float | None = typer.Option(
+        None, "--max-false-block-rate", help="Fail if the legitimate false-block rate is higher."
+    ),
+    cases_dir: Path = typer.Option(Path("benchmark/cases"), "--cases-dir", help="Cases to score."),
+    labels: Path = typer.Option(Path("benchmark/labels.jsonl"), "--labels", help="Ground-truth labels."),
+    out: Path = typer.Option(Path("benchmark"), "--out", help="Where RESULTS.md and results.json go."),
+) -> None:
+    """Run the pre-purchase gate over labeled cases and write the PayGate benchmark section."""
+    from intenttrace.bench import (
+        load_cases,
+        make_provider,
+        read_manifest_seed,
+        run_paygate_bench,
+        write_paygate_results,
+    )
+    from intenttrace.sim.generate import build_cases
+
+    name = provider.strip().lower()
+    try:
+        llm = None if name == "none" else make_provider(name)
+    except ValueError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(code=2) from exc
+
+    if n is not None:
+        used_seed = 7 if seed is None else seed
+        generated = build_cases(n, used_seed)
+        cases = [g.case for g in generated]
+        label_map = {g.case.case_id: g.label for g in generated}
+    else:
+        used_seed = seed if seed is not None else read_manifest_seed(labels.parent / "manifest.json")
+        try:
+            cases, label_map = load_cases(cases_dir, labels)
+        except (OSError, ValueError) as exc:
+            typer.echo(f"Cannot load benchmark cases: {exc}", err=True)
+            raise typer.Exit(code=2) from exc
+
+    try:
+        results = run_paygate_bench(cases, label_map, llm, seed=used_seed)
+    except ValueError as exc:
+        typer.echo(f"Cannot run PayGate benchmark: {exc}", err=True)
+        raise typer.Exit(code=2) from exc
+    write_paygate_results(results, out)
+
+    attack, legit = results["attack"], results["legitimate"]
+    typer.echo(f"Provider: {results['provider']} ({results['model']}), N={results['n']}")
+    if results["pipeline_test_only"]:
+        typer.echo("Note: pipeline test on synthetic data, not a measure of real-world accuracy.")
+    typer.echo(f"Attack block rate: {attack['block_rate']:.3f} (n={attack['n']})")
+    typer.echo(f"Legitimate false-block rate: {results['false_block_rate']:.3f} (n={legit['n']})")
+    typer.echo(
+        f"ASK_HUMAN rate: attack {attack['ask_human_rate']:.3f}, legitimate {legit['ask_human_rate']:.3f}"
+    )
+    excluded = ", ".join(f"{k}={v['count']}" for k, v in results["excluded"].items())
+    typer.echo(f"Excluded: {excluded}")
+    lat = results["latency_ms"]
+    typer.echo(f"Latency ms: p50 {lat['p50']:.1f}, p95 {lat['p95']:.1f}")
+    typer.echo(f"Wrote PayGate results to {out}")
+
+    failed = False
+    if min_block_rate is not None and attack["block_rate"] < min_block_rate:
+        typer.echo(f"FAIL: attack block rate {attack['block_rate']:.3f} < {min_block_rate}", err=True)
+        failed = True
+    if max_false_block_rate is not None and results["false_block_rate"] > max_false_block_rate:
+        typer.echo(
+            f"FAIL: false-block rate {results['false_block_rate']:.3f} > {max_false_block_rate}",
+            err=True,
+        )
+        failed = True
+    if failed:
+        raise typer.Exit(code=1)
+
+
 @app.command()
 def serve(
     port: int = typer.Option(8787, "--port", help="Port to listen on."),

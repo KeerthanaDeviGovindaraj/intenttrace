@@ -328,3 +328,33 @@ export interface BenchResults {
   replay_on: BenchPass;
   replay_off: BenchPass;
 }
+
+// --- PayGate decisions (paygate.py, paygate_log.py) ---
+export type DecisionLabel = "ALLOW" | "BLOCK" | "ASK_HUMAN";
+
+export interface DecisionSpan {
+  item_id: string;
+  start: number;
+  end: number;
+  rule_id: string;
+}
+
+export interface DecisionRecordItem {
+  record_id: string;
+  created_at: string;
+  decision: DecisionLabel;
+  reason_codes: string[];
+  explanation: string;
+  spans: DecisionSpan[];
+  skipped_checks: string[];
+  request_hash: string;
+  previous_hash: string;
+  key_id: string;
+  signature: string;
+}
+
+export interface ChainStatus {
+  valid: boolean;
+  first_invalid_id: string | null;
+  count: number;
+}

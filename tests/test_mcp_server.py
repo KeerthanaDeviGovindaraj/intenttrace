@@ -75,4 +75,4 @@ def test_server_registers_tools():
 
     server = create_server()
     names = {t.name for t in asyncio.run(server.list_tools())}
-    assert names == {"investigate_purchase", "get_case", "list_cases"}
+    assert names == {"investigate_purchase", "get_case", "list_cases", "check_purchase"}
