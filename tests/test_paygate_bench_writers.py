@@ -154,3 +154,25 @@ def test_pipeline_label_present_for_none_and_fake(provider: str) -> None:
 
 def test_pipeline_label_absent_for_real_provider() -> None:
     assert NOTICE not in render_paygate_section(_paygate(provider="anthropic", pipeline=False))
+
+
+def test_rendered_excluded_groups_stay_out_of_rate_tables(tmp_path: Path, monkeypatch) -> None:
+    from intenttrace.bench import run_paygate_bench
+    from intenttrace.sim.generate import build_cases
+
+    monkeypatch.setenv("INTENTTRACE_DB", str(tmp_path / "user.db"))
+    generated = build_cases(40, 7)
+    labels = {g.label["case_id"]: g.label for g in generated}
+    results = run_paygate_bench([g.case for g in generated], labels, None, seed=7)
+    results.update(provider="none", pipeline_test_only=True)
+    section = render_paygate_section(results)
+    head, _, rest = section.partition("| Excluded group | Count | Reason |")
+    excluded_rows = rest.split("\n\n", 1)[0]
+    merchant = results["excluded"]["merchant_misrepresentation"]
+    payment = results["excluded"]["payment_only_integrity"]
+    assert merchant["count"] > 0 and payment["count"] > 0
+    assert f"| merchant_misrepresentation | {merchant['count']} | {merchant['reason']} |" in excluded_rows
+    assert f"| payment_only_integrity | {payment['count']} | {payment['reason']} |" in excluded_rows
+    tables = head + rest.split("\n\n", 1)[1]
+    for name in ("MERCHANT_MISREPRESENTATION", "amount_altered", "cart_hash_altered"):
+        assert name not in tables

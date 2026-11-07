@@ -89,7 +89,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - One case per rule row including replay `unavailable` falling through to rows 4 to 6, spies showing reused functions are called and later checks are skipped after a `BLOCK`, one monkeypatched exception per check, failing log, failing provider, `socket.socket` guard when `provider=None`
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 4.1, 4.4, 5.1, 5.3, 5.4, 13.1_
 
-- [~] 6. Checkpoint - core gate
+- [-] 6. Checkpoint - core gate
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 7. HTTP endpoints
@@ -129,7 +129,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 9.5 Add the `paygate-bench` command to `cli.py`
     - Options `--provider fake|none|anthropic|openai`, `--n`, `--seed`, `--cases-dir`, `--labels`, `--out`, `--min-block-rate`, `--max-false-block-rate`; exit 1 on a missed threshold, 2 on load or provider errors
     - _Requirements: 11.1, 11.10_
-  - [ ]* 9.6 Write benchmark unit tests
+  - [x]* 9.6 Write benchmark unit tests
     - Threshold exit codes via Typer's runner, user database untouched, RESULTS.md keeps the IntentTrace block after `write_results`, payment-only and merchant cases land in the excluded tables and in no rate
     - _Requirements: 11.7, 11.8, 11.10, 11.11_
 
@@ -160,7 +160,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
   - [x] 13.2 Add a PayGate section to `README.md`
     - Quickstart for the Python function, REST endpoint, and MCP tool; state that data is synthetic, detection is English-only and bypassable by paraphrase, `ALLOW` is not a guarantee, the data model is AP2-style and not AP2-compliant, and output is not legal advice; list the out-of-scope items and the excluded benchmark groups with their reasons
     - _Requirements: 12.1, 12.3, 12.4, 12.5_
-  - [ ]* 13.3 Write a test that greps the README for the required limitation phrases
+  - [x]* 13.3 Write a test that greps the README for the required limitation phrases
     - _Requirements: 12.1, 12.4, 12.5_
 
 - [~] 14. Final checkpoint - Ensure all tests pass
