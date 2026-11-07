@@ -9,6 +9,11 @@
 
 IntentTrace is a forensic investigator for AI agent purchases. Give it the record of a purchase and it decides whether the purchase was legitimate, out of scope, manipulated, a merchant misrepresentation, or tampered with. It then writes a dispute-ready evidence packet.
 
+It works at two points in a purchase:
+
+- **Before payment, with [PayGate](#paygate-check-before-you-pay).** The agent calls PayGate with the proposed cart and the text it read, and gets `ALLOW`, `BLOCK`, or `ASK_HUMAN` with reasons. Every decision goes into a signed, tamper-evident log.
+- **After payment, with the investigator.** Give it the full record of a purchase and it returns a verdict and an evidence packet.
+
 > **AP2-style, not AP2-compliant.** IntentTrace uses a local, AP2-style mandate model (signed intent, cart, and payment mandates). It does not use the official AP2 SDK and makes no claim of AP2 compliance.
 
 ## Why we built it
@@ -17,12 +22,26 @@ Agent payment protocols prove that a purchase was signed. They do not prove the 
 
 ## Who it is for
 
+- **Teams shipping shopping or checkout agents** who want a check that stops a manipulated purchase before money moves (PayGate).
 - **Payment providers and dispute teams** who need a defensible first-pass triage of "my agent bought something I didn't want" claims.
 - **Agent and shopping-assistant builders** who want to test whether their agent can be redirected, and track it as a regression metric.
 - **Merchants and marketplaces** who need to show a listing was not misrepresented, or spot content that manipulates agents.
 - **Security and AI-safety researchers** who want a labeled, reproducible benchmark for agent purchase manipulation.
 
 ## How it works at a glance
+
+PayGate, before payment:
+
+```mermaid
+flowchart LR
+    A["Agent: proposed cart,<br/>signed intent, text it read"] --> B["Integrity + scope"]
+    B --> C["Injection rules,<br/>best-match, replay"]
+    C --> D{"Decision"}
+    D --> E["ALLOW / BLOCK / ASK_HUMAN<br/>+ reason codes"]
+    D --> F["Signed, hash-chained<br/>decision log"]
+```
+
+The investigator, after payment:
 
 ```mermaid
 flowchart LR
