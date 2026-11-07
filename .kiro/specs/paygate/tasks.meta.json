@@ -243,6 +243,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879707
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003198269
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794066968913
       }
     ],
     "10.1 Add a golden file of expected Decisions and `tests/test_paygate_samples.py`": [
@@ -301,6 +311,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879822
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003193067
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794066966870
       }
     ],
     "12. Checkpoint - interfaces and benchmark": [
@@ -315,6 +335,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879874
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794066993768
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794067134118
       }
     ],
     "13.2 Add a PayGate section to `README.md`": [
@@ -322,6 +352,16 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794001879904
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794066993955
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794067134568
       }
     ],
     "14. Final checkpoint - Ensure all tests pass": [
@@ -505,6 +545,51 @@
         "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
         "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
         "timestamp": 1794003174091
+      }
+    ],
+    "9.3 Write property test for benchmark conversion and rates": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003190777
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794067135754
+      }
+    ],
+    "9.4 Write property test for the results section writer": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794003191913
+      },
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794066967746
+      }
+    ],
+    "11. Dashboard Decisions view": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794066966941
+      }
+    ],
+    "9. Benchmark mode and CLI": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794066968949
+      }
+    ],
+    "13. CI and README": [
+      {
+        "executionId": "79b5e337-5c0a-4bc7-b256-9b36d96b304d",
+        "chatSessionId": "sess_4b5b4bff-085a-4939-9486-d1109c7838e5",
+        "timestamp": 1794067134606
       }
     ]
   }

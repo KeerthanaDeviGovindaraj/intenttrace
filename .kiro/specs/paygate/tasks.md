@@ -109,7 +109,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Direct calls for valid and unparseable input, same record as the Python function, `create_server` lists four tools
     - _Requirements: 8.1, 8.3, 8.4, 8.5, 13.2_
 
-- [ ] 9. Benchmark mode and CLI
+- [x] 9. Benchmark mode and CLI
   - [x] 9.1 Add `case_to_request` and `run_paygate_bench` to `bench.py`
     - Convert `merchant`, `review`, and `external_agent` trace steps to content items; drop payment, delivered item, and `listing_after`
     - Run `gate_purchase` per case with a temp database and key in `tempfile.TemporaryDirectory`, time with `perf_counter`
@@ -120,13 +120,13 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Section between `<!-- paygate:begin -->` and `<!-- paygate:end -->`, replaced in place on rerun; includes provider, seed, N, date, the pipeline-test label for `fake` or scripted runs, and a separate "Excluded" table with count and reason per group
     - `results.json` gets a top-level `"paygate"` key; `write_results` preserves an existing PayGate block and key
     - _Requirements: 11.7, 11.8, 11.9, 12.3_
-  - [ ]* 9.3 Write property test for benchmark conversion and rates
+  - [x]* 9.3 Write property test for benchmark conversion and rates
     - **Property 11: Benchmark conversion and rates**
     - **Validates: Requirements 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7**
-  - [ ]* 9.4 Write property test for the results section writer
+  - [x]* 9.4 Write property test for the results section writer
     - **Property 12: PayGate results section is idempotent and non-destructive**
     - **Validates: Requirements 11.8**
-  - [~] 9.5 Add the `paygate-bench` command to `cli.py`
+  - [x] 9.5 Add the `paygate-bench` command to `cli.py`
     - Options `--provider fake|none|anthropic|openai`, `--n`, `--seed`, `--cases-dir`, `--labels`, `--out`, `--min-block-rate`, `--max-false-block-rate`; exit 1 on a missed threshold, 2 on load or provider errors
     - _Requirements: 11.1, 11.10_
   - [ ]* 9.6 Write benchmark unit tests
@@ -138,13 +138,13 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - Convert the committed cases in `benchmark/sample/` with `case_to_request`, generate the golden decisions once with the rule-only path, review them by hand, and assert `gate_purchase` matches
     - _Requirements: 13.4_
 
-- [ ] 11. Dashboard Decisions view
+- [x] 11. Dashboard Decisions view
   - [x] 11.1 Add `DecisionLabel` and `DecisionRecordItem` to `web/src/types.ts` and `listDecisions`, `getChainStatus`, `decisionEvidenceUrl` to `web/src/api.ts`
     - _Requirements: 10.2, 10.3, 10.6_
   - [x] 11.2 Create `web/src/components/DecisionBadge.tsx`
     - Mirror `VerdictBadge` with the same dark-mode class pattern: green ALLOW, red BLOCK, amber ASK_HUMAN
     - _Requirements: 10.2, 10.7_
-  - [~] 11.3 Create `web/src/pages/DecisionsPage.tsx` and wire the `/decisions` route and "Decisions" nav link in `web/src/App.tsx`
+  - [x] 11.3 Create `web/src/pages/DecisionsPage.tsx` and wire the `/decisions` route and "Decisions" nav link in `web/src/App.tsx`
     - Chain status banner, `ALL | ALLOW | BLOCK | ASK_HUMAN` filters, newest-first list with timestamp, badge, Reason_Codes, and explanation, inline expansion with highlighted spans and the evidence download link, empty state "No PayGate decisions yet."
     - Existing CSS variables for both themes; layout holds at 390 px
     - `npm run build` succeeds
@@ -153,11 +153,11 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
 - [~] 12. Checkpoint - interfaces and benchmark
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 13. CI and README
-  - [~] 13.1 Add the `paygate-bench` step to `.github/workflows/ci.yml` after the existing bench step
+- [x] 13. CI and README
+  - [x] 13.1 Add the `paygate-bench` step to `.github/workflows/ci.yml` after the existing bench step
     - Run `intenttrace paygate-bench --provider fake` once, then set `--min-block-rate` and `--max-false-block-rate` to the measured values minus a margin, and record the baseline in a workflow comment; commit the PayGate section of `benchmark/RESULTS.md` and `results.json`
     - _Requirements: 11.8, 11.10, 13.5, 13.6_
-  - [~] 13.2 Add a PayGate section to `README.md`
+  - [x] 13.2 Add a PayGate section to `README.md`
     - Quickstart for the Python function, REST endpoint, and MCP tool; state that data is synthetic, detection is English-only and bypassable by paraphrase, `ALLOW` is not a guarantee, the data model is AP2-style and not AP2-compliant, and output is not legal advice; list the out-of-scope items and the excluded benchmark groups with their reasons
     - _Requirements: 12.1, 12.3, 12.4, 12.5_
   - [ ]* 13.3 Write a test that greps the README for the required limitation phrases

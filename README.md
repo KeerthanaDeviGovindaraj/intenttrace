@@ -144,6 +144,106 @@ Subtle persuasion is the hard case: with no explicit instruction to detect, the 
 - Results from the fake provider test the pipeline, not model accuracy.
 - Reports describe technical findings. They are not legal advice and do not determine liability.
 
+## PayGate: check before you pay
+
+PayGate is a pre-purchase checkpoint. An AI agent calls it with the signed intent, the cart it plans to buy, and the untrusted text it read. PayGate runs the same integrity, scope, detection, best-match, and replay checks as the investigator and returns `ALLOW`, `BLOCK`, or `ASK_HUMAN` with reason codes. Every decision goes into a signed, hash-chained log. It needs no LLM or API key by default.
+
+Rules run top to bottom. The first match wins.
+
+| # | Condition | Decision | Reason codes |
+|---|---|---|---|
+| 1 | Signature, hash link, total, or signer check fails | `BLOCK` | `INTEGRITY_*` |
+| 2 | Cart breaks a signed constraint | `BLOCK` | `SCOPE_VIOLATION` |
+| 3 | Suspicious span, and replay without it changes the choice | `BLOCK` | `INJECTION_DETECTED`, `REPLAY_CHANGED_CHOICE` |
+| 4 | Suspicious span, and the chosen item is not the top match | `BLOCK` | `INJECTION_DETECTED`, `BEST_MATCH_DEVIATION` |
+| 5 | Suspicious span only | `ASK_HUMAN` | `INJECTION_DETECTED` |
+| 6 | Chosen item is not the top match | `ASK_HUMAN` | `BEST_MATCH_DEVIATION` |
+| 7 | Nothing found | `ALLOW` | `CLEAN` |
+
+Malformed input returns `ASK_HUMAN` with `INPUT_MALFORMED`. A check that fails, or a log that cannot be written, returns `CHECK_FAILED`. The gate never approves when it is unsure.
+
+### PayGate quickstart
+
+The examples use a request built from a committed sample case. Point `INTENTTRACE_DB` at a scratch file to keep the decision log out of your main database.
+
+```bash
+export INTENTTRACE_DB=/tmp/paygate-demo.db
+
+# Build a request from a sample case (a MANIPULATED one: a review injection)
+python - <<'EOF'
+from intenttrace.bench import case_to_request
+from intenttrace.models import CaseFile
+
+case = CaseFile.model_validate_json(open("benchmark/sample/case-0003.json").read())
+open("request.json", "w").write(case_to_request(case).model_dump_json())
+EOF
+```
+
+Python function. It takes a model or a dict, never raises, and writes one log record per call.
+
+```python
+import json
+from intenttrace.paygate import gate_purchase
+
+result = gate_purchase(json.load(open("request.json")))
+print(result.decision, result.reason_codes)
+# BLOCK ['INJECTION_DETECTED', 'REPLAY_CHANGED_CHOICE']
+```
+
+REST endpoint (start the server with `intenttrace serve`):
+
+```bash
+curl -s -X POST http://127.0.0.1:8787/api/paygate/check \
+  -H 'Content-Type: application/json' --data @request.json
+
+curl -s 'http://127.0.0.1:8787/api/paygate/decisions?decision=BLOCK&limit=10'
+curl -s http://127.0.0.1:8787/api/paygate/chain   # {"valid": true, "first_invalid_id": null, "count": N}
+```
+
+A decision of any kind returns HTTP 200. A body that is not valid JSON returns 422. Add `?replay=false` to skip counterfactual replay.
+
+MCP tool. `intenttrace mcp` now exposes `check_purchase(request_json)` next to the three investigator tools. It takes the request as a JSON string and returns the result as a dict.
+
+Benchmark. This converts each generated case into a pre-purchase request and writes the PayGate section of `benchmark/RESULTS.md`:
+
+```bash
+intenttrace paygate-bench --provider none --n 300 --seed 7
+```
+
+Dashboard. Run `intenttrace serve` and open the Decisions page at `/decisions`. It lists decisions newest first, filters by decision, shows the flagged spans, links to a Markdown evidence packet, and shows whether the log chain verifies.
+
+The log holds a hash of each request and the span offsets. It does not store the untrusted text. The signing key is created beside the database on first use (`<db>.paygate.key`), or loaded from `PAYGATE_KEY_FILE`.
+
+### PayGate results
+
+See the [PayGate section of `benchmark/RESULTS.md`](benchmark/RESULTS.md#paygate-benchmark-pre-purchase-gate) for the numbers, provider, seed, and date. They are a pipeline test on synthetic data, not a measure of real-world accuracy.
+
+Two groups are left out of every rate, and the results file counts them separately:
+
+- **`MERCHANT_MISREPRESENTATION`.** The failure appears only after purchase, so there is nothing to check before payment.
+- **`INTEGRITY_FAILURE` with cause `amount_altered` or `cart_hash_altered`.** These alter only the payment mandate, which does not exist before payment.
+
+### PayGate limitations
+
+- All data is synthetic. Results say nothing about real-world accuracy.
+- Detection rules are English-only. A paraphrased attack can get past them.
+- `ALLOW` is not a guarantee of safety. It means the checks found nothing.
+- The data model is AP2-style, not AP2-compliant.
+- Output is a technical signal. It is not legal advice.
+
+Out of scope:
+
+- Real payment execution, payment rails, card handling, or merchant integrations.
+- Official AP2 or ACP SDK interoperability or compliance.
+- Human approval workflows. `ASK_HUMAN` only returns the decision.
+- Authentication, user accounts, rate limiting, or multi-tenant separation for the HTTP endpoint.
+- Non-English detection rules and multimodal content (images, audio, PDFs).
+- Detection of post-purchase merchant misrepresentation.
+- Training or tuning models, or a required LLM path. The LLM provider stays optional.
+- Key management beyond a local key file (no HSM, rotation, or revocation).
+- Legal, liability, or chargeback determinations.
+- Real-world accuracy claims.
+
 ## Built spec-first with Kiro
 
 See [`.kiro/specs/intenttrace-mvp/`](.kiro/specs/intenttrace-mvp/).
