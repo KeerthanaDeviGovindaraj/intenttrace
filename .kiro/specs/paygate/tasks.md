@@ -89,7 +89,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - One case per rule row including replay `unavailable` falling through to rows 4 to 6, spies showing reused functions are called and later checks are skipped after a `BLOCK`, one monkeypatched exception per check, failing log, failing provider, `socket.socket` guard when `provider=None`
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 4.1, 4.4, 5.1, 5.3, 5.4, 13.1_
 
-- [-] 6. Checkpoint - core gate
+- [x] 6. Checkpoint - core gate
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 7. HTTP endpoints
@@ -150,7 +150,7 @@ Rules for every task: implement, write tests, run `ruff check . && ruff format .
     - `npm run build` succeeds
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7_
 
-- [~] 12. Checkpoint - interfaces and benchmark
+- [-] 12. Checkpoint - interfaces and benchmark
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 13. CI and README

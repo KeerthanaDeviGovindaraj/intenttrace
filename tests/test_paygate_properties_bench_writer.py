@@ -160,7 +160,11 @@ def test_paygate_results_writer_idempotent_and_non_destructive(md, existing, res
         assert out_text.count(PAYGATE_END) == 1
         assert block in out_text
         if prefix is None:
-            assert out_text.startswith(text.rstrip("\n"))
+            # A whitespace-only file holds no content to preserve; the writer emits just the block.
+            if text.strip():
+                assert out_text.startswith(text.rstrip("\n"))
+            else:
+                assert out_text == block + "\n"
         else:
             assert out_text == prefix + block + suffix
         data = json.loads(js1)
@@ -179,3 +183,35 @@ def test_paygate_results_writer_idempotent_and_non_destructive(md, existing, res
         final_json = json.loads((out / "results.json").read_text(encoding="utf-8"))
         assert final_json["paygate"] == data["paygate"]
         assert final_json["provider"] == "fake"
+
+
+def test_writer_whitespace_only_results_md_regression(tmp_path):
+    """Counterexample from Hypothesis: an existing RESULTS.md holding only ' '."""
+    results = {
+        "provider": "_",
+        "model": "_",
+        "seed": None,
+        "n": 0,
+        "date": "2025-01-31",
+        "pipeline_test_only": False,
+        "attack": {"n": 0, "block_rate": 0.0, "ask_human_rate": 0.0, "allow_rate": 0.0},
+        "legitimate": {"n": 0, "block_rate": 0.0, "ask_human_rate": 0.0, "allow_rate": 0.0},
+        "false_block_rate": 0.0,
+        "excluded": {
+            "merchant_misrepresentation": {"count": 0, "reason": "r1"},
+            "payment_only_integrity": {"count": 0, "reason": "r2"},
+        },
+        "block_rate_by_label": {},
+        "block_rate_by_attack_type": {},
+        "block_rate_by_cause": {},
+        "latency_ms": {"p50": 0.0, "p95": 0.0},
+    }
+    (tmp_path / "RESULTS.md").write_text(" ", encoding="utf-8")
+    (tmp_path / "results.json").write_text("{}", encoding="utf-8")
+    write_paygate_results(results, tmp_path)
+    first = (tmp_path / "RESULTS.md").read_bytes()
+    write_paygate_results(results, tmp_path)
+    assert (tmp_path / "RESULTS.md").read_bytes() == first
+    text = first.decode("utf-8")
+    assert text == render_paygate_section(results) + "\n"
+    assert text.count(PAYGATE_BEGIN) == 1 and text.count(PAYGATE_END) == 1
