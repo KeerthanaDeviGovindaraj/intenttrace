@@ -4,7 +4,7 @@
 
 ![IntentTrace demo: a MANIPULATED case with the highlighted injection and the replay result](docs/demo.gif)
 
-**Live demo:** https://intenttrace.onrender.com (free tier, so the first load after idle can take about a minute; sample data only)
+**Live demo:** https://intenttrace.onrender.com, with PayGate decisions at [/decisions](https://intenttrace.onrender.com/decisions). Free tier, so the first load after idle can take about a minute. Sample data only, and the decision log resets when the service restarts.
 
 
 IntentTrace is a forensic investigator for AI agent purchases. Give it the record of a purchase and it decides whether the purchase was legitimate, out of scope, manipulated, a merchant misrepresentation, or tampered with. It then writes a dispute-ready evidence packet.
@@ -235,7 +235,18 @@ The log holds a hash of each request and the span offsets. It does not store the
 
 ### PayGate results
 
-See the [PayGate section of `benchmark/RESULTS.md`](benchmark/RESULTS.md#paygate-benchmark-pre-purchase-gate) for the numbers, provider, seed, and date. They are a pipeline test on synthetic data, not a measure of real-world accuracy.
+> **Pipeline test on synthetic data, not real-world accuracy.** Rules only (no LLM), seed 7, 300 generated cases.
+
+| Group | N | BLOCK | ASK_HUMAN | ALLOW |
+|---|---|---|---|---|
+| Attack | 141 | 88.7% | 11.3% | 0.0% |
+| Legitimate | 99 | 0.0% | 32.3% | 67.7% |
+
+No attack case was allowed and no legitimate case was blocked. Every integrity and scope attack was blocked, and 80.2% of manipulated cases were blocked (the rest went to `ASK_HUMAN`). Subtle persuasion is the gap: with no explicit instruction to detect, those purchases are not blocked.
+
+The cost is review load. About a third of legitimate purchases go to `ASK_HUMAN`. Most of them read injected text that did not change the agent's choice, so PayGate flags the text without proof it mattered.
+
+Full tables, including the date, are in the [PayGate section of `benchmark/RESULTS.md`](benchmark/RESULTS.md#paygate-benchmark-pre-purchase-gate).
 
 Two groups are left out of every rate, and the results file counts them separately:
 
