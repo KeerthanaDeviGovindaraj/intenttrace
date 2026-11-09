@@ -52,6 +52,10 @@ def test_groups_and_excluded_counts(generated, tmp_path, monkeypatch):
     assert out["latency_ms"]["p50"] <= out["latency_ms"]["p95"]
     assert "MERCHANT_MISREPRESENTATION" not in out["block_rate_by_label"]
     assert not PAYMENT_ONLY & set(out["block_rate_by_cause"])
+    assert "LEGITIMATE" not in out["block_rate_by_label"]
+    attack_n = sum(v["n"] for v in out["block_rate_by_attack_type"].values())
+    manipulated = count(lambda lb: lb["label"] == "MANIPULATED")
+    assert attack_n == manipulated
 
 
 def test_user_db_untouched(generated, tmp_path, monkeypatch):
