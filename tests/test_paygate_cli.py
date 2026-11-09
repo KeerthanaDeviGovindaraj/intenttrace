@@ -63,3 +63,26 @@ def test_paygate_bench_load_error_exits_2(tmp_path):
 
 def test_paygate_bench_unknown_provider_exits_2(tmp_path):
     assert runner.invoke(app, _base(tmp_path, "--provider", "nope")).exit_code == 2
+
+
+def test_paygate_load_sample_writes_decisions(tmp_path, monkeypatch):
+    from intenttrace.paygate_log import DecisionLog, chain_status
+
+    db = tmp_path / "user.db"
+    monkeypatch.setenv("INTENTTRACE_DB", str(db))
+    monkeypatch.delenv("PAYGATE_KEY_FILE", raising=False)
+    res = CliRunner().invoke(app, ["paygate-load-sample"])
+    assert res.exit_code == 0, res.output
+    assert "Gated 12 sample cases" in res.output
+    log = DecisionLog(db)
+    try:
+        assert {r.decision for r in log.list()} == {"ALLOW", "BLOCK", "ASK_HUMAN"}
+    finally:
+        log.close()
+    assert chain_status(db) == {"valid": True, "first_invalid_id": None, "count": 12}
+
+
+def test_paygate_load_sample_missing_dir(tmp_path, monkeypatch):
+    monkeypatch.setenv("INTENTTRACE_DB", str(tmp_path / "user.db"))
+    res = CliRunner().invoke(app, ["paygate-load-sample", "--dir", str(tmp_path / "nope")])
+    assert res.exit_code == 2

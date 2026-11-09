@@ -4,7 +4,7 @@
 
 ![IntentTrace demo: a MANIPULATED case with the highlighted injection and the replay result](docs/demo.gif)
 
-**Live demo:** https://intenttrace.onrender.com, with PayGate decisions at [/decisions](https://intenttrace.onrender.com/decisions). Free tier, so the first load after idle can take about a minute. Sample data only, and the decision log resets when the service restarts.
+**Live demo:** https://intenttrace.onrender.com, with PayGate decisions at [/decisions](https://intenttrace.onrender.com/decisions). Free tier, so the first load after idle can take about a minute. Sample data only. On every restart the log resets to the 12 sample decisions.
 
 
 IntentTrace is a forensic investigator for AI agent purchases. Give it the record of a purchase and it decides whether the purchase was legitimate, out of scope, manipulated, a merchant misrepresentation, or tampered with. It then writes a dispute-ready evidence packet.
@@ -110,7 +110,7 @@ cd web && npm install && npm run build
 
 ## Deploy
 
-A `Dockerfile` and `render.yaml` run the API and the built dashboard as one service on the deterministic `fake` provider, with the sample cases preloaded. No API keys go into the image.
+A `Dockerfile` and `render.yaml` run the API and the built dashboard as one service on the deterministic `fake` provider, with the sample cases and their PayGate decisions preloaded. No API keys go into the image.
 
 ```bash
 docker build -t intenttrace-demo .
@@ -164,6 +164,8 @@ Subtle persuasion is the hard case: with no explicit instruction to detect, the 
 - Reports describe technical findings. They are not legal advice and do not determine liability.
 
 ## PayGate: check before you pay
+
+![PayGate Decisions page: verified log, BLOCK filter, a blocked injection with its flagged span and evidence download](docs/paygate-demo.gif)
 
 PayGate is a pre-purchase checkpoint. An AI agent calls it with the signed intent, the cart it plans to buy, and the untrusted text it read. PayGate runs the same integrity, scope, detection, best-match, and replay checks as the investigator and returns `ALLOW`, `BLOCK`, or `ASK_HUMAN` with reason codes. Every decision goes into a signed, hash-chained log. It needs no LLM or API key by default.
 
@@ -229,7 +231,7 @@ Benchmark. This converts each generated case into a pre-purchase request and wri
 intenttrace paygate-bench --provider none --n 300 --seed 7
 ```
 
-Dashboard. Run `intenttrace serve` and open the Decisions page at `/decisions`. It lists decisions newest first, filters by decision, shows the flagged spans, links to a Markdown evidence packet, and shows whether the log chain verifies.
+Dashboard. Run `intenttrace paygate-load-sample` to gate the 12 sample cases, then `intenttrace serve` and open the Decisions page at `/decisions`. It lists decisions newest first, filters by decision, shows the flagged spans, links to a Markdown evidence packet, and shows whether the log chain verifies.
 
 The log holds a hash of each request and the span offsets. It does not store the untrusted text. The signing key is created beside the database on first use (`<db>.paygate.key`), or loaded from `PAYGATE_KEY_FILE`.
 
@@ -242,7 +244,7 @@ The log holds a hash of each request and the span offsets. It does not store the
 | Attack | 141 | 88.7% | 11.3% | 0.0% |
 | Legitimate | 99 | 0.0% | 32.3% | 67.7% |
 
-No attack case was allowed and no legitimate case was blocked. Every integrity and scope attack was blocked, and 80.2% of manipulated cases were blocked (the rest went to `ASK_HUMAN`). Subtle persuasion is the gap: with no explicit instruction to detect, those purchases are not blocked.
+No attack case was allowed and no legitimate case was blocked. Every pre-payment integrity and scope attack was blocked. Of the 81 manipulated cases, 80.2% were blocked: all explicit-instruction, fake-urgency, hidden-text and review-injection cases. Subtle persuasion is the gap: none of its 16 cases were blocked. They all went to `ASK_HUMAN` instead, so none were allowed, but a person has to catch them.
 
 The cost is review load. About a third of legitimate purchases go to `ASK_HUMAN`. Most of them read injected text that did not change the agent's choice, so PayGate flags the text without proof it mattered.
 

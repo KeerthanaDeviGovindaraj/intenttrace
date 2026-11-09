@@ -19,4 +19,4 @@ COPY benchmark/sample benchmark/sample
 COPY benchmark/results.json benchmark/results.json
 COPY --from=web /web/dist web/dist
 EXPOSE 8787
-CMD ["sh", "-c", "intenttrace load-sample && intenttrace serve --host 0.0.0.0 --port ${PORT:-8787}"]
+CMD ["sh", "-c", "intenttrace load-sample && intenttrace paygate-load-sample && intenttrace serve --host 0.0.0.0 --port ${PORT:-8787}"]

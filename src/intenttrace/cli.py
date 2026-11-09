@@ -294,5 +294,27 @@ def load_sample(
     typer.echo(f"Stored {len(files)} sample cases in {store.path}")
 
 
+@app.command("paygate-load-sample")
+def paygate_load_sample(
+    sample_dir: Path = typer.Option(Path("benchmark/sample"), "--dir", help="Directory of sample cases."),
+) -> None:
+    """Run the sample cases through PayGate (rules only) so the Decisions page has examples."""
+    from intenttrace.bench import case_to_request
+    from intenttrace.models import CaseFile
+    from intenttrace.paygate import gate_purchase
+
+    files = sorted(sample_dir.glob("case-*.json"))
+    if not files:
+        typer.echo(f"No sample cases found in {sample_dir}", err=True)
+        raise typer.Exit(code=2)
+    counts: dict[str, int] = {}
+    for f in files:
+        case = CaseFile.model_validate_json(f.read_text(encoding="utf-8"))
+        result = gate_purchase(case_to_request(case), provider=None)
+        counts[result.decision] = counts.get(result.decision, 0) + 1
+    summary = ", ".join(f"{k} {v}" for k, v in sorted(counts.items()))
+    typer.echo(f"Gated {len(files)} sample cases: {summary}")
+
+
 if __name__ == "__main__":
     app()

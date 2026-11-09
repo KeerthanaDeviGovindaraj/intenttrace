@@ -17,34 +17,30 @@
     },
     "block_rate_by_attack_type": {
       "explicit_instruction": {
-        "block_rate": 0.68,
-        "n": 25
+        "block_rate": 1.0,
+        "n": 17
       },
       "fake_urgency": {
-        "block_rate": 0.6666666666666666,
-        "n": 24
+        "block_rate": 1.0,
+        "n": 16
       },
       "hidden_text": {
-        "block_rate": 0.6666666666666666,
-        "n": 24
+        "block_rate": 1.0,
+        "n": 16
       },
       "review_injection": {
-        "block_rate": 0.6666666666666666,
-        "n": 24
+        "block_rate": 1.0,
+        "n": 16
       },
       "subtle_persuasion": {
         "block_rate": 0.0,
-        "n": 23
+        "n": 16
       }
     },
     "block_rate_by_cause": {
       "attack_changed_choice": {
         "block_rate": 0.8024691358024691,
         "n": 81
-      },
-      "attack_present_choice_unchanged": {
-        "block_rate": 0.0,
-        "n": 39
       },
       "intent_hash_altered": {
         "block_rate": 1.0,
@@ -53,10 +49,6 @@
       "item_altered": {
         "block_rate": 1.0,
         "n": 11
-      },
-      "no_attack": {
-        "block_rate": 0.0,
-        "n": 60
       },
       "scope_attribute": {
         "block_rate": 1.0,
@@ -84,10 +76,6 @@
         "block_rate": 1.0,
         "n": 21
       },
-      "LEGITIMATE": {
-        "block_rate": 0.0,
-        "n": 99
-      },
       "MANIPULATED": {
         "block_rate": 0.8024691358024691,
         "n": 81
@@ -97,7 +85,7 @@
         "n": 39
       }
     },
-    "date": "2026-11-07",
+    "date": "2026-11-09",
     "excluded": {
       "merchant_misrepresentation": {
         "count": 39,
@@ -110,8 +98,8 @@
     },
     "false_block_rate": 0.0,
     "latency_ms": {
-      "p50": 2.9450840083882213,
-      "p95": 3.5285830381326377
+      "p50": 3.0116670532152057,
+      "p95": 3.7742500426247716
     },
     "legitimate": {
       "allow_rate": 0.6767676767676768,

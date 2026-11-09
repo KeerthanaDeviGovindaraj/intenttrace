@@ -8,8 +8,10 @@ import type {
   VerdictLabel,
 } from "./types";
 
+// The production build is served by the API itself, so it calls the same origin.
+// Only the Vite dev server (localhost:5173) needs the API's address.
 export const API_BASE: string = (
-  import.meta.env.VITE_API_BASE ?? "http://127.0.0.1:8787"
+  import.meta.env.VITE_API_BASE ?? (import.meta.env.DEV ? "http://127.0.0.1:8787" : "")
 ).replace(/\/+$/, "");
 
 export class ApiError extends Error {

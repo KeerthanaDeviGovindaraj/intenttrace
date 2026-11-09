@@ -263,7 +263,6 @@ def run_paygate_bench(
 
     attack = [r for r in rows if r["group"] == "attack"]
     legit = [r for r in rows if r["group"] == "legitimate"]
-    included = attack + legit
     excluded = {
         name: {"count": sum(1 for r in rows if r["group"] == name), "reason": reason}
         for name, reason in EXCLUDED_REASONS.items()
@@ -280,9 +279,9 @@ def run_paygate_bench(
         "legitimate": legit_rates,
         "false_block_rate": legit_rates["block_rate"],
         "excluded": excluded,
-        "block_rate_by_label": _block_rate_by(included, "label"),
-        "block_rate_by_attack_type": _block_rate_by(included, "attack_type"),
-        "block_rate_by_cause": _block_rate_by(included, "cause"),
+        "block_rate_by_label": _block_rate_by(attack, "label"),
+        "block_rate_by_attack_type": _block_rate_by(attack, "attack_type"),
+        "block_rate_by_cause": _block_rate_by(attack, "cause"),
         "latency_ms": {"p50": _percentile(latencies_ms, 50), "p95": _percentile(latencies_ms, 95)},
     }
 
